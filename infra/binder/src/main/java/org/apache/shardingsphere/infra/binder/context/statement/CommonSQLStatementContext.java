@@ -28,6 +28,7 @@ import org.apache.shardingsphere.sql.parser.sql.dialect.statement.opengauss.Open
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.oracle.OracleStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.postgresql.PostgreSQLStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.sql92.SQL92Statement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.FirebirdStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.sqlserver.SQLServerStatement;
 
 import java.util.Collections;
@@ -68,6 +69,9 @@ public abstract class CommonSQLStatementContext implements SQLStatementContext {
         }
         if (sqlStatement instanceof SQL92Statement) {
             return TypedSPILoader.getService(DatabaseType.class, "SQL92");
+        }
+        if (sqlStatement instanceof FirebirdStatement) {
+            return TypedSPILoader.getService(DatabaseType.class, "Firebird");
         }
         throw new UnsupportedSQLOperationException(sqlStatement.getClass().getName());
     }
