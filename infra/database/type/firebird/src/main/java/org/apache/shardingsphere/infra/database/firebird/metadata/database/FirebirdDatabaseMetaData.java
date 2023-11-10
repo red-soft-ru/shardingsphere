@@ -21,6 +21,8 @@ import org.apache.shardingsphere.infra.database.core.metadata.database.DialectDa
 import org.apache.shardingsphere.infra.database.core.metadata.database.enums.NullsOrderType;
 import org.apache.shardingsphere.infra.database.core.metadata.database.enums.QuoteCharacter;
 
+import java.util.Locale;
+
 /**
  * Database meta data of Firebird.
  */
@@ -34,6 +36,11 @@ public final class FirebirdDatabaseMetaData implements DialectDatabaseMetaData {
     @Override
     public NullsOrderType getDefaultNullsOrderType() {
         return NullsOrderType.FIRST;
+    }
+    
+    @Override
+    public String formatTableNamePattern(final String tableNamePattern) {
+        return tableNamePattern.toUpperCase();
     }
     
     @Override
