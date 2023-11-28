@@ -406,7 +406,7 @@ public final class FirebirdDMLStatementVisitor extends FirebirdStatementVisitor 
     public ASTNode visitTableFactor(final TableFactorContext ctx) {
         if (null != ctx.subquery()) {
             FirebirdSelectStatement subquery = (FirebirdSelectStatement) visit(ctx.subquery());
-            SubquerySegment subquerySegment = new SubquerySegment(ctx.subquery().start.getStartIndex(), ctx.subquery().stop.getStopIndex(), subquery);
+            SubquerySegment subquerySegment = new SubquerySegment(ctx.subquery().start.getStartIndex(), ctx.subquery().stop.getStopIndex(), subquery, getOriginalText(ctx.subquery()));
             SubqueryTableSegment result = new SubqueryTableSegment(subquerySegment);
             if (null != ctx.alias()) {
                 result.setAlias((AliasSegment) visit(ctx.alias()));

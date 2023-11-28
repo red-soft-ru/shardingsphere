@@ -324,7 +324,8 @@ public abstract class FirebirdStatementVisitor extends FirebirdStatementBaseVisi
         ExpressionSegment left = (ExpressionSegment) visit(ctx.bitExpr(0));
         ExpressionSegment right;
         if (null != ctx.subquery()) {
-            right = new SubqueryExpressionSegment(new SubquerySegment(ctx.subquery().start.getStartIndex(), ctx.subquery().stop.getStopIndex(), (FirebirdSelectStatement) visit(ctx.subquery())));
+            right = new SubqueryExpressionSegment(new SubquerySegment(ctx.subquery().start.getStartIndex(), ctx.subquery().stop.getStopIndex(), (FirebirdSelectStatement) visit(ctx.subquery()),
+                    getOriginalText(ctx.subquery())));
         } else {
             ListExpression listExpression = new ListExpression(ctx.LP_().getSymbol().getStartIndex(), ctx.RP_().getSymbol().getStopIndex());
             for (ExprContext each : ctx.expr()) {
@@ -387,7 +388,7 @@ public abstract class FirebirdStatementVisitor extends FirebirdStatementBaseVisi
         int startIndex = ctx.getStart().getStartIndex();
         int stopIndex = ctx.getStop().getStopIndex();
         if (null != ctx.subquery()) {
-            return new SubquerySegment(startIndex, stopIndex, (FirebirdSelectStatement) visit(ctx.subquery()));
+            return new SubquerySegment(startIndex, stopIndex, (FirebirdSelectStatement) visit(ctx.subquery()), getOriginalText(ctx.subquery()));
         }
         if (null != ctx.parameterMarker()) {
             ParameterMarkerValue parameterMarker = (ParameterMarkerValue) visit(ctx.parameterMarker());
