@@ -33,6 +33,7 @@
         <module>oracle</module>
         <module>sqlserver</module>
         <module>opengauss</module>
+        <module>firebird</module>
     </modules>
     
     <dependencies>

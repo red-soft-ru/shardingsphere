@@ -90,6 +90,8 @@ import org.apache.shardingsphere.traffic.exception.metadata.EmptyTrafficExecutio
 import org.apache.shardingsphere.traffic.rule.TrafficRule;
 import org.apache.shardingsphere.transaction.util.AutoCommitUtils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
@@ -265,7 +267,7 @@ public final class ShardingSpherePreparedStatement extends AbstractPreparedState
         for (ExecutionContext each : executionContexts) {
             List<QueryResult> queryResults = executeQuery0(each);
             MergedResult mergedResult = mergeQuery(queryResults, each.getSqlStatementContext());
-            List<ResultSet> resultSets = getResultSets();
+            List<ResultSet> resultSets = getResultSets(queryResults);
             if (null == columnLabelAndIndexMap) {
                 columnLabelAndIndexMap = ShardingSphereResultSetUtils.createColumnLabelAndIndexMap(sqlStatementContext, selectContainsEnhancedTable, resultSets.get(0).getMetaData());
             }
@@ -575,6 +577,22 @@ public final class ShardingSpherePreparedStatement extends AbstractPreparedState
         for (Statement each : statements) {
             if (null != each.getResultSet()) {
                 result.add(each.getResultSet());
+            }
+        }
+        return result;
+    }
+    
+    private List<ResultSet> getResultSets(List<QueryResult> qr) throws SQLException {
+        List<ResultSet> result = new ArrayList<>(qr.size());
+        for (QueryResult each : qr) {
+            try {
+                Method getResultSet = each.getClass().getDeclaredMethod("getResultSet");
+                ResultSet rs = (ResultSet) getResultSet.invoke(each);
+                if (null != rs) {
+                    result.add(rs);
+                }
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                return getResultSets();
             }
         }
         return result;
