@@ -513,7 +513,7 @@ modifyExternalTableProperties
 
 pivotClause
     : PIVOT XML?
-    LP_ aggregationFunctionName LP_ expr RP_ (AS? alias)? (COMMA_ aggregationFunctionName LP_ expr RP_ (AS? alias)?)* pivotForClause pivotInClause RP_
+    LP_ aggregationFunction (AS? alias)? (COMMA_ aggregationFunction (AS? alias)?)* pivotForClause pivotInClause RP_
     ;
 
 pivotForClause
@@ -521,9 +521,13 @@ pivotForClause
     ;
 
 pivotInClause
-    : IN LP_ ((expr | exprList) (AS? alias)? (COMMA_ (expr | exprList) (AS? alias)?)*
+    : IN LP_ (pivotInClauseExpr (COMMA_ pivotInClauseExpr)*
     | selectSubquery
     | ANY (COMMA_ ANY)*) RP_
+    ;
+
+pivotInClauseExpr
+    : (expr | exprList) (AS? alias)?
     ;
 
 unpivotClause
@@ -531,7 +535,11 @@ unpivotClause
     ;
 
 unpivotInClause
-    : IN LP_ (columnName | columnNames) (AS (literals | LP_ literals (COMMA_ literals)* RP_))? (COMMA_ (columnName | columnNames) (AS (literals | LP_ literals (COMMA_ literals)* RP_))?)* RP_
+    : IN LP_ unpivotInClauseExpr (COMMA_ unpivotInClauseExpr)* RP_
+    ;
+
+unpivotInClauseExpr
+    : (columnName | columnNames) (AS (literals | LP_ literals (COMMA_ literals)* RP_))?
     ;
 
 sampleClause

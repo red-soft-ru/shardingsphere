@@ -29,15 +29,19 @@ import lombok.Setter;
 @Setter
 public final class ConsistencyCheckJobItemInfo {
     
+    private boolean active;
+    
     private String tableNames;
     
     private Boolean checkSuccess;
     
     private String checkFailedTableNames;
     
-    private int finishedPercentage;
+    private int inventoryFinishedPercentage;
     
-    private long remainingSeconds;
+    private long inventoryRemainingSeconds;
+    
+    private String incrementalIdleSeconds = "";
     
     private String checkBeginTime;
     

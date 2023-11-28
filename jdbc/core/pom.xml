@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.apache.shardingsphere</groupId>
         <artifactId>shardingsphere-jdbc</artifactId>
-        <version>5.4.1-SNAPSHOT</version>
+        <version>5.4.1</version>
     </parent>
     <artifactId>shardingsphere-jdbc-core</artifactId>
     <name>${project.artifactId}</name>
@@ -205,11 +205,5 @@
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
         </dependency>
-        
-        <dependency>
-            <groupId>com.ctrip.framework.apollo</groupId>
-            <artifactId>apollo-client</artifactId>
-        </dependency>
-        
     </dependencies>
 </project>

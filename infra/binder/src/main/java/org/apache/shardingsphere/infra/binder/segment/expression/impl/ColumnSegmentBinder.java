@@ -53,7 +53,7 @@ import java.util.Optional;
 public final class ColumnSegmentBinder {
     
     private static final Collection<String> EXCLUDE_BIND_COLUMNS = new LinkedHashSet<>(Arrays.asList("ROWNUM", "ROW_NUMBER", "ROWNUM_", "SYSDATE", "SYSTIMESTAMP", "CURRENT_TIMESTAMP",
-            "LOCALTIMESTAMP", "UID", "USER", "NEXTVAL", "ROWID"));
+            "LOCALTIMESTAMP", "UID", "USER", "NEXTVAL", "ROWID", "LEVEL"));
     
     private static final Map<SegmentType, String> SEGMENT_TYPE_MESSAGES = Maps.of(SegmentType.PROJECTION, "field list", SegmentType.JOIN_ON, "on clause", SegmentType.JOIN_USING, "from clause",
             SegmentType.PREDICATE, "where clause", SegmentType.ORDER_BY, "order clause", SegmentType.GROUP_BY, "group statement", SegmentType.INSERT_COLUMNS, "field list");
@@ -152,9 +152,23 @@ public final class ColumnSegmentBinder {
             result = findInputColumnSegmentByVariables(segment, statementBinderContext.getVariableNames()).orElse(null);
             isFindInputColumn = result != null;
         }
+        if (!isFindInputColumn) {
+            result = findInputColumnSegmentByPivotColumns(segment, statementBinderContext.getPivotColumnNames()).orElse(null);
+            isFindInputColumn = result != null;
+        }
         ShardingSpherePreconditions.checkState(isFindInputColumn || containsFunctionTable(tableBinderContexts, outerTableBinderContexts.values()),
                 () -> new UnknownColumnException(segment.getExpression(), SEGMENT_TYPE_MESSAGES.getOrDefault(parentSegmentType, UNKNOWN_SEGMENT_TYPE_MESSAGE)));
         return Optional.ofNullable(result);
+    }
+    
+    private static Optional<ColumnSegment> findInputColumnSegmentByPivotColumns(final ColumnSegment segment, final Collection<String> pivotColumnNames) {
+        if (pivotColumnNames.isEmpty()) {
+            return Optional.empty();
+        }
+        if (pivotColumnNames.contains(segment.getIdentifier().getValue().toLowerCase())) {
+            return Optional.of(new ColumnSegment(0, 0, segment.getIdentifier()));
+        }
+        return Optional.empty();
     }
     
     private static Optional<ProjectionSegment> findInputColumnSegmentFromOuterTable(final ColumnSegment segment, final Map<String, TableSegmentBinderContext> outerTableBinderContexts) {
@@ -180,6 +194,9 @@ public final class ColumnSegmentBinder {
     }
     
     private static Optional<ColumnSegment> findInputColumnSegmentByVariables(final ColumnSegment segment, final Collection<String> variableNames) {
+        if (variableNames.isEmpty()) {
+            return Optional.empty();
+        }
         if (variableNames.contains(segment.getIdentifier().getValue().toLowerCase())) {
             ColumnSegment result = new ColumnSegment(0, 0, segment.getIdentifier());
             result.setVariable(true);
