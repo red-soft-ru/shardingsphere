@@ -18,11 +18,13 @@
 package org.apache.shardingsphere.test.e2e.transaction.cases.savepoint;
 
 import lombok.SneakyThrows;
+import org.apache.shardingsphere.test.e2e.transaction.engine.base.TransactionBaseE2EIT;
 import org.apache.shardingsphere.test.e2e.transaction.engine.base.TransactionContainerComposer;
 import org.apache.shardingsphere.test.e2e.transaction.engine.base.TransactionTestCase;
 import org.apache.shardingsphere.test.e2e.transaction.engine.constants.TransactionTestConstants;
 import org.postgresql.jdbc.PSQLSavepoint;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -37,8 +39,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 @TransactionTestCase(dbTypes = TransactionTestConstants.POSTGRESQL)
 public final class PostgreSQLSavePointTestCase extends BaseSavePointTestCase {
     
-    public PostgreSQLSavePointTestCase(final TransactionTestCaseParameter testCaseParam) {
-        super(testCaseParam);
+    public PostgreSQLSavePointTestCase(final TransactionBaseE2EIT baseTransactionITCase, final DataSource dataSource) {
+        super(baseTransactionITCase, dataSource);
     }
     
     @Override

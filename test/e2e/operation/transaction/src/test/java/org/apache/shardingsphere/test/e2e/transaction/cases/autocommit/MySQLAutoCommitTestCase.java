@@ -17,12 +17,15 @@
 
 package org.apache.shardingsphere.test.e2e.transaction.cases.autocommit;
 
+import org.apache.shardingsphere.test.e2e.transaction.cases.base.BaseTransactionTestCase;
+import org.apache.shardingsphere.test.e2e.transaction.engine.base.TransactionBaseE2EIT;
 import org.apache.shardingsphere.test.e2e.transaction.engine.base.TransactionContainerComposer;
 import org.apache.shardingsphere.test.e2e.transaction.engine.base.TransactionTestCase;
 import org.apache.shardingsphere.test.e2e.transaction.engine.constants.TransactionTestConstants;
 import org.apache.shardingsphere.transaction.api.TransactionType;
 import org.awaitility.Awaitility;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
@@ -33,27 +36,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * MySQL auto commit transaction integration test.
  */
-@TransactionTestCase(dbTypes = TransactionTestConstants.MYSQL)
-public final class MySQLAutoCommitTestCase extends AutoCommitTestCase {
+@TransactionTestCase(dbTypes = TransactionTestConstants.MYSQL, transactionTypes = TransactionType.LOCAL)
+public final class MySQLAutoCommitTestCase extends BaseTransactionTestCase {
     
-    public MySQLAutoCommitTestCase(final TransactionTestCaseParameter testCaseParam) {
-        super(testCaseParam);
+    public MySQLAutoCommitTestCase(final TransactionBaseE2EIT baseTransactionITCase, final DataSource dataSource) {
+        super(baseTransactionITCase, dataSource);
     }
     
     @Override
     public void executeTest(final TransactionContainerComposer containerComposer) throws SQLException {
-        if (TransactionType.LOCAL == getTransactionType()) {
-            assertAutoCommit();
-        }
-        assertAutoCommitWithStatement();
-        assertAutoCommitWithPrepareStatement();
+        assertAutoCommit();
     }
     
     private void assertAutoCommit() throws SQLException {
         // TODO Currently XA transaction does not support two transactions in the same thread at the same time
-        try (
-                Connection connection1 = getDataSource().getConnection();
-                Connection connection2 = getDataSource().getConnection()) {
+        try (Connection connection1 = getDataSource().getConnection(); Connection connection2 = getDataSource().getConnection()) {
             executeWithLog(connection1, "set session transaction isolation level read committed;");
             executeWithLog(connection2, "set session transaction isolation level read committed;");
             connection1.setAutoCommit(false);
@@ -61,7 +58,8 @@ public final class MySQLAutoCommitTestCase extends AutoCommitTestCase {
             executeWithLog(connection1, "insert into account(id, balance, transaction_id) values(1, 100, 1);");
             assertFalse(executeQueryWithLog(connection2, "select * from account;").next());
             connection1.commit();
-            Awaitility.await().atMost(1L, TimeUnit.SECONDS).pollDelay(200L, TimeUnit.MILLISECONDS).until(() -> executeQueryWithLog(connection2, "select * from account;").next());
+            Awaitility.await().atMost(1L, TimeUnit.SECONDS).pollDelay(200L, TimeUnit.MILLISECONDS).until(
+                    () -> executeQueryWithLog(connection2, "select * from account;").next());
             assertTrue(executeQueryWithLog(connection2, "select * from account;").next());
         }
     }

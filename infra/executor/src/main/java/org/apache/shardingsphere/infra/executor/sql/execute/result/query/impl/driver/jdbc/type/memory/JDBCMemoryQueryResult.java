@@ -29,10 +29,10 @@ import java.sql.SQLException;
  * JDBC query result for memory loading.
  */
 public final class JDBCMemoryQueryResult extends AbstractMemoryQueryResult {
-    
+
     @Getter
     private final ResultSet resultSet;
-    
+
     public JDBCMemoryQueryResult(final ResultSet resultSet, final DatabaseType databaseType) throws SQLException {
         super(new JDBCQueryResultMetaData(resultSet.getMetaData()), new QueryResultDataRowLoader(databaseType).load(resultSet.getMetaData().getColumnCount(), resultSet));
         this.resultSet = resultSet;

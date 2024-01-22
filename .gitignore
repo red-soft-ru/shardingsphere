@@ -39,6 +39,7 @@ logs/
 *.diff
 *.patch
 *.tmp
+.hugo_build.lock
 
 # system ignore
 .DS_Store
@@ -50,8 +51,3 @@ gen/
 
 # profiler ignore
 .profiler/
-
-# hugo ignore
-public/
-.hugo_build.lock
-*.html-e

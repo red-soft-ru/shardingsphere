@@ -17,7 +17,6 @@
 
 package org.apache.shardingsphere.single.rule.builder;
 
-import org.apache.shardingsphere.infra.database.core.type.DatabaseType;
 import org.apache.shardingsphere.infra.instance.InstanceContext;
 import org.apache.shardingsphere.infra.rule.ShardingSphereRule;
 import org.apache.shardingsphere.infra.rule.builder.database.DatabaseRuleBuilder;
@@ -35,9 +34,9 @@ import java.util.Map;
 public final class SingleRuleBuilder implements DatabaseRuleBuilder<SingleRuleConfiguration> {
     
     @Override
-    public SingleRule build(final SingleRuleConfiguration config, final String databaseName, final DatabaseType protocolType,
+    public SingleRule build(final SingleRuleConfiguration config, final String databaseName,
                             final Map<String, DataSource> dataSources, final Collection<ShardingSphereRule> builtRules, final InstanceContext instanceContext) {
-        return new SingleRule(config, databaseName, protocolType, dataSources, builtRules);
+        return new SingleRule(config, databaseName, dataSources, builtRules);
     }
     
     @Override

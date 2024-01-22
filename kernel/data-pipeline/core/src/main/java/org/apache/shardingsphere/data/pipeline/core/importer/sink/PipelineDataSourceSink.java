@@ -135,10 +135,7 @@ public final class PipelineDataSourceSink implements PipelineSink {
     
     private void doFlush(final DataSource dataSource, final List<DataRecord> buffer) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            boolean enableTransaction = buffer.size() > 1;
-            if (enableTransaction) {
-                connection.setAutoCommit(false);
-            }
+            connection.setAutoCommit(false);
             switch (buffer.get(0).getType()) {
                 case IngestDataChangeType.INSERT:
                     if (null != rateLimitAlgorithm) {
@@ -161,9 +158,42 @@ public final class PipelineDataSourceSink implements PipelineSink {
                 default:
                     break;
             }
-            if (enableTransaction) {
-                connection.commit();
+            connection.commit();
+        }
+    }
+    
+    private void doFlush(final Connection connection, final List<DataRecord> buffer) {
+        // TODO it's better use transaction, but execute delete maybe not effect when open transaction of PostgreSQL sometimes
+        for (DataRecord each : buffer) {
+            try {
+                doFlush(connection, each);
+            } catch (final SQLException ex) {
+                throw new PipelineImporterJobWriteException(String.format("Write failed, record=%s", each), ex);
             }
+        }
+    }
+    
+    private void doFlush(final Connection connection, final DataRecord dataRecord) throws SQLException {
+        switch (dataRecord.getType()) {
+            case IngestDataChangeType.INSERT:
+                if (null != rateLimitAlgorithm) {
+                    rateLimitAlgorithm.intercept(JobOperationType.INSERT, 1);
+                }
+                executeBatchInsert(connection, Collections.singletonList(dataRecord));
+                break;
+            case IngestDataChangeType.UPDATE:
+                if (null != rateLimitAlgorithm) {
+                    rateLimitAlgorithm.intercept(JobOperationType.UPDATE, 1);
+                }
+                executeUpdate(connection, dataRecord);
+                break;
+            case IngestDataChangeType.DELETE:
+                if (null != rateLimitAlgorithm) {
+                    rateLimitAlgorithm.intercept(JobOperationType.DELETE, 1);
+                }
+                executeBatchDelete(connection, Collections.singletonList(dataRecord));
+                break;
+            default:
         }
     }
     
@@ -249,11 +279,11 @@ public final class PipelineDataSourceSink implements PipelineSink {
     }
     
     private void sequentialFlush(final DataSource dataSource, final List<DataRecord> buffer) {
-        // TODO it's better use transaction, but execute delete maybe not effect when open transaction of PostgreSQL sometimes
-        try {
-            for (DataRecord each : buffer) {
-                doFlush(dataSource, Collections.singletonList(each));
-            }
+        if (buffer.isEmpty()) {
+            return;
+        }
+        try (Connection connection = dataSource.getConnection()) {
+            doFlush(connection, buffer);
         } catch (final SQLException ex) {
             throw new PipelineImporterJobWriteException(ex);
         }

@@ -57,28 +57,18 @@ public abstract class AbstractStatementAdapter extends AbstractUnsupportedOperat
     
     private boolean closed;
     
-    protected final boolean isNeedImplicitCommitTransaction(final ShardingSphereConnection connection, final Collection<ExecutionContext> executionContexts) {
-        if (connection.getAutoCommit()) {
-            return false;
-        }
-        ConnectionTransaction connectionTransaction = connection.getDatabaseConnectionManager().getConnectionTransaction();
-        boolean isInTransaction = connection.getDatabaseConnectionManager().getConnectionContext().getTransactionContext().isInTransaction();
-        if (!TransactionType.isDistributedTransaction(connectionTransaction.getTransactionType()) || isInTransaction) {
-            return false;
-        }
-        if (1 == executionContexts.size()) {
-            SQLStatement sqlStatement = executionContexts.iterator().next().getSqlStatementContext().getSqlStatement();
-            return isWriteDMLStatement(sqlStatement) && executionContexts.iterator().next().getExecutionUnits().size() > 1;
-        }
-        for (ExecutionContext each : executionContexts) {
-            if (isWriteDMLStatement(each.getSqlStatementContext().getSqlStatement())) {
-                return true;
-            }
-        }
-        return false;
+    protected final boolean isNeedImplicitCommitTransaction(final ShardingSphereConnection connection, final ExecutionContext executionContext) {
+        return isInDistributedTransaction(connection) && isModifiedSQL(executionContext) && executionContext.getExecutionUnits().size() > 1;
     }
     
-    private boolean isWriteDMLStatement(final SQLStatement sqlStatement) {
+    private boolean isInDistributedTransaction(final ShardingSphereConnection connection) {
+        ConnectionTransaction connectionTransaction = connection.getDatabaseConnectionManager().getConnectionTransaction();
+        boolean isInTransaction = connection.getDatabaseConnectionManager().getConnectionContext().getTransactionContext().isInTransaction();
+        return TransactionType.isDistributedTransaction(connectionTransaction.getTransactionType()) && !isInTransaction;
+    }
+    
+    private boolean isModifiedSQL(final ExecutionContext executionContext) {
+        SQLStatement sqlStatement = executionContext.getSqlStatementContext().getSqlStatement();
         return sqlStatement instanceof DMLStatement && !(sqlStatement instanceof SelectStatement);
     }
     

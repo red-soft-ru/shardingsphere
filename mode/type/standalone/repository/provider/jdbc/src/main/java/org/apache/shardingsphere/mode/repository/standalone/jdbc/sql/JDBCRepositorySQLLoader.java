@@ -101,7 +101,7 @@ public final class JDBCRepositorySQLLoader {
     }
     
     private static JDBCRepositorySQL loadFromJar(final URL url, final String type) throws JAXBException, IOException {
-        JDBCRepositorySQL result = null;
+        JDBCRepositorySQL defaultProvider = null;
         try (JarFile jar = ((JarURLConnection) url.openConnection()).getJarFile()) {
             Enumeration<JarEntry> entries = jar.entries();
             while (entries.hasMoreElements()) {
@@ -112,14 +112,13 @@ public final class JDBCRepositorySQLLoader {
                 final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
                 JDBCRepositorySQL provider = (JDBCRepositorySQL) JAXBContext.newInstance(JDBCRepositorySQL.class).createUnmarshaller().unmarshal(inputStream);
                 if (provider.isDefault()) {
-                    result = provider;
+                    defaultProvider = provider;
                 }
                 if (Objects.equals(provider.getType(), type)) {
-                    result = provider;
-                    break;
+                    return provider;
                 }
             }
         }
-        return result;
+        return defaultProvider;
     }
 }

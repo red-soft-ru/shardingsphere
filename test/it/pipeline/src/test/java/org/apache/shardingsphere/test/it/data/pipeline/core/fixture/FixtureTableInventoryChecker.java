@@ -18,6 +18,8 @@
 package org.apache.shardingsphere.test.it.data.pipeline.core.fixture;
 
 import org.apache.shardingsphere.data.pipeline.core.consistencycheck.result.TableDataConsistencyCheckResult;
+import org.apache.shardingsphere.data.pipeline.core.consistencycheck.result.TableDataConsistencyContentCheckResult;
+import org.apache.shardingsphere.data.pipeline.core.consistencycheck.result.TableDataConsistencyCountCheckResult;
 import org.apache.shardingsphere.data.pipeline.core.consistencycheck.table.TableInventoryChecker;
 
 public final class FixtureTableInventoryChecker implements TableInventoryChecker {
@@ -33,6 +35,6 @@ public final class FixtureTableInventoryChecker implements TableInventoryChecker
     
     @Override
     public TableDataConsistencyCheckResult checkSingleTableInventoryData() {
-        return new TableDataConsistencyCheckResult(true);
+        return new TableDataConsistencyCheckResult(new TableDataConsistencyCountCheckResult(2, 2), new TableDataConsistencyContentCheckResult(true));
     }
 }

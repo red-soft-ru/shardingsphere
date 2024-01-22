@@ -21,9 +21,11 @@ import lombok.Getter;
 import org.apache.shardingsphere.infra.config.database.DatabaseConfiguration;
 import org.apache.shardingsphere.infra.config.rule.RuleConfiguration;
 import org.apache.shardingsphere.infra.config.rule.decorator.RuleConfigurationDecorator;
+import org.apache.shardingsphere.infra.datasource.pool.destroyer.DataSourcePoolDestroyer;
 import org.apache.shardingsphere.infra.datasource.pool.config.DataSourceConfiguration;
-import org.apache.shardingsphere.infra.datasource.pool.props.creator.DataSourcePoolPropertiesCreator;
 import org.apache.shardingsphere.infra.datasource.pool.props.domain.DataSourcePoolProperties;
+import org.apache.shardingsphere.infra.datasource.pool.props.creator.DataSourcePoolPropertiesCreator;
+import org.apache.shardingsphere.infra.metadata.database.resource.node.StorageNode;
 import org.apache.shardingsphere.infra.rule.ShardingSphereRule;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
 import org.apache.shardingsphere.metadata.persist.data.ShardingSphereDataPersistService;
@@ -100,11 +102,6 @@ public final class MetaDataPersistService implements MetaDataBasedPersistService
         }
     }
     
-    private Map<String, DataSourcePoolProperties> getDataSourcePoolPropertiesMap(final DatabaseConfiguration databaseConfigs) {
-        return databaseConfigs.getStorageUnits().entrySet().stream()
-                .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().getDataSourcePoolProperties(), (oldValue, currentValue) -> oldValue, LinkedHashMap::new));
-    }
-    
     @SuppressWarnings({"unchecked", "rawtypes"})
     private Collection<RuleConfiguration> decorateRuleConfigs(final String databaseName, final Map<String, DataSource> dataSources, final Collection<ShardingSphereRule> rules) {
         Collection<RuleConfiguration> result = new LinkedList<>();
@@ -116,9 +113,28 @@ public final class MetaDataPersistService implements MetaDataBasedPersistService
         return result;
     }
     
+    private Map<String, DataSourcePoolProperties> getDataSourcePoolPropertiesMap(final DatabaseConfiguration databaseConfigs) {
+        if (!databaseConfigs.getDataSources().isEmpty() && databaseConfigs.getDataSourcePoolPropertiesMap().isEmpty()) {
+            return getDataSourcePoolPropertiesMap(databaseConfigs.getStorageResource().getDataSourceMap());
+        }
+        return databaseConfigs.getDataSourcePoolPropertiesMap();
+    }
+    
+    private Map<String, DataSourcePoolProperties> getDataSourcePoolPropertiesMap(final Map<StorageNode, DataSource> storageNodeDataSources) {
+        Map<String, DataSourcePoolProperties> result = new LinkedHashMap<>(storageNodeDataSources.size(), 1F);
+        for (Entry<StorageNode, DataSource> entry : storageNodeDataSources.entrySet()) {
+            result.put(entry.getKey().getName(), DataSourcePoolPropertiesCreator.create(entry.getValue()));
+        }
+        return result;
+    }
+    
     @Override
-    public Map<String, DataSourceConfiguration> loadDataSourceConfigurations(final String databaseName) {
-        return dataSourceUnitService.load(databaseName).entrySet().stream().collect(Collectors.toMap(Entry::getKey,
+    public Map<String, DataSourceConfiguration> getEffectiveDataSources(final String databaseName, final Map<String, ? extends DatabaseConfiguration> databaseConfigs) {
+        Map<String, DataSourcePoolProperties> propsMap = dataSourceUnitService.load(databaseName);
+        if (databaseConfigs.containsKey(databaseName) && !databaseConfigs.get(databaseName).getDataSources().isEmpty()) {
+            databaseConfigs.get(databaseName).getStorageResource().getDataSourceMap().values().forEach(each -> new DataSourcePoolDestroyer(each).asyncDestroy());
+        }
+        return propsMap.entrySet().stream().collect(Collectors.toMap(Entry::getKey,
                 entry -> DataSourcePoolPropertiesCreator.createConfiguration(entry.getValue()), (oldValue, currentValue) -> oldValue, LinkedHashMap::new));
     }
 }

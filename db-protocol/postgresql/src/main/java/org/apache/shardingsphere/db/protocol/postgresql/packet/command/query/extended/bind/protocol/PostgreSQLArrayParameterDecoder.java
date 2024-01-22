@@ -46,8 +46,8 @@ public final class PostgreSQLArrayParameterDecoder {
         Collection<String> parameterElements = decodeText(parameterValue);
         short[] result = new short[parameterElements.size()];
         int index = 0;
-        for (String each : parameterElements) {
-            result[index++] = Short.parseShort(each);
+        for (String element : parameterElements) {
+            result[index++] = Short.parseShort(element);
         }
         return result;
     }
@@ -65,8 +65,8 @@ public final class PostgreSQLArrayParameterDecoder {
         Collection<String> parameterElements = decodeText(parameterValue);
         int[] result = new int[parameterElements.size()];
         int index = 0;
-        for (String each : parameterElements) {
-            result[index++] = Integer.parseInt(each);
+        for (String element : parameterElements) {
+            result[index++] = Integer.parseInt(element);
         }
         return result;
     }
@@ -84,8 +84,8 @@ public final class PostgreSQLArrayParameterDecoder {
         Collection<String> parameterElements = decodeText(parameterValue);
         long[] result = new long[parameterElements.size()];
         int index = 0;
-        for (String each : parameterElements) {
-            result[index++] = Long.parseLong(each);
+        for (String element : parameterElements) {
+            result[index++] = Long.parseLong(element);
         }
         return result;
     }
@@ -103,8 +103,8 @@ public final class PostgreSQLArrayParameterDecoder {
         Collection<String> parameterElements = decodeText(parameterValue);
         float[] result = new float[parameterElements.size()];
         int index = 0;
-        for (String each : parameterElements) {
-            result[index++] = Float.parseFloat(each);
+        for (String element : parameterElements) {
+            result[index++] = Float.parseFloat(element);
         }
         return result;
     }
@@ -122,8 +122,8 @@ public final class PostgreSQLArrayParameterDecoder {
         Collection<String> parameterElements = decodeText(parameterValue);
         double[] result = new double[parameterElements.size()];
         int index = 0;
-        for (String each : parameterElements) {
-            result[index++] = Double.parseDouble(each);
+        for (String element : parameterElements) {
+            result[index++] = Double.parseDouble(element);
         }
         return result;
     }
@@ -141,8 +141,8 @@ public final class PostgreSQLArrayParameterDecoder {
         Collection<String> parameterElements = decodeText(parameterValue);
         boolean[] result = new boolean[parameterElements.size()];
         int index = 0;
-        for (String each : parameterElements) {
-            result[index++] = Boolean.parseBoolean(each);
+        for (String element : parameterElements) {
+            result[index++] = Boolean.parseBoolean(element);
         }
         return result;
     }

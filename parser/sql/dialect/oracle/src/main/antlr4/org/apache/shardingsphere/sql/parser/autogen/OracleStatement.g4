@@ -153,7 +153,5 @@ execute
     | alterType
     | createType
     | createCluster
-    | createJava
-    | plsqlBlock
     ) SEMI_?
     ;

@@ -21,8 +21,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.shardingsphere.infra.config.database.DatabaseConfiguration;
 import org.apache.shardingsphere.infra.config.props.ConfigurationProperties;
-import org.apache.shardingsphere.infra.database.DatabaseTypeEngine;
 import org.apache.shardingsphere.infra.database.core.type.DatabaseType;
+import org.apache.shardingsphere.infra.database.DatabaseTypeEngine;
 import org.apache.shardingsphere.infra.instance.InstanceContext;
 import org.apache.shardingsphere.infra.metadata.database.ShardingSphereDatabase;
 import org.apache.shardingsphere.infra.rule.builder.database.DatabaseRulesBuilder;
@@ -51,9 +51,8 @@ public final class NewInternalMetaDataFactory {
      */
     public static ShardingSphereDatabase create(final String databaseName, final NewMetaDataPersistService persistService, final DatabaseConfiguration databaseConfig,
                                                 final ConfigurationProperties props, final InstanceContext instanceContext) {
-        DatabaseType protocolType = DatabaseTypeEngine.getProtocolType(databaseName, databaseConfig, props);
-        return ShardingSphereDatabase.create(databaseName, protocolType, databaseConfig, DatabaseRulesBuilder.build(databaseName, protocolType, databaseConfig, instanceContext),
-                persistService.getDatabaseMetaDataService().loadSchemas(databaseName));
+        return ShardingSphereDatabase.create(databaseName, DatabaseTypeEngine.getProtocolType(databaseName, databaseConfig, props), databaseConfig,
+                DatabaseRulesBuilder.build(databaseName, databaseConfig, instanceContext), persistService.getDatabaseMetaDataService().loadSchemas(databaseName));
     }
     
     /**
@@ -75,7 +74,7 @@ public final class NewInternalMetaDataFactory {
         Map<String, ShardingSphereDatabase> result = new ConcurrentHashMap<>(databaseConfigMap.size(), 1F);
         for (Entry<String, DatabaseConfiguration> entry : databaseConfigMap.entrySet()) {
             String databaseName = entry.getKey();
-            if (entry.getValue().getStorageUnits().isEmpty()) {
+            if (entry.getValue().getDataSources().isEmpty()) {
                 result.put(databaseName.toLowerCase(), ShardingSphereDatabase.create(databaseName, protocolType, props));
             } else {
                 result.put(databaseName.toLowerCase(), create(databaseName, persistService, entry.getValue(), props, instanceContext));

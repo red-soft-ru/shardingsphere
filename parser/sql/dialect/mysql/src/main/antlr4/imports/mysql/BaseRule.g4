@@ -918,7 +918,7 @@ simpleExpr
     | columnRef
     | simpleExpr collateClause
     | variable
-    | simpleExpr VERTICAL_BAR_ VERTICAL_BAR_ simpleExpr
+    | simpleExpr OR_ simpleExpr
     | (PLUS_ | MINUS_ | TILDE_ | notOperator | BINARY) simpleExpr
     | ROW? LP_ expr (COMMA_ expr)* RP_
     | EXISTS? subquery

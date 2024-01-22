@@ -18,6 +18,7 @@
 package org.apache.shardingsphere.proxy.backend.connector;
 
 import com.google.common.base.Preconditions;
+import org.apache.shardingsphere.infra.exception.dialect.SQLExceptionTransformEngine;
 import org.apache.shardingsphere.infra.binder.context.aware.CursorDefinitionAware;
 import org.apache.shardingsphere.infra.binder.context.segment.insert.keygen.GeneratedKeyContext;
 import org.apache.shardingsphere.infra.binder.context.statement.SQLStatementContext;
@@ -30,8 +31,6 @@ import org.apache.shardingsphere.infra.config.props.ConfigurationPropertyKey;
 import org.apache.shardingsphere.infra.connection.kernel.KernelProcessor;
 import org.apache.shardingsphere.infra.connection.refresher.MetaDataRefreshEngine;
 import org.apache.shardingsphere.infra.database.core.type.DatabaseType;
-import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
-import org.apache.shardingsphere.infra.exception.dialect.SQLExceptionTransformEngine;
 import org.apache.shardingsphere.infra.executor.sql.context.ExecutionContext;
 import org.apache.shardingsphere.infra.executor.sql.execute.engine.SQLExecutorExceptionHandler;
 import org.apache.shardingsphere.infra.executor.sql.execute.engine.driver.jdbc.JDBCExecutionUnit;
@@ -47,6 +46,7 @@ import org.apache.shardingsphere.infra.metadata.database.ShardingSphereDatabase;
 import org.apache.shardingsphere.infra.metadata.database.schema.util.SystemSchemaUtils;
 import org.apache.shardingsphere.infra.rule.identifier.type.DataNodeContainedRule;
 import org.apache.shardingsphere.infra.session.query.QueryContext;
+import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
 import org.apache.shardingsphere.mode.manager.ContextManager;
 import org.apache.shardingsphere.mode.metadata.MetaDataContexts;
 import org.apache.shardingsphere.proxy.backend.connector.jdbc.executor.callback.ProxyJDBCExecutorCallback;
@@ -180,9 +180,6 @@ public final class DatabaseConnector implements DatabaseBackendHandler {
     }
     
     private boolean isNeedImplicitCommitTransaction(final Collection<ExecutionContext> executionContexts) {
-        if (!databaseConnectionManager.getConnectionSession().isAutoCommit()) {
-            return false;
-        }
         TransactionStatus transactionStatus = databaseConnectionManager.getConnectionSession().getTransactionStatus();
         if (!TransactionType.isDistributedTransaction(transactionStatus.getTransactionType()) || transactionStatus.isInTransaction()) {
             return false;
@@ -191,12 +188,7 @@ public final class DatabaseConnector implements DatabaseBackendHandler {
             SQLStatement sqlStatement = executionContexts.iterator().next().getSqlStatementContext().getSqlStatement();
             return isWriteDMLStatement(sqlStatement) && executionContexts.iterator().next().getExecutionUnits().size() > 1;
         }
-        for (ExecutionContext each : executionContexts) {
-            if (isWriteDMLStatement(each.getSqlStatementContext().getSqlStatement())) {
-                return true;
-            }
-        }
-        return false;
+        return executionContexts.stream().anyMatch(each -> isWriteDMLStatement(each.getSqlStatementContext().getSqlStatement()));
     }
     
     private boolean isWriteDMLStatement(final SQLStatement sqlStatement) {
@@ -222,9 +214,11 @@ public final class DatabaseConnector implements DatabaseBackendHandler {
     
     private ResponseHeader doExecute(final Collection<ExecutionContext> executionContexts) throws SQLException {
         ResponseHeader result = null;
-        // TODO support multi execution context, currently executionContexts.size() always equals 1
         for (ExecutionContext each : executionContexts) {
-            result = doExecute(each);
+            ResponseHeader responseHeader = doExecute(each);
+            if (null == result) {
+                result = responseHeader;
+            }
         }
         return result;
     }
@@ -257,7 +251,7 @@ public final class DatabaseConnector implements DatabaseBackendHandler {
         JDBCBackendStatement statementManager = (JDBCBackendStatement) databaseConnectionManager.getConnectionSession().getStatementManager();
         return new DriverExecutionPrepareEngine<>(driverType, maxConnectionsSizePerQuery, databaseConnectionManager, statementManager,
                 new StatementOption(isReturnGeneratedKeys), metaData.getMetaData().getDatabase(databaseConnectionManager.getConnectionSession().getDatabaseName()).getRuleMetaData().getRules(),
-                metaData.getMetaData().getDatabase(databaseConnectionManager.getConnectionSession().getDatabaseName()).getResourceMetaData().getStorageUnits());
+                metaData.getMetaData().getDatabase(databaseConnectionManager.getConnectionSession().getDatabaseName()).getResourceMetaData().getStorageUnitMetaData());
     }
     
     private ResponseHeader processExecuteFederation(final ResultSet resultSet, final MetaDataContexts metaDataContexts) throws SQLException {

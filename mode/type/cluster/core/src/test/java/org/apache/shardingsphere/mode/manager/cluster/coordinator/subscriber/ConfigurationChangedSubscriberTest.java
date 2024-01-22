@@ -113,7 +113,6 @@ class ConfigurationChangedSubscriberTest {
     private Map<String, ShardingSphereDatabase> createDatabases() {
         when(database.getName()).thenReturn("db");
         ResourceMetaData resourceMetaData = mock(ResourceMetaData.class, RETURNS_DEEP_STUBS);
-        when(resourceMetaData.getStorageUnits()).thenReturn(Collections.emptyMap());
         when(database.getResourceMetaData()).thenReturn(resourceMetaData);
         when(database.getSchemas()).thenReturn(Collections.singletonMap("foo_schema", new ShardingSphereSchema()));
         when(database.getProtocolType()).thenReturn(TypedSPILoader.getService(DatabaseType.class, "FIXTURE"));
@@ -134,7 +133,7 @@ class ConfigurationChangedSubscriberTest {
     @Test
     void assertRenewForDataSourceChanged() {
         subscriber.renew(new DataSourceUnitsChangedEvent("db", "0", createChangedDataSourcePoolPropertiesMap()));
-        assertTrue(contextManager.getMetaDataContexts().getMetaData().getDatabase("db").getResourceMetaData().getStorageUnits().containsKey("ds_2"));
+        assertTrue(contextManager.getMetaDataContexts().getMetaData().getDatabase("db").getResourceMetaData().getStorageUnitMetaData().getStorageUnits().containsKey("ds_2"));
     }
     
     private Map<String, DataSourcePoolProperties> createChangedDataSourcePoolPropertiesMap() {

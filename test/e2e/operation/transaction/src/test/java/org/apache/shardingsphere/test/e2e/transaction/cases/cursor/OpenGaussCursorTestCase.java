@@ -19,11 +19,13 @@ package org.apache.shardingsphere.test.e2e.transaction.cases.cursor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shardingsphere.test.e2e.transaction.cases.base.BaseTransactionTestCase;
+import org.apache.shardingsphere.test.e2e.transaction.engine.base.TransactionBaseE2EIT;
 import org.apache.shardingsphere.test.e2e.transaction.engine.base.TransactionContainerComposer;
 import org.apache.shardingsphere.test.e2e.transaction.engine.base.TransactionTestCase;
 import org.apache.shardingsphere.test.e2e.transaction.engine.command.CursorSQLCommand;
 import org.apache.shardingsphere.test.e2e.transaction.engine.constants.TransactionTestConstants;
 
+import javax.sql.DataSource;
 import javax.xml.bind.JAXB;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -44,8 +46,8 @@ public final class OpenGaussCursorTestCase extends BaseTransactionTestCase {
     
     private final CursorSQLCommand cursorSQLCommand;
     
-    public OpenGaussCursorTestCase(final TransactionTestCaseParameter testCaseParam) {
-        super(testCaseParam);
+    public OpenGaussCursorTestCase(final TransactionBaseE2EIT baseTransactionITCase, final DataSource dataSource) {
+        super(baseTransactionITCase, dataSource);
         this.cursorSQLCommand = loadCursorSQLCommand();
     }
     

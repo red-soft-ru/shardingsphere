@@ -26,7 +26,6 @@ import org.apache.shardingsphere.driver.jdbc.exception.connection.ConnectionClos
 import org.apache.shardingsphere.infra.session.connection.ConnectionContext;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
 import org.apache.shardingsphere.mode.manager.ContextManager;
-import org.apache.shardingsphere.transaction.api.TransactionType;
 
 import java.sql.Array;
 import java.sql.CallableStatement;
@@ -153,7 +152,7 @@ public final class ShardingSphereConnection extends AbstractConnectionAdapter {
         if (databaseConnectionManager.getConnectionTransaction().isLocalTransaction()) {
             processLocalTransaction();
         } else {
-            processDistributedTransaction();
+            processDistributeTransaction();
         }
     }
     
@@ -164,34 +163,18 @@ public final class ShardingSphereConnection extends AbstractConnectionAdapter {
         }
     }
     
-    private void processDistributedTransaction() throws SQLException {
+    private void processDistributeTransaction() throws SQLException {
         switch (databaseConnectionManager.getConnectionTransaction().getDistributedTransactionOperationType(autoCommit)) {
             case BEGIN:
-                beginDistributedTransaction();
+                databaseConnectionManager.close();
+                databaseConnectionManager.getConnectionTransaction().begin();
+                getConnectionContext().getTransactionContext().setInTransaction(true);
                 break;
             case COMMIT:
                 databaseConnectionManager.getConnectionTransaction().commit();
                 break;
             default:
                 break;
-        }
-    }
-    
-    private void beginDistributedTransaction() throws SQLException {
-        databaseConnectionManager.close();
-        databaseConnectionManager.getConnectionTransaction().begin();
-        getConnectionContext().getTransactionContext().setInTransaction(true);
-    }
-    
-    /**
-     * Handle auto commit.
-     * 
-     * @throws SQLException SQL exception
-     */
-    public void handleAutoCommit() throws SQLException {
-        if (!autoCommit && TransactionType.isDistributedTransaction(databaseConnectionManager.getConnectionTransaction().getTransactionType())
-                && !databaseConnectionManager.getConnectionTransaction().isInTransaction()) {
-            beginDistributedTransaction();
         }
     }
     

@@ -17,12 +17,15 @@
 
 package org.apache.shardingsphere.test.e2e.transaction.cases.autocommit;
 
+import org.apache.shardingsphere.test.e2e.transaction.cases.base.BaseTransactionTestCase;
+import org.apache.shardingsphere.test.e2e.transaction.engine.base.TransactionBaseE2EIT;
 import org.apache.shardingsphere.test.e2e.transaction.engine.base.TransactionContainerComposer;
 import org.apache.shardingsphere.test.e2e.transaction.engine.base.TransactionTestCase;
 import org.apache.shardingsphere.test.e2e.transaction.engine.constants.TransactionTestConstants;
 import org.apache.shardingsphere.transaction.api.TransactionType;
 import org.awaitility.Awaitility;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
@@ -33,20 +36,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * PostgreSQL auto commit transaction integration test.
  */
-@TransactionTestCase(dbTypes = TransactionTestConstants.POSTGRESQL)
-public final class PostgreSQLAutoCommitTestCase extends AutoCommitTestCase {
+@TransactionTestCase(dbTypes = TransactionTestConstants.POSTGRESQL, transactionTypes = TransactionType.LOCAL)
+public final class PostgreSQLAutoCommitTestCase extends BaseTransactionTestCase {
     
-    public PostgreSQLAutoCommitTestCase(final TransactionTestCaseParameter testCaseParam) {
-        super(testCaseParam);
+    public PostgreSQLAutoCommitTestCase(final TransactionBaseE2EIT baseTransactionITCase, final DataSource dataSource) {
+        super(baseTransactionITCase, dataSource);
     }
     
     @Override
     public void executeTest(final TransactionContainerComposer containerComposer) throws SQLException {
-        if (TransactionType.LOCAL == getTransactionType()) {
-            assertAutoCommit();
-        }
-        assertAutoCommitWithStatement();
-        assertAutoCommitWithPrepareStatement();
+        assertAutoCommit();
     }
     
     private void assertAutoCommit() throws SQLException {

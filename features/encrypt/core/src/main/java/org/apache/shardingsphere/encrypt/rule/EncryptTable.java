@@ -18,7 +18,6 @@
 package org.apache.shardingsphere.encrypt.rule;
 
 import lombok.Getter;
-import org.apache.commons.collections4.map.CaseInsensitiveMap;
 import org.apache.shardingsphere.encrypt.api.config.rule.EncryptColumnRuleConfiguration;
 import org.apache.shardingsphere.encrypt.api.config.rule.EncryptTableRuleConfiguration;
 import org.apache.shardingsphere.encrypt.api.encrypt.assisted.AssistedEncryptAlgorithm;
@@ -36,26 +35,29 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.TreeMap;
 
 /**
  * Encrypt table.
  */
-@Getter
 public final class EncryptTable {
     
+    @Getter
     private final String table;
     
     private final Map<String, EncryptColumn> columns;
     
+    @SuppressWarnings("rawtypes")
     public EncryptTable(final EncryptTableRuleConfiguration config, final Map<String, StandardEncryptAlgorithm> standardEncryptors,
                         final Map<String, AssistedEncryptAlgorithm> assistedEncryptors, final Map<String, LikeEncryptAlgorithm> likeEncryptors) {
         table = config.getName();
         columns = createEncryptColumns(config, standardEncryptors, assistedEncryptors, likeEncryptors);
     }
     
+    @SuppressWarnings("rawtypes")
     private Map<String, EncryptColumn> createEncryptColumns(final EncryptTableRuleConfiguration config, final Map<String, StandardEncryptAlgorithm> standardEncryptors,
                                                             final Map<String, AssistedEncryptAlgorithm> assistedEncryptors, final Map<String, LikeEncryptAlgorithm> likeEncryptors) {
-        Map<String, EncryptColumn> result = new CaseInsensitiveMap<>();
+        Map<String, EncryptColumn> result = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         for (EncryptColumnRuleConfiguration each : config.getColumns()) {
             result.put(each.getName(), createEncryptColumn(each, standardEncryptors, assistedEncryptors, likeEncryptors));
         }
@@ -134,7 +136,7 @@ public final class EncryptTable {
     public String getLogicColumnByCipherColumn(final String cipherColumnName) {
         for (Entry<String, EncryptColumn> entry : columns.entrySet()) {
             if (entry.getValue().getCipher().getName().equalsIgnoreCase(cipherColumnName)) {
-                return entry.getValue().getName();
+                return entry.getKey();
             }
         }
         throw new EncryptLogicColumnNotFoundException(cipherColumnName);
@@ -150,7 +152,7 @@ public final class EncryptTable {
     public String getLogicColumnByAssistedQueryColumn(final String assistQueryColumnName) {
         for (Entry<String, EncryptColumn> entry : columns.entrySet()) {
             if (entry.getValue().getAssistedQuery().isPresent() && entry.getValue().getAssistedQuery().get().getName().equalsIgnoreCase(assistQueryColumnName)) {
-                return entry.getValue().getName();
+                return entry.getKey();
             }
         }
         throw new EncryptLogicColumnNotFoundException(assistQueryColumnName);

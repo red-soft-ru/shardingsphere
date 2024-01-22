@@ -28,6 +28,7 @@
     
     <properties>
         <imageName>apache-shardingsphere-proxy-native</imageName>
+        <mainClass>org.apache.shardingsphere.proxy.Bootstrap</mainClass>
         <native.image.repository>apache/shardingsphere-proxy-native</native.image.repository>
     </properties>
     
@@ -102,7 +103,8 @@
                         <version>${native-maven-plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <mainClass>org.apache.shardingsphere.proxy.Bootstrap</mainClass>
+                            <fallback>false</fallback>
+                            <verbose>true</verbose>
                             <buildArgs>
                                 <arg>--report-unsupported-elements-at-runtime</arg>
                                 <arg>-J-Xmx7g</arg>

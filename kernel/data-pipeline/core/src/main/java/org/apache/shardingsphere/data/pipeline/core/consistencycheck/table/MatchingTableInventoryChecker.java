@@ -24,6 +24,8 @@ import org.apache.shardingsphere.data.pipeline.common.job.progress.listener.Pipe
 import org.apache.shardingsphere.data.pipeline.core.consistencycheck.result.SingleTableInventoryCalculatedResult;
 import org.apache.shardingsphere.data.pipeline.core.consistencycheck.result.TableDataConsistencyCheckResult;
 import org.apache.shardingsphere.data.pipeline.core.consistencycheck.result.yaml.YamlTableDataConsistencyCheckResult;
+import org.apache.shardingsphere.data.pipeline.core.consistencycheck.result.yaml.YamlTableDataConsistencyCheckResult.YamlTableDataConsistencyContentCheckResult;
+import org.apache.shardingsphere.data.pipeline.core.consistencycheck.result.yaml.YamlTableDataConsistencyCheckResult.YamlTableDataConsistencyCountCheckResult;
 import org.apache.shardingsphere.data.pipeline.core.consistencycheck.result.yaml.YamlTableDataConsistencyCheckResultSwapper;
 import org.apache.shardingsphere.data.pipeline.core.consistencycheck.table.calculator.SingleTableInventoryCalculateParameter;
 import org.apache.shardingsphere.data.pipeline.core.consistencycheck.table.calculator.SingleTableInventoryCalculator;
@@ -76,9 +78,9 @@ public abstract class MatchingTableInventoryChecker implements TableInventoryChe
         calculators.add(sourceCalculator);
         SingleTableInventoryCalculator targetCalculator = buildSingleTableInventoryCalculator();
         calculators.add(targetCalculator);
+        Iterator<SingleTableInventoryCalculatedResult> sourceCalculatedResults = waitFuture(executor.submit(() -> sourceCalculator.calculate(sourceParam))).iterator();
+        Iterator<SingleTableInventoryCalculatedResult> targetCalculatedResults = waitFuture(executor.submit(() -> targetCalculator.calculate(targetParam))).iterator();
         try {
-            Iterator<SingleTableInventoryCalculatedResult> sourceCalculatedResults = waitFuture(executor.submit(() -> sourceCalculator.calculate(sourceParam))).iterator();
-            Iterator<SingleTableInventoryCalculatedResult> targetCalculatedResults = waitFuture(executor.submit(() -> targetCalculator.calculate(targetParam))).iterator();
             return checkSingleTableInventoryData(sourceCalculatedResults, targetCalculatedResults, param, executor);
         } finally {
             QuietlyCloser.close(sourceParam.getCalculationContext());
@@ -91,15 +93,17 @@ public abstract class MatchingTableInventoryChecker implements TableInventoryChe
     private TableDataConsistencyCheckResult checkSingleTableInventoryData(final Iterator<SingleTableInventoryCalculatedResult> sourceCalculatedResults,
                                                                           final Iterator<SingleTableInventoryCalculatedResult> targetCalculatedResults,
                                                                           final TableInventoryCheckParameter param, final ThreadPoolExecutor executor) {
-        YamlTableDataConsistencyCheckResult checkResult = new YamlTableDataConsistencyCheckResult(true);
+        YamlTableDataConsistencyCheckResult checkResult = new YamlTableDataConsistencyCheckResult(new YamlTableDataConsistencyCountCheckResult(), new YamlTableDataConsistencyContentCheckResult(true));
         while (sourceCalculatedResults.hasNext() && targetCalculatedResults.hasNext()) {
             if (null != param.getReadRateLimitAlgorithm()) {
                 param.getReadRateLimitAlgorithm().intercept(JobOperationType.SELECT, 1);
             }
             SingleTableInventoryCalculatedResult sourceCalculatedResult = waitFuture(executor.submit(sourceCalculatedResults::next));
             SingleTableInventoryCalculatedResult targetCalculatedResult = waitFuture(executor.submit(targetCalculatedResults::next));
+            checkResult.getCountCheckResult().addSourceRecordsCount(sourceCalculatedResult.getRecordsCount());
+            checkResult.getCountCheckResult().addTargetRecordsCount(targetCalculatedResult.getRecordsCount());
             if (!Objects.equals(sourceCalculatedResult, targetCalculatedResult)) {
-                checkResult.setMatched(false);
+                checkResult.getContentCheckResult().setMatched(false);
                 log.info("content matched false, jobId={}, sourceTable={}, targetTable={}, uniqueKeys={}", param.getJobId(), param.getSourceTable(), param.getTargetTable(), param.getUniqueKeys());
                 break;
             }
@@ -112,11 +116,14 @@ public abstract class MatchingTableInventoryChecker implements TableInventoryChe
             param.getProgressContext().onProgressUpdated(new PipelineJobProgressUpdatedParameter(sourceCalculatedResult.getRecordsCount()));
         }
         if (sourceCalculatedResults.hasNext()) {
-            checkResult.setMatched(false);
+            // TODO Refactor SingleTableInventoryCalculatedResult to represent inaccurate number
+            checkResult.getCountCheckResult().addSourceRecordsCount(1);
+            checkResult.getContentCheckResult().setMatched(false);
             return new YamlTableDataConsistencyCheckResultSwapper().swapToObject(checkResult);
         }
         if (targetCalculatedResults.hasNext()) {
-            checkResult.setMatched(false);
+            checkResult.getCountCheckResult().addTargetRecordsCount(1);
+            checkResult.getContentCheckResult().setMatched(false);
             return new YamlTableDataConsistencyCheckResultSwapper().swapToObject(checkResult);
         }
         return new YamlTableDataConsistencyCheckResultSwapper().swapToObject(checkResult);

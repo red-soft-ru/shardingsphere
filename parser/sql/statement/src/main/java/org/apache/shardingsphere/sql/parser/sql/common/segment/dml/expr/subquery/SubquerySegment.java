@@ -37,8 +37,11 @@ public final class SubquerySegment implements ExpressionSegment {
     
     private final SelectStatement select;
     
-    private final String text;
-    
     @Setter
     private SubqueryType subqueryType;
+    
+    @Override
+    public String getText() {
+        return select.toString();
+    }
 }

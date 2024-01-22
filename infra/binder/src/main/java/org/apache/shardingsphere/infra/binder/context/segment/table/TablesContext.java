@@ -20,7 +20,6 @@ package org.apache.shardingsphere.infra.binder.context.segment.table;
 import com.google.common.base.Preconditions;
 import lombok.Getter;
 import lombok.ToString;
-import org.apache.commons.collections4.map.CaseInsensitiveMap;
 import org.apache.shardingsphere.infra.binder.context.segment.select.subquery.SubqueryTableContext;
 import org.apache.shardingsphere.infra.binder.context.segment.select.subquery.engine.SubqueryTableContextEngine;
 import org.apache.shardingsphere.infra.binder.context.statement.dml.SelectStatementContext;
@@ -43,6 +42,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
@@ -56,7 +56,6 @@ public final class TablesContext {
     
     private final Collection<SimpleTableSegment> simpleTableSegments = new LinkedList<>();
     
-    @Getter
     private final Collection<String> tableNames = new HashSet<>();
     
     private final Collection<String> schemaNames = new HashSet<>();
@@ -114,6 +113,15 @@ public final class TablesContext {
     }
     
     /**
+     * Get table names.
+     * 
+     * @return table names
+     */
+    public Collection<String> getTableNames() {
+        return tableNames;
+    }
+    
+    /**
      * Find expression table name map by column segment.
      *
      * @param columns column segment collection
@@ -124,7 +132,7 @@ public final class TablesContext {
         if (1 == simpleTableSegments.size()) {
             return findTableNameFromSingleTableByColumnSegment(columns);
         }
-        Map<String, String> result = new CaseInsensitiveMap<>();
+        Map<String, String> result = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         Map<String, Collection<String>> ownerColumnNames = getOwnerColumnNamesByColumnSegment(columns);
         result.putAll(findTableNameFromSQL(ownerColumnNames));
         Collection<String> noOwnerColumnNames = getNoOwnerColumnNamesByColumnSegment(columns);
@@ -155,7 +163,7 @@ public final class TablesContext {
     
     private Map<String, String> findTableNameFromSingleTableByColumnSegment(final Collection<ColumnSegment> columns) {
         String tableName = simpleTableSegments.iterator().next().getTableName().getIdentifier().getValue();
-        Map<String, String> result = new CaseInsensitiveMap<>();
+        Map<String, String> result = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         for (ColumnSegment each : columns) {
             result.putIfAbsent(each.getExpression(), tableName);
         }
@@ -163,7 +171,7 @@ public final class TablesContext {
     }
     
     private Map<String, Collection<String>> getOwnerColumnNamesByColumnSegment(final Collection<ColumnSegment> columns) {
-        Map<String, Collection<String>> result = new CaseInsensitiveMap<>();
+        Map<String, Collection<String>> result = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         for (ColumnSegment each : columns) {
             if (!each.getOwner().isPresent()) {
                 continue;

@@ -17,7 +17,6 @@
 
 package org.apache.shardingsphere.mask.rule.builder;
 
-import org.apache.shardingsphere.infra.database.core.type.DatabaseType;
 import org.apache.shardingsphere.infra.instance.InstanceContext;
 import org.apache.shardingsphere.infra.rule.ShardingSphereRule;
 import org.apache.shardingsphere.infra.rule.builder.database.DatabaseRuleBuilder;
@@ -35,7 +34,7 @@ import java.util.Map;
 public final class MaskRuleBuilder implements DatabaseRuleBuilder<MaskRuleConfiguration> {
     
     @Override
-    public MaskRule build(final MaskRuleConfiguration config, final String databaseName, final DatabaseType protocolType,
+    public MaskRule build(final MaskRuleConfiguration config, final String databaseName,
                           final Map<String, DataSource> dataSources, final Collection<ShardingSphereRule> builtRules, final InstanceContext instanceContext) {
         return new MaskRule(config);
     }

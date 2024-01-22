@@ -54,7 +54,6 @@ public final class ResourceMetaDataContextManager {
         metaDataContexts.get().getMetaData().addDatabase(databaseName, protocolType, metaDataContexts.get().getMetaData().getProps());
         ShardingSphereDatabase database = metaDataContexts.get().getMetaData().getDatabase(databaseName);
         alterMetaDataHeldRule(database);
-        metaDataContexts.set(new MetaDataContexts(metaDataContexts.get().getPersistService(), metaDataContexts.get().getMetaData()));
     }
     
     private void alterMetaDataHeldRule(final ShardingSphereDatabase database) {
