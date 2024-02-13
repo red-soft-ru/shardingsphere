@@ -76,6 +76,7 @@ import org.apache.shardingsphere.mode.metadata.MetaDataContexts;
 import org.apache.shardingsphere.parser.rule.SQLParserRule;
 import org.apache.shardingsphere.sql.parser.sql.common.statement.SQLStatement;
 import org.apache.shardingsphere.sql.parser.sql.common.statement.dal.DALStatement;
+import org.apache.shardingsphere.sql.parser.sql.common.statement.ddl.DDLStatement;
 import org.apache.shardingsphere.sqlfederation.executor.SQLFederationExecutorContext;
 import org.apache.shardingsphere.traffic.engine.TrafficEngine;
 import org.apache.shardingsphere.traffic.exception.metadata.EmptyTrafficExecutionUnitException;
@@ -426,8 +427,12 @@ public final class ShardingSphereStatement extends AbstractStatementAdapter {
     }
     
     private boolean execute0(final String sql, final ExecuteCallback executeCallback, final TrafficExecutorCallback<Boolean> trafficCallback) throws SQLException {
+        boolean autoCommitState = connection.getAutoCommit();
         try {
             QueryContext queryContext = createQueryContext(sql);
+            if (queryContext.getSqlStatementContext().getSqlStatement() instanceof DDLStatement) {
+                connection.setAutoCommit(true);
+            }
             databaseName = queryContext.getDatabaseNameFromSQLStatement().orElse(connection.getDatabaseName());
             connection.getDatabaseConnectionManager().getConnectionContext().setCurrentDatabase(databaseName);
             trafficInstanceId = getInstanceIdAndSet(queryContext).orElse(null);
@@ -449,6 +454,7 @@ public final class ShardingSphereStatement extends AbstractStatementAdapter {
             return isNeedImplicitCommitTransaction(connection, executionContext) ? executeWithImplicitCommitTransaction(executeCallback) : useDriverToExecute(executeCallback);
         } finally {
             currentResultSet = null;
+            connection.setAutoCommit(autoCommitState);
         }
     }
     
