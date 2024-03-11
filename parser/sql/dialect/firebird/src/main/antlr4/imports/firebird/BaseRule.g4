@@ -251,6 +251,7 @@ regularFunction
 
 regularFunctionName
     : identifier | IF | CURRENT_TIMESTAMP | LOCALTIME | LOCALTIMESTAMP | INTERVAL
+    | CHAR_LENGTH | CHARACTER_LENGTH | BIT_LENGTH | OCTET_LENGTH
     ;
 
 matchExpression
