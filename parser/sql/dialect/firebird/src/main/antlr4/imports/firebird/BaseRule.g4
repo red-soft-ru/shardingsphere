@@ -242,7 +242,8 @@ extractFunction
     ;
 
 trimFunction
-    : TRIM LP_ (LEADING | BOTH | TRAILING) STRING_ FROM STRING_ RP_
+    : TRIM LP_ ((LEADING | BOTH | TRAILING) expr? FROM)? expr RP_
+    | TRIM LP_ (expr FROM)? expr RP_
     ;
 
 regularFunction
