@@ -690,3 +690,27 @@ WRITE
 ZONE
     : Z O N E
     ;
+
+//PASSWORD
+//    : P A S S W O R D
+//    ;
+//
+//FIRSTNAME
+//    : F I R S T N A M E
+//    ;
+//
+//MIDDLENAME
+//    : M I D D L E N A M E
+//    ;
+//
+//LASTNAME
+//    : L A S T N A M E
+//    ;
+//
+//ADMIN
+//    : A D M I N
+//    ;
+//
+//ROLE
+//    : R O L E
+//    ;

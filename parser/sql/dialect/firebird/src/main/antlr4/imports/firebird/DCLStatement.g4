@@ -60,3 +60,27 @@ objectType
 privilegeLevel
     : tableName
     ;
+
+//createUser
+//    : CREATE USER identifier password (userOptions)?
+//    ;
+//
+//alterUser
+//    : ALTER USER identifier (password)? (userOptions)?
+//    ;
+//
+//dropUser
+//    : DROP username
+//    ;
+//
+//username
+//    : USER identifier
+//    ;
+//
+//password
+//    : PASSWORD STRING_
+//    ;
+//
+//userOptions
+//    : (FIRSTNAME STRING_)? (MIDDLENAME STRING_)? (LASTNAME STRING_)? ((GRANT | REVOKE) ADMIN ROLE)?
+//    ;
