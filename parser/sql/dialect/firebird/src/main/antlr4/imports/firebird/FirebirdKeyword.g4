@@ -691,6 +691,10 @@ ZONE
     : Z O N E
     ;
 
+ENDING
+    : E N D I N G
+    ;
+
 //PASSWORD
 //    : P A S S W O R D
 //    ;
