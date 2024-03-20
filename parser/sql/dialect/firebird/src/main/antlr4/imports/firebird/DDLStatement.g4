@@ -70,13 +70,13 @@ columnDefinition
     ;
 
 dataTypeOption
-    : primaryKey 
-    | UNIQUE KEY? 
-    | NOT? NULL 
+    : primaryKey usingDefinition?
+    | UNIQUE usingDefinition?
+    | NOT? NULL
     | collateClause
     | checkConstraintDefinition
-    | referenceDefinition 
-    | DEFAULT (literals | expr) 
+    | referenceDefinition
+    | DEFAULT (literals | expr)
     | STRING_
     ;
 
@@ -85,19 +85,15 @@ checkConstraintDefinition
     ;
 
 referenceDefinition
-    : REFERENCES tableName keyParts (MATCH FULL | MATCH PARTIAL | MATCH UNIQUE)? (ON (UPDATE | DELETE) referenceOption)*
+    : REFERENCES tableName columnNames? usingDefinition? (ON (UPDATE | DELETE) referenceOption)*
     ;
 
 referenceOption
-    : RESTRICT | CASCADE | SET NULL | NO ACTION | SET DEFAULT
+    : CASCADE | SET NULL | NO ACTION | SET DEFAULT
     ;
 
-keyParts
-    : LP_ keyPart (COMMA_ keyPart)* RP_
-    ;
-
-keyPart
-    : (columnName (LP_ NUMBER_ RP_)? | expr) (ASC | DESC)?
+usingDefinition
+    : USING (ASC(ENDING)? | DESC(ENDING)?)? INDEX identifier
     ;
 
 constraintDefinition
@@ -105,7 +101,7 @@ constraintDefinition
     ;
 
 primaryKeyOption
-    : primaryKey columnNames
+    : primaryKey columnNames usingDefinition?
     ;
 
 primaryKey
@@ -113,7 +109,7 @@ primaryKey
     ;
 
 uniqueOption
-    : UNIQUE keyParts
+    : UNIQUE columnNames usingDefinition?
     ;
 
 foreignKeyOption
