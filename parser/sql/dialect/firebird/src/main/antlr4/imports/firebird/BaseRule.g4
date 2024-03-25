@@ -199,6 +199,7 @@ simpleExpr
     | matchExpression
     | caseExpression
     | intervalExpression
+    | timeConstants
     ;
 
 functionCall
@@ -251,9 +252,13 @@ regularFunction
     ;
 
 regularFunctionName
-    : identifier | IF | CURRENT_TIMESTAMP | LOCALTIME | LOCALTIMESTAMP | INTERVAL
+    : identifier | IF | INTERVAL
     | CHAR_LENGTH | CHARACTER_LENGTH | BIT_LENGTH | OCTET_LENGTH
     | UPPER | LOWER
+    ;
+
+timeConstants
+    : CURRENT_DATE | CURRENT_TIME | CURRENT_TIMESTAMP | LOCALTIME | LOCALTIMESTAMP
     ;
 
 matchExpression

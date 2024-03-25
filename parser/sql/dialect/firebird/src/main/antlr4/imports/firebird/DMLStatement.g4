@@ -69,7 +69,7 @@ select
     ;
 
 combineClause
-    : selectClause (UNION (ALL)? selectClause)*
+    : selectClause (UNION (DISTINCT | ALL)? selectClause)*
     ;
 
 selectClause
