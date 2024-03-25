@@ -695,6 +695,14 @@ ENDING
     : E N D I N G
     ;
 
+SECURITY
+    : S E C U R I T Y
+    ;
+
+INVOKER
+    : I N V O K E R
+    ;
+
 //PASSWORD
 //    : P A S S W O R D
 //    ;

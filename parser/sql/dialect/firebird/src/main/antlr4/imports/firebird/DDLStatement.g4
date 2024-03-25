@@ -20,7 +20,7 @@ grammar DDLStatement;
 import DMLStatement;
 
 createTable
-    : CREATE createTableSpecification? TABLE tableName (createDefinitionClause | createLikeClause)
+    : CREATE createTemporaryTable? TABLE tableName createDefinitionClause sqlSecurity?
     ;
 
 alterTable
@@ -49,8 +49,12 @@ dropView
     : DROP VIEW viewName dropBehaviour
     ;
 
-createTableSpecification
-    : (GLOBAL | LOCAL) TEMPORARY
+createTemporaryTable
+    : GLOBAL TEMPORARY
+    ;
+
+sqlSecurity
+    : SQL SECURITY (DEFINER | INVOKER)
     ;
 
 createDefinitionClause
