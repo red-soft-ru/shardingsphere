@@ -255,6 +255,8 @@ regularFunctionName
     : identifier | IF | INTERVAL
     | CHAR_LENGTH | CHARACTER_LENGTH | BIT_LENGTH | OCTET_LENGTH
     | UPPER | LOWER
+    | NULLIF
+    | COALESCE
     ;
 
 timeConstants
