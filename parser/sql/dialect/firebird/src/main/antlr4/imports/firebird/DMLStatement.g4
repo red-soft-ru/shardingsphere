@@ -147,7 +147,23 @@ havingClause
     ;
 
 limitClause
-    : LIMIT ((limitOffset COMMA_)? limitRowCount | limitRowCount OFFSET limitOffset)
+    : rowsClause | offsetDefinition
+    ;
+
+rowsClause
+    : ROWS expr (TO expr)?
+    ;
+
+offsetDefinition
+    : offsetClause? fetchClause?
+    ;
+
+offsetClause
+    : OFFSET limitOffset (ROW | ROWS)
+    ;
+
+fetchClause
+    : FETCH (FIRST | NEXT) limitRowCount (ROW | ROWS) ONLY
     ;
 
 limitRowCount
