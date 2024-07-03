@@ -703,6 +703,15 @@ INVOKER
     : I N V O K E R
     ;
 
+RECURSIVE
+    : R E C U R S I V E
+    ;
+
+ROW
+    : R O W
+    ;
+
+
 //PASSWORD
 //    : P A S S W O R D
 //    ;
