@@ -85,6 +85,8 @@ import org.apache.shardingsphere.mode.metadata.MetaDataContexts;
 import org.apache.shardingsphere.parser.rule.SQLParserRule;
 import org.apache.shardingsphere.sql.parser.sql.common.statement.SQLStatement;
 import org.apache.shardingsphere.sql.parser.sql.common.statement.dal.DALStatement;
+import org.apache.shardingsphere.sql.parser.sql.common.statement.ddl.DDLStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.FirebirdStatement;
 import org.apache.shardingsphere.sqlfederation.executor.context.SQLFederationContext;
 import org.apache.shardingsphere.traffic.engine.TrafficEngine;
 import org.apache.shardingsphere.traffic.exception.EmptyTrafficExecutionUnitException;
@@ -92,6 +94,8 @@ import org.apache.shardingsphere.traffic.rule.TrafficRule;
 import org.apache.shardingsphere.transaction.implicit.ImplicitTransactionCallback;
 import org.apache.shardingsphere.transaction.util.AutoCommitUtils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
@@ -261,7 +265,7 @@ public final class ShardingSpherePreparedStatement extends AbstractPreparedState
     private ShardingSphereResultSet doExecuteQuery(final ExecutionContext executionContext) throws SQLException {
         List<QueryResult> queryResults = executeQuery0(executionContext);
         MergedResult mergedResult = mergeQuery(queryResults, executionContext.getSqlStatementContext());
-        List<ResultSet> resultSets = getResultSets();
+        List<ResultSet> resultSets = getResultSets(queryResults);
         if (null == columnLabelAndIndexMap) {
             columnLabelAndIndexMap = ShardingSphereResultSetUtils.createColumnLabelAndIndexMap(sqlStatementContext, selectContainsEnhancedTable, resultSets.get(0).getMetaData());
         }
@@ -340,6 +344,7 @@ public final class ShardingSpherePreparedStatement extends AbstractPreparedState
     
     @Override
     public int executeUpdate() throws SQLException {
+        boolean autoCommitState = connection.getAutoCommit();
         try {
             if (statementsCacheable && !statements.isEmpty()) {
                 resetParameters();
@@ -347,6 +352,11 @@ public final class ShardingSpherePreparedStatement extends AbstractPreparedState
             }
             clearPrevious();
             QueryContext queryContext = createQueryContext();
+            SQLStatement sqlStatement = queryContext.getSqlStatementContext().getSqlStatement();
+            if (sqlStatement instanceof DDLStatement
+                    && sqlStatement instanceof FirebirdStatement) {
+                connection.setAutoCommit(true);
+            }
             handleAutoCommit(queryContext);
             trafficInstanceId = getInstanceIdAndSet(queryContext).orElse(null);
             if (null != trafficInstanceId) {
@@ -367,6 +377,7 @@ public final class ShardingSpherePreparedStatement extends AbstractPreparedState
             throw SQLExceptionTransformEngine.toSQLException(ex, metaDataContexts.getMetaData().getDatabase(databaseName).getProtocolType());
         } finally {
             clearBatch();
+            connection.setAutoCommit(autoCommitState);
         }
     }
     
@@ -404,6 +415,7 @@ public final class ShardingSpherePreparedStatement extends AbstractPreparedState
     
     @Override
     public boolean execute() throws SQLException {
+        boolean autoCommitState = connection.getAutoCommit();
         try {
             if (statementsCacheable && !statements.isEmpty()) {
                 resetParameters();
@@ -411,6 +423,11 @@ public final class ShardingSpherePreparedStatement extends AbstractPreparedState
             }
             clearPrevious();
             QueryContext queryContext = createQueryContext();
+            SQLStatement sqlStatement = queryContext.getSqlStatementContext().getSqlStatement();
+            if (sqlStatement instanceof DDLStatement
+                    && sqlStatement instanceof FirebirdStatement) {
+                connection.setAutoCommit(true);
+            }
             handleAutoCommit(queryContext);
             trafficInstanceId = getInstanceIdAndSet(queryContext).orElse(null);
             if (null != trafficInstanceId) {
@@ -437,6 +454,7 @@ public final class ShardingSpherePreparedStatement extends AbstractPreparedState
             throw SQLExceptionTransformEngine.toSQLException(ex, metaDataContexts.getMetaData().getDatabase(databaseName).getProtocolType());
         } finally {
             clearBatch();
+            connection.setAutoCommit(autoCommitState);
         }
     }
     
@@ -551,6 +569,22 @@ public final class ShardingSpherePreparedStatement extends AbstractPreparedState
             currentResultSet = new ShardingSphereResultSet(resultSets, mergedResult, this, selectContainsEnhancedTable, executionContext, columnLabelAndIndexMap);
         }
         return currentResultSet;
+    }
+
+    private List<ResultSet> getResultSets(List<QueryResult> qr) throws SQLException {
+        List<ResultSet> result = new ArrayList<>(qr.size());
+        for (QueryResult each : qr) {
+            try {
+                Method getResultSet = each.getClass().getDeclaredMethod("getResultSet");
+                ResultSet rs = (ResultSet) getResultSet.invoke(each);
+                if (null != rs) {
+                    result.add(rs);
+                }
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                return getResultSets();
+            }
+        }
+        return result;
     }
     
     private List<ResultSet> getResultSets() throws SQLException {

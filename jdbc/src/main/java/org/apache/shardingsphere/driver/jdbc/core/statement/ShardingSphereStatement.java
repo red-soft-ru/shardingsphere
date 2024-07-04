@@ -78,6 +78,8 @@ import org.apache.shardingsphere.mode.metadata.MetaDataContexts;
 import org.apache.shardingsphere.parser.rule.SQLParserRule;
 import org.apache.shardingsphere.sql.parser.sql.common.statement.SQLStatement;
 import org.apache.shardingsphere.sql.parser.sql.common.statement.dal.DALStatement;
+import org.apache.shardingsphere.sql.parser.sql.common.statement.ddl.DDLStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.FirebirdStatement;
 import org.apache.shardingsphere.sqlfederation.executor.context.SQLFederationContext;
 import org.apache.shardingsphere.traffic.engine.TrafficEngine;
 import org.apache.shardingsphere.traffic.exception.EmptyTrafficExecutionUnitException;
@@ -86,6 +88,8 @@ import org.apache.shardingsphere.traffic.rule.TrafficRule;
 import org.apache.shardingsphere.transaction.implicit.ImplicitTransactionCallback;
 import org.apache.shardingsphere.transaction.util.AutoCommitUtils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -198,7 +202,7 @@ public final class ShardingSphereStatement extends AbstractStatementAdapter {
         MergedResult mergedResult = mergeQuery(queryResults, executionContext.getSqlStatementContext());
         boolean selectContainsEnhancedTable =
                 executionContext.getSqlStatementContext() instanceof SelectStatementContext && ((SelectStatementContext) executionContext.getSqlStatementContext()).isContainsEnhancedTable();
-        return new ShardingSphereResultSet(getResultSets(), mergedResult, this, selectContainsEnhancedTable, executionContext);
+        return new ShardingSphereResultSet(getResultSets(queryResults), mergedResult, this, selectContainsEnhancedTable, executionContext);
     }
     
     private boolean decide(final QueryContext queryContext, final ShardingSphereDatabase database, final RuleMetaData globalRuleMetaData) {
@@ -320,21 +324,31 @@ public final class ShardingSphereStatement extends AbstractStatementAdapter {
     }
     
     private int executeUpdate0(final String sql, final ExecuteUpdateCallback updateCallback, final TrafficExecutorCallback<Integer> trafficCallback) throws SQLException {
-        QueryContext queryContext = createQueryContext(sql);
-        handleAutoCommit(queryContext);
-        databaseName = queryContext.getDatabaseNameFromSQLStatement().orElse(connection.getDatabaseName());
-        connection.getDatabaseConnectionManager().getConnectionContext().setCurrentDatabase(databaseName);
-        trafficInstanceId = getInstanceIdAndSet(queryContext).orElse(null);
-        if (null != trafficInstanceId) {
-            JDBCExecutionUnit executionUnit = createTrafficExecutionUnit(trafficInstanceId, queryContext);
-            return executor.getTrafficExecutor().execute(executionUnit, trafficCallback);
+        boolean autoCommitState = connection.getAutoCommit();
+        try {
+            QueryContext queryContext = createQueryContext(sql);
+            SQLStatement statement = queryContext.getSqlStatementContext().getSqlStatement();
+            if (statement instanceof DDLStatement
+                    && statement instanceof FirebirdStatement) {
+                connection.setAutoCommit(true);
+            }
+            handleAutoCommit(queryContext);
+            databaseName = queryContext.getDatabaseNameFromSQLStatement().orElse(connection.getDatabaseName());
+            connection.getDatabaseConnectionManager().getConnectionContext().setCurrentDatabase(databaseName);
+            trafficInstanceId = getInstanceIdAndSet(queryContext).orElse(null);
+            if (null != trafficInstanceId) {
+                JDBCExecutionUnit executionUnit = createTrafficExecutionUnit(trafficInstanceId, queryContext);
+                return executor.getTrafficExecutor().execute(executionUnit, trafficCallback);
+            }
+            executionContext = createExecutionContext(queryContext);
+            if (!metaDataContexts.getMetaData().getDatabase(databaseName).getRuleMetaData().getAttributes(RawExecutionRuleAttribute.class).isEmpty()) {
+                Collection<ExecuteResult> results = executor.getRawExecutor().execute(createRawExecutionContext(executionContext), executionContext.getQueryContext(), new RawSQLExecutorCallback());
+                return accumulate(results);
+            }
+            return executeUpdate(updateCallback, queryContext.getSqlStatementContext(), executionContext);
+        } finally {
+            connection.setAutoCommit(autoCommitState);
         }
-        executionContext = createExecutionContext(queryContext);
-        if (!metaDataContexts.getMetaData().getDatabase(databaseName).getRuleMetaData().getAttributes(RawExecutionRuleAttribute.class).isEmpty()) {
-            Collection<ExecuteResult> results = executor.getRawExecutor().execute(createRawExecutionContext(executionContext), executionContext.getQueryContext(), new RawSQLExecutorCallback());
-            return accumulate(results);
-        }
-        return executeUpdate(updateCallback, queryContext.getSqlStatementContext(), executionContext);
     }
     
     private int executeUpdateWithImplicitCommitTransaction(final ImplicitTransactionCallback<Integer> callback) throws SQLException {
@@ -442,8 +456,14 @@ public final class ShardingSphereStatement extends AbstractStatementAdapter {
     }
     
     private boolean execute0(final String sql, final ExecuteCallback executeCallback, final TrafficExecutorCallback<Boolean> trafficCallback) throws SQLException {
+        boolean autoCommitState = connection.getAutoCommit();
         try {
             QueryContext queryContext = createQueryContext(sql);
+            SQLStatement statement = queryContext.getSqlStatementContext().getSqlStatement();
+            if (statement instanceof DDLStatement
+                    && statement instanceof FirebirdStatement) {
+                connection.setAutoCommit(true);
+            }
             handleAutoCommit(queryContext);
             databaseName = queryContext.getDatabaseNameFromSQLStatement().orElse(connection.getDatabaseName());
             connection.getDatabaseConnectionManager().getConnectionContext().setCurrentDatabase(databaseName);
@@ -466,6 +486,7 @@ public final class ShardingSphereStatement extends AbstractStatementAdapter {
             return executeWithExecutionContext(executeCallback, executionContext);
         } finally {
             currentResultSet = null;
+            connection.setAutoCommit(autoCommitState);
         }
     }
     
@@ -619,6 +640,22 @@ public final class ShardingSphereStatement extends AbstractStatementAdapter {
             currentResultSet = new ShardingSphereResultSet(resultSets, mergedResult, this, selectContainsEnhancedTable, executionContext);
         }
         return currentResultSet;
+    }
+
+    private List<ResultSet> getResultSets(List<QueryResult> qr) throws SQLException {
+        List<ResultSet> result = new ArrayList<>(qr.size());
+        for (QueryResult each : qr) {
+            try {
+                Method getResultSet = each.getClass().getDeclaredMethod("getResultSet");
+                ResultSet rs = (ResultSet) getResultSet.invoke(each);
+                if (null != rs) {
+                    result.add(rs);
+                }
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+                return getResultSets();
+            }
+        }
+        return result;
     }
     
     private List<ResultSet> getResultSets() throws SQLException {
