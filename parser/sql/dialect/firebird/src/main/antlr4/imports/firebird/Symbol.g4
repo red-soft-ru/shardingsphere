@@ -56,3 +56,4 @@ SQ_ :                '\'';
 QUESTION_:           '?';
 AT_:                 '@';
 SEMI_:               ';';
+COMMENT:             '--';
