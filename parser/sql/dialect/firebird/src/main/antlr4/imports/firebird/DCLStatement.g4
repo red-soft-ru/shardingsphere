@@ -32,7 +32,7 @@ privilegeClause
     ;
 
 privileges
-    : privilegeType columnNames
+    : privilegeType
     ;
 
 privilegeType
