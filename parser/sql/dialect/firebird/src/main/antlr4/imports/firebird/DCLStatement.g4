@@ -32,7 +32,7 @@ privilegeClause
     ;
 
 privileges
-    : privilegeType
+    : privilegeType (COMMA_ privilegeType)*
     ;
 
 privilegeType
