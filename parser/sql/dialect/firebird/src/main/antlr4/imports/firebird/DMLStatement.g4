@@ -76,6 +76,7 @@ selectClause
     : SELECT selectSpecification* projections fromClause? whereClause? groupByClause? havingClause? orderByClause? limitClause?
     ;
 
+
 selectSpecification
     : duplicateSpecification
     ;
@@ -105,7 +106,7 @@ qualifiedShorthand
     ;
 
 fromClause
-    : FROM tableReferences
+    : FROM tableReferences joinedTable?
     ;
 
 tableReferences
@@ -126,8 +127,8 @@ tableFactor
 
 joinedTable
     : ((INNER | CROSS)? JOIN) tableFactor joinSpecification?
-    | (LEFT | RIGHT) OUTER? JOIN tableFactor joinSpecification
-    | NATURAL (INNER | (LEFT | RIGHT) (OUTER))? JOIN tableFactor
+    | (LEFT | RIGHT | FULL) OUTER? JOIN tableFactor joinSpecification
+    | NATURAL (INNER | (LEFT | RIGHT | FULL) (OUTER?))? JOIN tableFactor
     ;
 
 joinSpecification
