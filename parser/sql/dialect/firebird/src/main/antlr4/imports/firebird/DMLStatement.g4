@@ -65,7 +65,7 @@ singleTableClause
     ;
 
 select
-    : combineClause
+    : withClause? combineClause
     ;
 
 combineClause
@@ -75,6 +75,7 @@ combineClause
 selectClause
     : SELECT selectSpecification* projections fromClause? whereClause? groupByClause? havingClause? orderByClause? limitClause?
     ;
+
 
 selectSpecification
     : duplicateSpecification
@@ -105,7 +106,7 @@ qualifiedShorthand
     ;
 
 fromClause
-    : FROM tableReferences
+    : FROM tableReferences joinedTable?
     ;
 
 tableReferences
@@ -113,7 +114,7 @@ tableReferences
     ;
 
 escapedTableReference
-    : tableReference  | LBE_ tableReference RBE_
+    : tableReference | LBE_ tableReference RBE_
     ;
 
 tableReference
@@ -126,8 +127,8 @@ tableFactor
 
 joinedTable
     : ((INNER | CROSS)? JOIN) tableFactor joinSpecification?
-    | (LEFT | RIGHT) OUTER? JOIN tableFactor joinSpecification
-    | NATURAL (INNER | (LEFT | RIGHT) (OUTER))? JOIN tableFactor
+    | (LEFT | RIGHT | FULL) OUTER? JOIN tableFactor joinSpecification
+    | NATURAL (INNER | (LEFT | RIGHT | FULL) (OUTER?))? JOIN tableFactor
     ;
 
 joinSpecification
@@ -169,11 +170,19 @@ fetchClause
 limitRowCount
     : numberLiterals | parameterMarker
     ;
-    
+
 limitOffset
     : numberLiterals | parameterMarker
     ;
 
 subquery
-    : LP_ combineClause RP_
+    : LP_ (withClause? combineClause) RP_
+    ;
+
+withClause
+    : WITH RECURSIVE? cteClause (COMMA_ cteClause)*
+    ;
+
+cteClause
+    : identifier (LP_ columnNames RP_)? AS subquery
     ;

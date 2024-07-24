@@ -142,7 +142,7 @@ andOperator
     ;
     
 orOperator
-    : OR
+    : OR | CONCAT_
     ;
 
 notOperator
