@@ -300,7 +300,13 @@ orderByItem
     ;
 
 dataType
-    : dataTypeName dataTypeLength? characterSet? collateClause? | dataTypeName LP_ STRING_ (COMMA_ STRING_)* RP_ characterSet? collateClause?
+    : modification? dataTypeName dataTypeLength? characterSet? collateClause? | dataTypeName LP_ STRING_ (COMMA_ STRING_)* RP_ characterSet? collateClause?
+    ;
+
+modification
+    : TYPE | TO | POSITION
+    | SET DEFAULT | DROP DEFAULT
+    | SET NOT NULL | DROP NOT NULL
     ;
 
 dataTypeName
