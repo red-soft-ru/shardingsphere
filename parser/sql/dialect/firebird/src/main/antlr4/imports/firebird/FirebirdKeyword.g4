@@ -711,6 +711,9 @@ ROW
     : R O W
     ;
 
+GENERATED
+    : G E N E R A T E D
+    ;
 
 //PASSWORD
 //    : P A S S W O R D
