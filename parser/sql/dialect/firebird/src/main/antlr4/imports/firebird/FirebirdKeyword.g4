@@ -711,6 +711,13 @@ ROW
     : R O W
     ;
 
+GENERATED
+    : G E N E R A T E D
+    ;
+
+ALWAYS
+    : A L W A Y S
+    ;
 
 //PASSWORD
 //    : P A S S W O R D
