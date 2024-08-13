@@ -27,6 +27,18 @@ alterTable
     : ALTER TABLE tableName alterDefinitionClause
     ;
 
+alterDomain
+    : ALTER DOMAIN alterDomainClause
+    ;
+
+alterDomainClause
+    : tableName TO tableName
+    | tableName SET DEFAULT (literals | NULL | )
+    | tableName DROP DEFAULT
+    | tableName (SET | DROP) NOT NULL
+    | tableName DROP CONSTRAINT
+    ;
+
 dropTable
     : DROP TABLE tableNames dropBehaviour
     ;
