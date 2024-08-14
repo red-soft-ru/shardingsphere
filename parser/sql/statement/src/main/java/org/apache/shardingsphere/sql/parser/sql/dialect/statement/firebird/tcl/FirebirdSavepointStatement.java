@@ -19,9 +19,10 @@ package org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.tcl;
 
 import org.apache.shardingsphere.sql.parser.sql.common.statement.tcl.SavepointStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.FirebirdStatement;
-// org\apache\shardingsphere\sql\parser\sql\dialect\statement
+
 /**
- * PostgreSQL savepoint statement.
+ * Firebird savepoint statement.
  */
+
 public final class FirebirdSavepointStatement extends SavepointStatement implements FirebirdStatement {
 }
