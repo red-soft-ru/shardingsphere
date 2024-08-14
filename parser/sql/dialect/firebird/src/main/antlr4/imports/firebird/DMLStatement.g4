@@ -73,30 +73,13 @@ combineClause
     ;
 
 selectClause
-    : SELECT selectSpecification* projections fromClause? whereClause? groupByClause? havingClause? orderByClause? limitClause? overClause? // windowClause?
+    : SELECT selectSpecification* projections fromClause? whereClause? groupByClause? havingClause? orderByClause? limitClause? overClause?
     ;
 
 overClause
     : windowFunction? OVER LP_ partitionClause? sortClause? RP_
     ;
 
-//windowClause
-//    : WINDOW windowDefinitionList
-//    ;
-//
-//windowDefinitionList
-//    : windowDefinition
-//    | windowDefinitionList COMMA_ windowDefinition
-//    ;
-//
-//windowDefinition
-//    : colId AS windowSpecification
-//    ;
-//
-//windowSpecification
-//    : LP_ windowName? partitionClause? sortClause? RP_
-//    ;
-//
 partitionClause
     : PARTITION BY expr (COMMA_ expr)*
     ;
