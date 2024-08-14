@@ -100,6 +100,10 @@ columnName
     : (owner DOT_)? name
     ;
 
+windowName
+    : name
+    ;
+
 viewName
     : identifier
     | (owner DOT_)? identifier
@@ -328,4 +332,11 @@ ignoredIdentifier
 
 dropBehaviour
     : (CASCADE | RESTRICT)?
+    ;
+
+windowFunction
+    : (ROW_NUMBER | RANK | DENSE_RANK ) LP_ (expr (COMMA_ expr)*)? RP_
+    | (LEAD | LAG) LP_ (expr (COMMA_ expr)*)? RP_
+    | (FIRST_VALUE | LAST_VALUE) LP_ (expr (COMMA_ expr)*)? RP_
+    | NTH_VALUE LP_ (expr (COMMA_ expr)*)? RP_
     ;

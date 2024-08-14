@@ -711,6 +711,54 @@ ROW
     : R O W
     ;
 
+ROLE
+    : R O L E
+    ;
+
+RANK
+    : R A N K
+    ;
+
+ROW_NUMBER
+    : R O W UL_ N U M B  E R
+    ;
+
+DENSE_RANK
+    : D E N S E UL_ R A N K
+    ;
+
+LEAD
+    : L E A D
+    ;
+
+LAG
+    : L A G
+    ;
+
+FIRST_VALUE
+    : F I R S T UL_ V A L U E
+    ;
+
+LAST_VALUE
+    : L A S T UL_ V A L U E
+    ;
+
+NTH_VALUE
+    : N T H UL_ V A L U E
+    ;
+
+OVER
+    : O V E R
+    ;
+
+PARTITION
+    : P A R T I T I O N
+    ;
+
+NULLS
+    : N U L L S
+    ;
+
 
 //PASSWORD
 //    : P A S S W O R D

@@ -73,9 +73,53 @@ combineClause
     ;
 
 selectClause
-    : SELECT selectSpecification* projections fromClause? whereClause? groupByClause? havingClause? orderByClause? limitClause?
+    : SELECT selectSpecification* projections fromClause? whereClause? groupByClause? havingClause? orderByClause? limitClause? overClause? // windowClause?
     ;
 
+overClause
+    : windowFunction? OVER LP_ partitionClause? sortClause? RP_
+    ;
+
+//windowClause
+//    : WINDOW windowDefinitionList
+//    ;
+//
+//windowDefinitionList
+//    : windowDefinition
+//    | windowDefinitionList COMMA_ windowDefinition
+//    ;
+//
+//windowDefinition
+//    : colId AS windowSpecification
+//    ;
+//
+//windowSpecification
+//    : LP_ windowName? partitionClause? sortClause? RP_
+//    ;
+//
+partitionClause
+    : PARTITION BY expr (COMMA_ expr)*
+    ;
+
+sortClause
+    : ORDER BY sortbyList
+    ;
+
+sortbyList
+    : sortby (COMMA_ sortby)*
+    ;
+
+sortby
+    : expr ascDesc? nullsOrder?
+    ;
+
+nullsOrder
+    : NULLS (FIRST | LAST)
+    ;
+
+ascDesc
+    : ASC | DESC
+    ;
 
 selectSpecification
     : duplicateSpecification
@@ -90,7 +134,7 @@ projections
     ;
 
 projection
-    : (columnName | expr) (AS? alias)? | qualifiedShorthand
+    : (overClause | columnName | expr) (AS? alias)? | qualifiedShorthand
     ;
 
 alias
