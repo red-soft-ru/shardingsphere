@@ -37,5 +37,6 @@ execute
     | grant
     | revoke
     | alterDomain
+    | savepoint
     ) SEMI_?
     ;
