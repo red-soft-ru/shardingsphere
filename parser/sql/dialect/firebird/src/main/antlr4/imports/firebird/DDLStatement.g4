@@ -42,6 +42,10 @@ alterDomainClause
     | tableName (SET | DROP) NOT NULL
     | tableName DROP CONSTRAINT
     ;
+    
+alterSequence
+    : ALTER SEQUENCE tableName alterSequenceClause?
+    ;
 
 dropTable
     : DROP TABLE tableNames dropBehaviour
@@ -75,6 +79,11 @@ sqlSecurity
 
 createDefinitionClause
     : LP_ createDefinition (COMMA_ createDefinition)* RP_
+    ;
+
+alterSequenceClause
+    : RESTART (WITH bitExpr)?
+    | INCREMENT BY? NUMBER_
     ;
 
 createDatabaseSpecification_

@@ -23,6 +23,7 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AddC
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AddConstraintSpecificationContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterDefinitionClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterTableContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterSequenceContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CheckConstraintDefinitionContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ColumnDefinitionContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ConstraintDefinitionContext;
@@ -55,6 +56,7 @@ import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.F
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdDropTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateDomainStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterSequenceStatement;
 import org.apache.shardingsphere.sql.parser.firebird.visitor.statement.FirebirdStatementVisitor;
 
 import java.util.Collections;
@@ -221,5 +223,12 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
     @Override
     public ASTNode visitCreateDomain(final CreateDomainContext ctx) {
         return new FirebirdCreateDomainStatement();
+    }
+    
+    @Override
+    public ASTNode visitAlterSequence(final AlterSequenceContext ctx) {
+        FirebirdAlterSequenceStatement result = new FirebirdAlterSequenceStatement();
+        // result.setSequenceName(((SimpleTableSegment) visit(ctx.Name())).getTableName().getIdentifier().getValue());
+        return result;
     }
 }
