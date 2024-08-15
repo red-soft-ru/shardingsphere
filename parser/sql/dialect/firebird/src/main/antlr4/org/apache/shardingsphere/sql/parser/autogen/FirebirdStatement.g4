@@ -37,5 +37,6 @@ execute
     | grant
     | revoke
     | savepoint
+    | createRole
     ) SEMI_?
     ;
