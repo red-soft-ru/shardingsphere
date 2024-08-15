@@ -299,6 +299,13 @@ orderByItem
     : (columnName | numberLiterals) (ASC | DESC)?
     ;
 
+createDomainClause
+    : DEFAULT (literals | NULL | variable)?
+    | NOT NULL
+    | CHECK LP_ expr RP_
+    | CHARACTER SET  characterSetName (collateClause)?
+    ;
+
 dataType
     : dataTypeName dataTypeLength? characterSet? collateClause? | dataTypeName LP_ STRING_ (COMMA_ STRING_)* RP_ characterSet? collateClause?
     ;
