@@ -23,6 +23,10 @@ createTable
     : CREATE createTemporaryTable? TABLE tableName createDefinitionClause sqlSecurity?
     ;
 
+createDomain
+    : CREATE DOMAIN name AS? dataType createDomainClause?
+    ;
+
 alterTable
     : ALTER TABLE tableName alterDefinitionClause
     ;
