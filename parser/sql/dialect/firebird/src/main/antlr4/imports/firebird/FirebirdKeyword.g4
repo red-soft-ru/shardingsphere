@@ -732,6 +732,6 @@ ROW
 //    : A D M I N
 //    ;
 //
-//ROLE
-//    : R O L E
-//    ;
+ROLE
+    : R O L E
+    ;
