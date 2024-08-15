@@ -38,5 +38,6 @@ execute
     | revoke
     | alterDomain
     | savepoint
+    | createRole
     ) SEMI_?
     ;
