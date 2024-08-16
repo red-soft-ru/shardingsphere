@@ -711,6 +711,13 @@ ROW
     : R O W
     ;
 
+SENSITIVE
+    : S E N S I T I V E
+    ;
+
+ACCENT
+    : A C C E N T
+    ;
 
 //PASSWORD
 //    : P A S S W O R D

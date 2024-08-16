@@ -23,6 +23,17 @@ createTable
     : CREATE createTemporaryTable? TABLE tableName createDefinitionClause sqlSecurity?
     ;
 
+createCollation
+    : CREATE COLLATION name FOR name createCollationClause*
+    ;
+
+createCollationClause
+    : FROM name | FROM EXTERNAL LP_ STRING_ RP_
+    | NO PAD | PAD SPACE
+    | CASE SENSITIVE | CASE  INSENSITIVE
+    | ACCENT SENSITIVE | ACCENT INSENSITIVE
+    ;
+
 alterTable
     : ALTER TABLE tableName alterDefinitionClause
     ;
