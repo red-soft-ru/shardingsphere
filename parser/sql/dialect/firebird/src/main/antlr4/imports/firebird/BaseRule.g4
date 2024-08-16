@@ -81,7 +81,7 @@ unreservedWord
     | REPEATABLE | RETURNED_LENGTH | RETURNED_OCTET_LENGTH | RETURNED_SQLSTATE | ROW_COUNT
     | SCALE | SCHEMA_NAME | SERIALIZABLE | SERVER_NAME | SUBCLASS_ORIGIN
     | TABLE_NAME | TYPE
-    | UNCOMMITTED | UNNAMED
+    | UNCOMMITTED | UNNAMED | VALUE
     ;
 
 variable
@@ -166,6 +166,7 @@ predicate
     | bitExpr NOT? IN LP_ expr (COMMA_ expr)* RP_
     | bitExpr NOT? BETWEEN bitExpr AND predicate
     | bitExpr NOT? LIKE simpleExpr (ESCAPE simpleExpr)?
+    | bitExpr NOT? STARTING WITH? bitExpr
     | bitExpr
     ;
 
@@ -302,7 +303,7 @@ orderByItem
 createDomainClause
     : DEFAULT (literals | NULL | variable)?
     | NOT NULL
-    | CHECK LP_ expr RP_
+    | CHECK LP_ predicate RP_
     | CHARACTER SET  characterSetName (collateClause)?
     ;
 
