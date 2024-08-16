@@ -28,16 +28,18 @@ alterTable
     ;
 
 alterDomain
-    : ALTER DOMAIN alterDomainClause
+    : ALTER DOMAIN tableName alterDomainClause*
     ;
 
 alterDomainClause
-    : tableName TO tableName
-    | tableName SET DEFAULT (literals | NULL | )
-    | tableName DROP DEFAULT
-    | tableName (SET | DROP) NOT NULL
-    | tableName DROP CONSTRAINT
+    : TO tableName
+    | (SET DEFAULT defaultValue | DROP DEFAULT)
+    | (SET | DROP) NOT NULL
+    | (ADD CONSTRAINT? CHECK LP_ predicate RP_ | DROP CONSTRAINT)
+    | TYPE dataType (CHARACTER SET literals (COLLATE sortOrder)?)?
     ;
+
+
 
 dropTable
     : DROP TABLE tableNames dropBehaviour
