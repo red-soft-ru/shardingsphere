@@ -24,6 +24,7 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AddC
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterDefinitionClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterSequenceContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterDomainContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CheckConstraintDefinitionContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ColumnDefinitionContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ConstraintDefinitionContext;
@@ -54,6 +55,7 @@ import org.apache.shardingsphere.sql.parser.sql.common.segment.generic.table.Sim
 import org.apache.shardingsphere.sql.parser.sql.common.value.collection.CollectionValue;
 import org.apache.shardingsphere.sql.parser.sql.common.value.identifier.IdentifierValue;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterTableStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterDomainStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdDropTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateDomainStatement;
@@ -175,6 +177,11 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
             }
         }
         return result;
+    }
+
+    @Override
+    public ASTNode visitAlterDomain(final AlterDomainContext ctx) {
+        return new FirebirdAlterDomainStatement();
     }
     
     @SuppressWarnings("unchecked")
