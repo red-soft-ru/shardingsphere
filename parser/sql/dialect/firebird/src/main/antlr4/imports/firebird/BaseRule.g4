@@ -337,4 +337,3 @@ ignoredIdentifier
 dropBehaviour
     : (CASCADE | RESTRICT)?
     ;
-

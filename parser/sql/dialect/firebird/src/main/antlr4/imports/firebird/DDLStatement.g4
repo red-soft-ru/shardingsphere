@@ -26,6 +26,17 @@ createTable
 createDomain
     : CREATE DOMAIN name AS? dataType createDomainClause?
     ;
+    
+createCollation
+    : CREATE COLLATION name FOR name createCollationClause*
+    ;
+
+createCollationClause
+    : FROM name | FROM EXTERNAL LP_ STRING_ RP_
+    | NO PAD | PAD SPACE
+    | CASE SENSITIVE | CASE  INSENSITIVE
+    | ACCENT SENSITIVE | ACCENT INSENSITIVE
+    ;
 
 alterTable
     : ALTER TABLE tableName alterDefinitionClause

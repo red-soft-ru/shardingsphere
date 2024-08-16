@@ -727,6 +727,13 @@ INCREMENT
     : I N C R E M E N T
     ;
 
+SENSITIVE
+    : S E N S I T I V E
+    ;
+
+ACCENT
+    : A C C E N T
+    ;
 
 //PASSWORD
 //    : P A S S W O R D

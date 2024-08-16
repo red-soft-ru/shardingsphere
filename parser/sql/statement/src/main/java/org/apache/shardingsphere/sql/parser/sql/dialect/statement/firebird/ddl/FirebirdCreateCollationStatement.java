@@ -15,32 +15,13 @@
  * limitations under the License.
  */
 
-grammar FirebirdStatement;
+package org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl;
 
-import Comments, DDLStatement, TCLStatement, DCLStatement;
+import org.apache.shardingsphere.sql.parser.sql.common.statement.ddl.CreateCollationStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.FirebirdStatement;
 
-execute
-    : (select
-    | insert
-    | update
-    | delete
-    | createDatabase
-    | dropDatabase
-    | createTable
-    | alterTable
-    | dropTable
-    | createView
-    | dropView
-    | setTransaction
-    | commit
-    | rollback
-    | grant
-    | revoke
-    | alterDomain
-    | savepoint
-    | createRole
-    | createDomain
-    | alterSequence
-    | createCollation
-    ) SEMI_?
-    ;
+/**
+ * Firebird create collation statement.
+ */
+public final class FirebirdCreateCollationStatement extends CreateCollationStatement implements FirebirdStatement {
+}
