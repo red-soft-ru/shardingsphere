@@ -329,3 +329,13 @@ ignoredIdentifier
 dropBehaviour
     : (CASCADE | RESTRICT)?
     ;
+
+attributeCollation
+    : DISABLE_COMPRESSIONS
+    | DISABLE_EXPANSIONS
+    | ICU_VERSION
+    | LOCALE
+    | MULTI_LEVEL
+    | NUMERIC_SORT
+    | SPECIALS_FIRST
+    ;
