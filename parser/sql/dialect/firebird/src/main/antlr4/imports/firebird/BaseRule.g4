@@ -396,3 +396,13 @@ sortOrder
     | WIN1257 | WIN1257_EE | WIN1257_LT | WIN1257_LV
     | WIN1258
     ;
+    
+attributeCollation
+    : DISABLE_COMPRESSIONS
+    | DISABLE_EXPANSIONS
+    | ICU_VERSION
+    | LOCALE
+    | MULTI_LEVEL
+    | NUMERIC_SORT
+    | SPECIALS_FIRST
+    ;

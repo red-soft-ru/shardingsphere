@@ -28,14 +28,31 @@ createDomain
     ;
     
 createCollation
-    : CREATE COLLATION name FOR name createCollationClause*
+    : CREATE COLLATION name FOR characterSetName createCollationOptions?
     ;
 
-createCollationClause
+createCollationOptions
+    : createCollationFromClause? createCollationPaddingClause? createCollationCaseSensitivityClause? createCollationAccentSensitivityClause? createCollationAttributeClause?
+    ;
+
+createCollationFromClause
     : FROM name | FROM EXTERNAL LP_ STRING_ RP_
-    | NO PAD | PAD SPACE
-    | CASE SENSITIVE | CASE  INSENSITIVE
-    | ACCENT SENSITIVE | ACCENT INSENSITIVE
+    ;
+
+createCollationPaddingClause
+    : NO PAD | PAD SPACE
+    ;
+
+createCollationCaseSensitivityClause
+    : CASE SENSITIVE | CASE INSENSITIVE
+    ;
+
+createCollationAccentSensitivityClause
+    : ACCENT SENSITIVE | ACCENT INSENSITIVE
+    ;
+
+createCollationAttributeClause
+    : attributeCollation (SEMI_ attributeCollation)*
     ;
 
 alterTable
