@@ -92,6 +92,10 @@ schemaName
     : identifier
     ;
 
+domainName
+    : identifier
+    ;
+
 tableName
     : (owner DOT_)? name
     ;
@@ -304,13 +308,6 @@ orderByItem
     : (columnName | numberLiterals) (ASC | DESC)?
     ;
 
-createDomainClause
-    : DEFAULT (literals | NULL | variable)?
-    | NOT NULL
-    | CHECK LP_ predicate RP_
-    | CHARACTER SET  characterSetName (collateClause)?
-    ;
-
 dataType
     : dataTypeName dataTypeLength? characterSet? collateClause? | dataTypeName LP_ STRING_ (COMMA_ STRING_)* RP_ characterSet? collateClause?
     ;
@@ -343,7 +340,7 @@ dropBehaviour
     ;
 
 defaultValue
-    : (literals | NULL | contextVariables )
+    : (literals | NULL | contextVariables)
     ;
 
 contextVariables

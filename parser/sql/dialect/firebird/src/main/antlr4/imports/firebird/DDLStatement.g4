@@ -24,7 +24,23 @@ createTable
     ;
 
 createDomain
-    : CREATE DOMAIN name AS? dataType createDomainClause?
+    : CREATE DOMAIN domainName AS? dataType defaultClause? notNullClause? checkClause? characterSetClause?
+    ;
+
+defaultClause
+    : DEFAULT defaultValue?
+    ;
+
+notNullClause
+    : NOT NULL
+    ;
+
+checkClause
+    : CHECK predicate
+    ;
+
+characterSetClause
+    : CHARACTER SET characterSetName collateClause?
     ;
     
 createCollation
