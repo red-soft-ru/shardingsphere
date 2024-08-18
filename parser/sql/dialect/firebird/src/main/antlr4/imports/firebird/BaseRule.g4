@@ -92,6 +92,10 @@ schemaName
     : identifier
     ;
 
+domainName
+    : identifier
+    ;
+
 tableName
     : (owner DOT_)? name
     ;
@@ -300,13 +304,6 @@ orderByItem
     : (columnName | numberLiterals) (ASC | DESC)?
     ;
 
-createDomainClause
-    : DEFAULT (literals | NULL | variable)?
-    | NOT NULL
-    | CHECK LP_ predicate RP_
-    | CHARACTER SET  characterSetName (collateClause)?
-    ;
-
 dataType
     : dataTypeName dataTypeLength? characterSet? collateClause? | dataTypeName LP_ STRING_ (COMMA_ STRING_)* RP_ characterSet? collateClause?
     ;
@@ -336,4 +333,18 @@ ignoredIdentifier
 
 dropBehaviour
     : (CASCADE | RESTRICT)?
+    ;
+
+defaultValue
+    : (literals | NULL | contextVariables)
+    ;
+
+contextVariables
+    : CURRENT_CONNECTION | CURRENT_DATE | CURRENT_ROLE
+    | CURRENT_TIME | CURRENT_TIMESTAMP
+    | CURRENT_TRANSACTION | CURRENT_USER
+    | INSERTING | UPDATING | DELETING
+    | NEW | NOW | OLD | ROW_COUNT
+    | SQLCODE | GDSCODE | SQLSTATE
+    | TODAY | TOMORROW | USER | YESTERDAY
     ;
