@@ -96,6 +96,10 @@ tableName
     : (owner DOT_)? name
     ;
 
+collationName
+    : identifier
+    ;
+
 columnName
     : (owner DOT_)? name
     ;
@@ -397,7 +401,7 @@ sortOrder
     | WIN1258
     ;
     
-attributeCollation
+attributeCollationName
     : DISABLE_COMPRESSIONS
     | DISABLE_EXPANSIONS
     | ICU_VERSION
