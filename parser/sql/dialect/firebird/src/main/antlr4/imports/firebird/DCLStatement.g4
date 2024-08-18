@@ -62,7 +62,7 @@ privilegeLevel
     ;
 
 createRole
-    : CREATE ROLE name
+    : CREATE ROLE roleName
     ;
 
 //createUser

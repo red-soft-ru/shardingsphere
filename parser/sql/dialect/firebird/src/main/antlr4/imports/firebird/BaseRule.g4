@@ -103,6 +103,10 @@ tableName
 collationName
     : identifier
     ;
+    
+roleName
+    : identifier
+    ;
 
 columnName
     : (owner DOT_)? name
