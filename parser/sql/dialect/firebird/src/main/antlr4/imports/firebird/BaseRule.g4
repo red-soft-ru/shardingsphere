@@ -96,6 +96,10 @@ tableName
     : (owner DOT_)? name
     ;
 
+roleName
+    : identifier
+    ;
+
 columnName
     : (owner DOT_)? name
     ;
