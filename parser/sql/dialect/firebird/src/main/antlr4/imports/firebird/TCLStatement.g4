@@ -36,5 +36,5 @@ levelOfIsolation
     ;
 
 savepoint
-    : SAVEPOINT name
+    : SAVEPOINT savepointName
     ;

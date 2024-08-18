@@ -95,6 +95,10 @@ schemaName
 domainName
     : identifier
     ;
+    
+savepointName
+    : identifier
+    ;
 
 tableName
     : (owner DOT_)? name
