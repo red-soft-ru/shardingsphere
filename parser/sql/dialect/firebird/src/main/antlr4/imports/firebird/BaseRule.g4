@@ -92,6 +92,10 @@ schemaName
     : identifier
     ;
 
+domainName
+    : identifier
+    ;
+
 tableName
     : (owner DOT_)? name
     ;
