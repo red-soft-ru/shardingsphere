@@ -237,7 +237,7 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
     @Override
     public ASTNode visitAlterSequence(final AlterSequenceContext ctx) {
         FirebirdAlterSequenceStatement result = new FirebirdAlterSequenceStatement();
-        // result.setSequenceName(((SimpleTableSegment) visit(ctx.Name())).getTableName().getIdentifier().getValue());
+        result.setSequenceName(((SimpleTableSegment) visit(ctx.tableName())).getTableName().getIdentifier().getValue());
         return result;
     }
     

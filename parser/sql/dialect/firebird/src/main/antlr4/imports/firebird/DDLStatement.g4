@@ -80,7 +80,7 @@ toTableClause
     ;
     
 alterSequence
-    : ALTER SEQUENCE tableName alterSequenceClause?
+    : ALTER SEQUENCE tableName sequenceRestartClause? sequenceIncrementClause?
     ;
 
 defaultClause
@@ -133,9 +133,12 @@ createDefinitionClause
     : LP_ createDefinition (COMMA_ createDefinition)* RP_
     ;
 
-alterSequenceClause
+sequenceRestartClause
     : RESTART (WITH bitExpr)?
-    | INCREMENT BY? NUMBER_
+    ;
+
+sequenceIncrementClause
+    : INCREMENT BY? NUMBER_
     ;
 
 createDatabaseSpecification_
