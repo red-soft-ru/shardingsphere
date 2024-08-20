@@ -331,7 +331,7 @@ dropBehaviour
     ;
 
 array
-    : (SMALLINT | INTEGER | BIGINT) LBT_ arrayDimension RBT_?
+    : (SMALLINT | INTEGER | BIGINT) LBT_ arrayDimension RBT_
     ;
 
 arrayDimension
