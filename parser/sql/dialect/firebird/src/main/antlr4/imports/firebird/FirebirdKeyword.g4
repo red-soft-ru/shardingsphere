@@ -711,6 +711,9 @@ ROW
     : R O W
     ;
 
+BIGINT
+    : B I G I N T
+    ;
 
 //PASSWORD
 //    : P A S S W O R D
