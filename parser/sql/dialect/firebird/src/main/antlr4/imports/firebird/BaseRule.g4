@@ -121,6 +121,10 @@ viewName
     | (owner DOT_)? identifier
     ;
 
+domainName
+    : identifier
+    ;
+
 owner
     : identifier
     ;
