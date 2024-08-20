@@ -138,7 +138,20 @@ addColumnSpecification
     ;
 
 modifyColumnSpecification
-    : ALTER COLUMN? columnDefinition
+    : modifyColumn (TO tableName
+                  | POSITION expr
+                  | TYPE (dataType | domainName)
+                  | SET DEFAULT defaultValue
+                  | DROP DEFAULT
+                  | SET NOT NULL
+                  | DROP NOT NULL
+                  | (TYPE dataType)? (GENERATED ALWAYS AS | COMPUTED BY?) LP_ expr RP_
+                  | RESTART (WITH NUMBER_)?
+                  )
+    ;
+
+modifyColumn
+    : ALTER COLUMN? columnName
     ;
 
 dropColumnSpecification

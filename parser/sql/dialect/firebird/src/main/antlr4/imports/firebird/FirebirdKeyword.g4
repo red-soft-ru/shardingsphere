@@ -711,6 +711,21 @@ ROW
     : R O W
     ;
 
+GENERATED
+    : G E N E R A T E D
+    ;
+
+ALWAYS
+    : A L W A Y S
+    ;
+
+COMPUTED
+    : C O M P U T E D
+    ;
+
+RESTART
+    : R E S T A R T
+    ;
 
 //PASSWORD
 //    : P A S S W O R D

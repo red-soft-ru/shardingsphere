@@ -105,6 +105,10 @@ viewName
     | (owner DOT_)? identifier
     ;
 
+domainName
+    : identifier
+    ;
+
 owner
     : identifier
     ;
@@ -328,4 +332,18 @@ ignoredIdentifier
 
 dropBehaviour
     : (CASCADE | RESTRICT)?
+    ;
+
+defaultValue
+    : (literals | NULL | contextVariables)
+    ;
+
+contextVariables
+    : CURRENT_CONNECTION | CURRENT_DATE | CURRENT_ROLE
+    | CURRENT_TIME | CURRENT_TIMESTAMP
+    | CURRENT_TRANSACTION | CURRENT_USER
+    | INSERTING | UPDATING | DELETING
+    | NEW | NOW | OLD | ROW_COUNT
+    | SQLCODE | GDSCODE | SQLSTATE
+    | TODAY | TOMORROW | USER | YESTERDAY
     ;
