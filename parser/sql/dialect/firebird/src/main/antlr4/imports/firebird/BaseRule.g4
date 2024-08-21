@@ -207,7 +207,7 @@ functionCall
     ;
 
 aggregationFunction
-    : aggregationFunctionName LP_ distinct? (expr (COMMA_ expr)* | ASTERISK_)? RP_
+    : aggregationFunctionName LP_ distinct? (expr (COMMA_ expr)* | ASTERISK_)? RP_ overClause?
     ;
 
 aggregationFunctionName
@@ -219,7 +219,13 @@ distinct
     ;
 
 specialFunction
-    : castFunction | convertFunction | positionFunction | substringFunction | extractFunction | trimFunction
+    : castFunction
+    | convertFunction
+    | positionFunction
+    | substringFunction
+    | extractFunction
+    | trimFunction
+    | windowFunction
     ;
 
 castFunction
@@ -328,4 +334,13 @@ ignoredIdentifier
 
 dropBehaviour
     : (CASCADE | RESTRICT)?
+    ;
+
+windowFunction
+    : funcName = (ROW_NUMBER | RANK | DENSE_RANK) LP_ (expr (COMMA_ expr)* | ASTERISK_)? RP_ overClause?
+    | funcName = (LEAD | LAG | FIRST_VALUE | LAST_VALUE | NTH_VALUE) LP_ (expr (COMMA_ expr)* | ASTERISK_)? RP_ overClause?
+    ;
+
+overClause
+    : OVER LP_ (PARTITION BY expr (COMMA_ expr)*)? orderByClause? RP_
     ;
