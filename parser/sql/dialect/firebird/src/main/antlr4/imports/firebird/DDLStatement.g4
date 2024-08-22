@@ -31,6 +31,79 @@ dropTable
     : DROP TABLE tableNames dropBehaviour
     ;
 
+createFunction
+    : CREATE FUNCTION functionName
+      inputArgumentClause?                        // ([(<входной параметр> [, <входной параметр> ...])]) - необ€зательный блок с параметрами
+      RETURNS typeDescriptionArgument             // RETURNS <тип>
+      collateClause?                              // [COLLATE <сортировка>] - необ€зательный COLLATE
+      DETERMINISTIC?                              // [DETERMINISTIC] - необ€зательный DETERMINISTIC
+      (
+          EXTERNAL NAME externalModuleName ENGINE engineName  // EXTERNAL NAME '<внешний модуль>' ENGINE <им€ движка>
+      |
+          (SQL SECURITY (DEFINER | INVOKER))?  // [SQL SECURITY {DEFINER | INVOKER}] - необ€зательный SQL SECURITY блок
+          AS                                    // AS
+          declarationClause?                    // [<объ€вление> [<объ€вление> ...] ] - необ€зательные объ€влени€
+          BEGIN                                 // BEGIN
+              statementBlock                    // <блок операторов>
+          END                                   // END
+      )
+    ;
+
+
+statementBlock
+    : (statement SEMI_)*
+    ;
+
+statement
+    : select
+    | insert
+    | update
+    | delete
+    | return
+    ;
+
+declarationClause
+    : declaration (COMMA_ declaration)*
+    ;
+
+declaration
+    : localVariableDeclaration
+    | cursorDeclaration
+    | procedureDeclaration
+    | functioneDeclaration
+    ;
+
+localVariableDeclaration
+    : DECLARE VARIABLE? (
+    localVariableDeclarationName typeDescriptionArgument
+    (NOT NULL)?
+    collateClause?
+    ((EQ_ | DEFAULT) defaultValue)?
+    | cursorName CURSOR FOR LP_ select RP_
+    )
+    ;
+
+cursorDeclaration
+    :  DECLARE VARIABLE? cursorName
+    CURSOR FOR (SCROLL | NO SCROLL)? LP_ select RP_
+    ;
+
+procedureDeclaration
+    : PROCEDURE procedureName inputArgumentClause? (RETURNS inputArgumentClause)?
+    ;
+
+functioneDeclaration
+    : FUNCTION functionName inputArgumentClause? RETURNS typeDescriptionArgument collateClause? DETERMINISTIC?
+    ;
+
+inputArgument
+    : descriptionArgument ((EQ_ | DEFAULT) defaultValue)?
+    ;
+
+inputArgumentClause
+    : LP_ inputArgument (COMMA_ inputArgument)* RP_
+    ;
+
 createDatabase
     : CREATE SCHEMA schemaName createDatabaseSpecification_*
     ;
@@ -151,4 +224,8 @@ addConstraintSpecification
 
 dropConstraintSpecification
     : DROP constraintDefinition
+    ;
+
+return
+    : RETURN expr
     ;

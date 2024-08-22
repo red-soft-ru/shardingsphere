@@ -105,15 +105,51 @@ viewName
     | (owner DOT_)? identifier
     ;
 
+functionName
+    : identifier
+    ;
+
+domainName
+    : identifier
+    ;
+
+argumentName
+    : identifier
+    ;
+
 owner
     : identifier
     ;
 
-name
+engineName
+    : identifier
+    ;
+
+information
+    : identifier
+    ;
+
+localVariableDeclarationName
     : identifier
     ;
 
 constraintName
+    : identifier
+    ;
+
+externalModuleName
+    : identifier
+    ;
+
+cursorName
+    : identifier
+    ;
+
+procedureName
+    : identifier
+    ;
+
+name
     : identifier
     ;
 
@@ -144,6 +180,8 @@ andOperator
 orOperator
     : OR | CONCAT_
     ;
+
+
 
 notOperator
     : NOT | NOT_
@@ -328,4 +366,33 @@ ignoredIdentifier
 
 dropBehaviour
     : (CASCADE | RESTRICT)?
+    ;
+
+defaultValue
+    : (literals | NULL | contextVariables)
+    ;
+
+contextVariables
+    : CURRENT_CONNECTION | CURRENT_DATE | CURRENT_ROLE
+    | CURRENT_TIME | CURRENT_TIMESTAMP
+    | CURRENT_TRANSACTION | CURRENT_USER
+    | INSERTING | UPDATING | DELETING
+    | NEW | NOW | OLD | ROW_COUNT
+    | SQLCODE | GDSCODE | SQLSTATE
+    | TODAY | TOMORROW | USER | YESTERDAY
+    ;
+
+descriptionArgument
+    : argumentName typeDescriptionArgument (NOT NULL)? collateClause?
+    ;
+
+typeDescriptionArgument
+    : dataType
+    | (TYPE OF)? domainName
+    | TYPE OF COLUMN (tableName | viewName) DOT_ columnName
+    ;
+
+
+externalModule
+    : EQ_ externalModuleName NOT_ functionName (NOT_ information)? EQ_
     ;
