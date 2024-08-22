@@ -133,6 +133,10 @@ name
     : identifier
     ;
 
+baseSortName
+    : identifier
+    ;
+
 constraintName
     : identifier
     ;
@@ -416,6 +420,10 @@ sortOrder
     | WIN1258
     ;
     
+attributeCollation
+    : attributeCollationName EQ_ (STRING_ | NUMBER_)
+    ;
+
 attributeCollationName
     : DISABLE_COMPRESSIONS
     | DISABLE_EXPANSIONS

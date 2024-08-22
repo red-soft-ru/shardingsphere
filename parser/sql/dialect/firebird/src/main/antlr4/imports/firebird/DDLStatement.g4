@@ -48,7 +48,7 @@ createCollation
     ;
 
 fromCollationClause
-    : FROM collationName | FROM EXTERNAL LP_ STRING_ RP_
+    : FROM baseSortName | FROM EXTERNAL LP_ STRING_ RP_
     ;
 
 paddingClause
@@ -64,7 +64,7 @@ accentSensitivityClause
     ;
 
 attributeClause
-    : attributeCollationName (SEMI_ attributeCollationName)*
+    : attributeCollation (SEMI_ attributeCollation)*
     ;
 
 alterTable
