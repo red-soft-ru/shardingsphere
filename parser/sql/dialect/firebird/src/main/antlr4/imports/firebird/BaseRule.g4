@@ -121,7 +121,15 @@ viewName
     | (owner DOT_)? identifier
     ;
 
+functionName
+    : identifier
+    ;
+
 domainName
+    : identifier
+    ;
+
+argumentName
     : identifier
     ;
 
@@ -129,7 +137,15 @@ owner
     : identifier
     ;
 
-name
+engineName
+    : identifier
+    ;
+
+information
+    : identifier
+    ;
+
+localVariableDeclarationName
     : identifier
     ;
 
@@ -138,6 +154,22 @@ baseSortName
     ;
 
 constraintName
+    : identifier
+    ;
+
+externalModuleName
+    : identifier
+    ;
+
+cursorName
+    : identifier
+    ;
+
+procedureName
+    : identifier
+    ;
+
+name
     : identifier
     ;
 
@@ -168,6 +200,8 @@ andOperator
 orOperator
     : OR | CONCAT_
     ;
+
+
 
 notOperator
     : NOT | NOT_
@@ -441,4 +475,19 @@ windowFunction
 
 overClause
     : OVER LP_ (PARTITION BY expr (COMMA_ expr)*)? orderByClause? RP_
+    ;
+    
+descriptionArgument
+    : argumentName typeDescriptionArgument (NOT NULL)? collateClause?
+    ;
+
+typeDescriptionArgument
+    : dataType
+    | (TYPE OF)? domainName
+    | TYPE OF COLUMN (tableName | viewName) DOT_ columnName
+    ;
+
+
+externalModule
+    : EQ_ externalModuleName NOT_ functionName (NOT_ information)? EQ_
     ;

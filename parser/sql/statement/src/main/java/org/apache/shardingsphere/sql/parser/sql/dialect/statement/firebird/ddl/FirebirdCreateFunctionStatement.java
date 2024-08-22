@@ -15,33 +15,13 @@
  * limitations under the License.
  */
 
-grammar FirebirdStatement;
+package org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl;
 
-import Comments, DDLStatement, TCLStatement, DCLStatement;
+import org.apache.shardingsphere.sql.parser.sql.common.statement.ddl.CreateFunctionStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.FirebirdStatement;
 
-execute
-    : (select
-    | insert
-    | update
-    | delete
-    | createDatabase
-    | dropDatabase
-    | createTable
-    | alterTable
-    | dropTable
-    | createView
-    | dropView
-    | setTransaction
-    | commit
-    | rollback
-    | grant
-    | revoke
-    | alterDomain
-    | savepoint
-    | createRole
-    | createDomain
-    | alterSequence
-    | createCollation
-    | createFunction
-    ) SEMI_?
-    ;
+/**
+ * Firebird create function statement.
+ */
+public final class FirebirdCreateFunctionStatement extends CreateFunctionStatement implements FirebirdStatement {
+}
