@@ -46,3 +46,4 @@ fragment X:   [Xx];
 fragment Y:   [Yy];
 fragment Z:   [Zz];
 fragment UL_: '_';
+fragment HYPHEN: '-';

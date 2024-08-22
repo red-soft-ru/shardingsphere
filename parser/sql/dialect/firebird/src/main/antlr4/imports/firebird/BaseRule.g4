@@ -117,6 +117,10 @@ name
     : identifier
     ;
 
+baseSortName
+    : identifier
+    ;
+
 constraintName
     : identifier
     ;
@@ -332,6 +336,10 @@ ignoredIdentifier
 
 dropBehaviour
     : (CASCADE | RESTRICT)?
+    ;
+
+attributeCollation
+    : attributeCollationName EQ_ (STRING_ | NUMBER_)
     ;
 
 attributeCollationName

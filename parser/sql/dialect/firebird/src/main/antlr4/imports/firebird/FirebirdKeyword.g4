@@ -719,6 +719,34 @@ ACCENT
     : A C C E N T
     ;
 
+DISABLE_COMPRESSIONS
+    : D I S A B L E HYPHEN C O M P R E S S I O N S
+    ;
+
+DISABLE_EXPANSIONS
+    : D I S A B L E HYPHEN E X P A N S I O N S
+    ;
+
+ICU_VERSION
+    : I C U HYPHEN V E R S I O N
+    ;
+
+MULTI_LEVEL
+    : M U L T I HYPHEN L E V E L
+    ;
+
+NUMERIC_SORT
+    : N U M E R I C HYPHEN S O R T
+    ;
+
+SPECIALS_FIRST
+    : S P E C I A L S HYPHEN F I R S T
+    ;
+
+LOCALE
+    : L O C A L E
+    ;
+
 //PASSWORD
 //    : P A S S W O R D
 //    ;
