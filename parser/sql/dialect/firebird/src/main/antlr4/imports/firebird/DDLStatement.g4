@@ -105,19 +105,19 @@ dropTable
 
 createFunction
     : CREATE FUNCTION functionName
-      inputArgumentClause?                        // ([(<входной параметр> [, <входной параметр> ...])]) - необ€зательный блок с параметрами
-      RETURNS typeDescriptionArgument             // RETURNS <тип>
-      collateClause?                              // [COLLATE <сортировка>] - необ€зательный COLLATE
-      DETERMINISTIC?                              // [DETERMINISTIC] - необ€зательный DETERMINISTIC
+      inputArgumentClause?
+      RETURNS typeDescriptionArgument
+      collateClause?
+      DETERMINISTIC?
       (
-          EXTERNAL NAME externalModuleName ENGINE engineName  // EXTERNAL NAME '<внешний модуль>' ENGINE <им€ движка>
+          EXTERNAL NAME externalModuleName ENGINE engineName
       |
-          (SQL SECURITY (DEFINER | INVOKER))?  // [SQL SECURITY {DEFINER | INVOKER}] - необ€зательный SQL SECURITY блок
-          AS                                    // AS
-          declarationClause?                    // [<объ€вление> [<объ€вление> ...] ] - необ€зательные объ€влени€
-          BEGIN                                 // BEGIN
-              statementBlock                    // <блок операторов>
-          END                                   // END
+          (SQL SECURITY (DEFINER | INVOKER))?
+          AS
+          declarationClause?
+          BEGIN
+              statementBlock
+          END
       )
     ;
 
