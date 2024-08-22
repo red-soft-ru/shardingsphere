@@ -339,7 +339,7 @@ dropBehaviour
     ;
 
 attributeCollation
-    : attributeCollationName EQ_ (STRING_ | NUMBER_)
+    : SQ_ attributeCollationName EQ_ (STRING_ | NUMBER_) SQ_
     ;
 
 attributeCollationName
