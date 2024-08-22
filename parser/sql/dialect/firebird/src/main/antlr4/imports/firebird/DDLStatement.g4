@@ -36,7 +36,7 @@ notNullClause
     ;
 
 checkClause
-    : CHECK predicate
+    : CHECK LP_ predicate RP_
     ;
 
 characterSetClause
