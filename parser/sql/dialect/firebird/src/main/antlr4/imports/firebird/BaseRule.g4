@@ -23,6 +23,10 @@ parameterMarker
     : QUESTION_
     ;
 
+namedParameter
+    : identifier
+    ;
+    
 literals
     : stringLiterals
     | numberLiterals
@@ -53,7 +57,7 @@ hexadecimalLiterals
 bitValueLiterals
     : characterSetName? BIT_NUM_ collateClause?
     ;
-    
+
 booleanLiterals
     : TRUE | FALSE
     ;
@@ -105,15 +109,51 @@ viewName
     | (owner DOT_)? identifier
     ;
 
+functionName
+    : identifier
+    ;
+
+domainName
+    : identifier
+    ;
+
+argumentName
+    : identifier
+    ;
+
 owner
     : identifier
     ;
 
-name
+engineName
+    : identifier
+    ;
+
+information
+    : identifier
+    ;
+
+localVariableDeclarationName
     : identifier
     ;
 
 constraintName
+    : identifier
+    ;
+
+externalModuleName
+    : identifier
+    ;
+
+cursorName
+    : identifier
+    ;
+
+procedureName
+    : identifier
+    ;
+
+name
     : identifier
     ;
 
@@ -140,10 +180,12 @@ expr
 andOperator
     : AND | AND_
     ;
-    
+
 orOperator
     : OR | CONCAT_
     ;
+
+
 
 notOperator
     : NOT | NOT_
@@ -166,6 +208,8 @@ predicate
     | bitExpr NOT? IN LP_ expr (COMMA_ expr)* RP_
     | bitExpr NOT? BETWEEN bitExpr AND predicate
     | bitExpr NOT? LIKE simpleExpr (ESCAPE simpleExpr)?
+    | bitExpr IS NOT? NULL
+    | bitExpr IS NOT? DISTINCT FROM bitExpr
     | bitExpr
     ;
 
@@ -203,7 +247,7 @@ simpleExpr
     ;
 
 functionCall
-    : aggregationFunction | specialFunction | regularFunction 
+    : aggregationFunction | specialFunction | regularFunction
     ;
 
 aggregationFunction
@@ -328,4 +372,32 @@ ignoredIdentifier
 
 dropBehaviour
     : (CASCADE | RESTRICT)?
+    ;
+
+defaultValue
+    : (literals | NULL | contextVariables)
+    ;
+
+contextVariables
+    : CURRENT_CONNECTION | CURRENT_DATE | CURRENT_ROLE
+    | CURRENT_TIME | CURRENT_TIMESTAMP
+    | CURRENT_TRANSACTION | CURRENT_USER
+    | INSERTING | UPDATING | DELETING
+    | NEW | NOW | OLD | ROW_COUNT
+    | SQLCODE | GDSCODE | SQLSTATE
+    | TODAY | TOMORROW | USER | YESTERDAY
+    ;
+
+announcementArgument
+    : argumentName typeDescriptionArgument (NOT NULL)? collateClause?
+    ;
+
+typeDescriptionArgument
+    : dataType
+    | (TYPE OF)? domainName
+    | TYPE OF COLUMN (tableName | viewName) DOT_ columnName
+    ;
+
+externalModule
+    : EQ_ externalModuleName NOT_ functionName (NOT_ information)? EQ_
     ;

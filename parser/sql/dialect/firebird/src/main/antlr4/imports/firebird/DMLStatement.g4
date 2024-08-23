@@ -168,11 +168,11 @@ fetchClause
     ;
 
 limitRowCount
-    : numberLiterals | parameterMarker
+    : numberLiterals | parameterMarker | namedParameter
     ;
 
 limitOffset
-    : numberLiterals | parameterMarker
+    : numberLiterals | parameterMarker | namedParameter
     ;
 
 subquery

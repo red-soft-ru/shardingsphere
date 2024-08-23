@@ -36,5 +36,6 @@ execute
     | rollback
     | grant
     | revoke
+    | executeBlock
     ) SEMI_?
     ;

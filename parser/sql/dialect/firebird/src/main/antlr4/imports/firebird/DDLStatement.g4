@@ -31,6 +31,59 @@ dropTable
     : DROP TABLE tableNames dropBehaviour
     ;
 
+statementBlock
+    : (statement SEMI_)*
+    ;
+
+statement
+    : select
+    | insert
+    | update
+    | delete
+    ;
+
+announcementClause
+    : announcement (COMMA_ announcement)*
+    ;
+
+announcement
+    : localVariableAnnouncement
+    | cursorAnnouncement
+    | procedureAnnouncement
+    | functioneAnnouncement
+    ;
+
+localVariableAnnouncement
+    : DECLARE VARIABLE? (
+    localVariableDeclarationName typeDescriptionArgument
+    (NOT NULL)?
+    collateClause?
+    ((EQ_ | DEFAULT) defaultValue)?
+    | cursorName CURSOR FOR LP_ select RP_ SEMI_?
+    )
+    ;
+
+cursorAnnouncement
+    :  DECLARE VARIABLE? cursorName
+    CURSOR FOR (SCROLL | NO SCROLL)? LP_ select RP_ SEMI_?
+    ;
+
+procedureAnnouncement
+    : PROCEDURE procedureName inputArgumentClause? (RETURNS inputArgumentClause)?
+    ;
+
+functioneAnnouncement
+    : FUNCTION functionName inputArgumentClause? RETURNS typeDescriptionArgument collateClause? DETERMINISTIC?
+    ;
+
+inputArgument
+    : announcementArgument ((EQ_ | DEFAULT) defaultValue)?
+    ;
+
+inputArgumentClause
+    : LP_ (inputArgument (COMMA_ inputArgument)*)? RP_
+    ;
+
 createDatabase
     : CREATE SCHEMA schemaName createDatabaseSpecification_*
     ;
@@ -152,3 +205,32 @@ addConstraintSpecification
 dropConstraintSpecification
     : DROP constraintDefinition
     ;
+
+executeBlock
+    :
+    EXECUTE BLOCK
+        inputArgumentListClause?
+        (RETURNS outputArgumentListClause)?
+    AS
+        localVariableAnnouncementClause?
+    BEGIN
+        statementBlock
+    END SEMI_
+    ;
+
+inputArgumentList
+    : announcementArgument EQ_ QUESTION_
+    ;
+
+inputArgumentListClause
+    : LP_ inputArgumentList (COMMA_ inputArgumentList)* RP_
+    ;
+
+outputArgumentListClause
+    : inputArgumentClause
+    ;
+
+localVariableAnnouncementClause
+    : localVariableAnnouncement (COMMA_ localVariableAnnouncement)*
+    ;
+
