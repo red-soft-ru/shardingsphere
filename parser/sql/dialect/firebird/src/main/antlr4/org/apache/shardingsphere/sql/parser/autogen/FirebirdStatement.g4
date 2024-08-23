@@ -37,12 +37,12 @@ execute
     | grant
     | revoke
     | alterDomain
-    | savepoint
     | createRole
     | createDomain
     | alterSequence
     | createCollation
     | createFunction
     | createProcedure
+    | savepoint
     ) SEMI_?
     ;
