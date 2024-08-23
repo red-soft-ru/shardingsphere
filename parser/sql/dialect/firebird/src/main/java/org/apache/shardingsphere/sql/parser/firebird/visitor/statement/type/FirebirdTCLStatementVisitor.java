@@ -22,10 +22,15 @@ import org.apache.shardingsphere.sql.parser.api.visitor.statement.type.TCLStatem
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CommitContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.RollbackContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.SetTransactionContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.SavepointContext;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.tcl.FirebirdCommitStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.tcl.FirebirdRollbackStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.tcl.FirebirdSetTransactionStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.tcl.FirebirdSavepointStatement;
 import org.apache.shardingsphere.sql.parser.firebird.visitor.statement.FirebirdStatementVisitor;
+
+
+
 
 /**
  * TCL statement visitor for Firebird.
@@ -45,5 +50,10 @@ public final class FirebirdTCLStatementVisitor extends FirebirdStatementVisitor 
     @Override
     public ASTNode visitRollback(final RollbackContext ctx) {
         return new FirebirdRollbackStatement();
+    }
+
+    @Override
+    public ASTNode visitSavepoint(final SavepointContext ctx) {
+        return new FirebirdSavepointStatement();
     }
 }

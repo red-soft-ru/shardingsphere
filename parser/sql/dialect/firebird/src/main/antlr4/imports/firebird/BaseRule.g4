@@ -96,8 +96,16 @@ domainName
     : identifier
     ;
 
+savepointName
+    : identifier
+    ;
+
 tableName
     : (owner DOT_)? name
+    ;
+
+roleName
+    : identifier
     ;
 
 columnName
