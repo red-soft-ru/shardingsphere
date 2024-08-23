@@ -711,6 +711,9 @@ ROW
     : R O W
     ;
 
+STARTING
+    : S T A R T I N G
+    ;
 
 //PASSWORD
 //    : P A S S W O R D

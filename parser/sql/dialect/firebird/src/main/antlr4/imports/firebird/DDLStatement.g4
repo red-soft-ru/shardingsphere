@@ -23,6 +23,26 @@ createTable
     : CREATE createTemporaryTable? TABLE tableName createDefinitionClause sqlSecurity?
     ;
 
+createDomain
+    : CREATE DOMAIN domainName AS? dataType defaultClause? notNullClause? checkClause? characterSetClause?
+    ;
+
+defaultClause
+    : DEFAULT defaultValue?
+    ;
+
+notNullClause
+    : NOT NULL
+    ;
+
+checkClause
+    : CHECK LP_ predicate RP_
+    ;
+
+characterSetClause
+    : CHARACTER SET characterSetName collateClause?
+    ;
+
 alterTable
     : ALTER TABLE tableName alterDefinitionClause
     ;
