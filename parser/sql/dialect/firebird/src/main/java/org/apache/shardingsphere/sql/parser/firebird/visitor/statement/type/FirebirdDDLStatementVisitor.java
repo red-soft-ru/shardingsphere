@@ -40,6 +40,7 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.Modi
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateDomainContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateCollationContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateFunctionContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateProcedureContext;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.AlterDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.CreateDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.column.ColumnDefinitionSegment;
@@ -63,6 +64,7 @@ import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.F
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterSequenceStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateCollationStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateFunctionStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateProcedureStatement;
 import org.apache.shardingsphere.sql.parser.firebird.visitor.statement.FirebirdStatementVisitor;
 
 import java.util.Collections;
@@ -254,5 +256,9 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
     
     public ASTNode visitCreateFunction(final CreateFunctionContext ctx) {
         return new FirebirdCreateFunctionStatement();
+    }
+    @Override
+    public ASTNode visitCreateProcedure(final CreateProcedureContext ctx) {
+        return new FirebirdCreateProcedureStatement();
     }
 }

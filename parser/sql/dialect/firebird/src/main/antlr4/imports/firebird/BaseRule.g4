@@ -477,7 +477,7 @@ overClause
     : OVER LP_ (PARTITION BY expr (COMMA_ expr)*)? orderByClause? RP_
     ;
     
-descriptionArgument
+announcementArgument
     : argumentName typeDescriptionArgument (NOT NULL)? collateClause?
     ;
 

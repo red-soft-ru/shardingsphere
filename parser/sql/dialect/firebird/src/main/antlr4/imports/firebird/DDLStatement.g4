@@ -114,7 +114,7 @@ createFunction
       |
           (SQL SECURITY (DEFINER | INVOKER))?
           AS
-          declarationClause?
+          announcementClause?
           BEGIN
               statementBlock
           END
@@ -131,49 +131,54 @@ statement
     | insert
     | update
     | delete
-    | return
+    | returnStatement
+    | cursorOpenStatement
     ;
 
-declarationClause
-    : declaration (COMMA_ declaration)*
+cursorOpenStatement
+    : OPEN cursorName
     ;
 
-declaration
-    : localVariableDeclaration
-    | cursorDeclaration
-    | procedureDeclaration
-    | functioneDeclaration
+announcementClause
+    : announcement (COMMA_ announcement)*
     ;
 
-localVariableDeclaration
+announcement
+    : localVariableAnnouncement
+    | cursorAnnouncement
+    | procedureAnnouncement
+    | functioneAnnouncement
+    ;
+
+localVariableAnnouncement
     : DECLARE VARIABLE? (
     localVariableDeclarationName typeDescriptionArgument
     (NOT NULL)?
     collateClause?
     ((EQ_ | DEFAULT) defaultValue)?
-    | cursorName CURSOR FOR LP_ select RP_
+    | cursorName CURSOR FOR LP_ select RP_ SEMI_?
     )
     ;
 
-cursorDeclaration
+cursorAnnouncement
     :  DECLARE VARIABLE? cursorName
-    CURSOR FOR (SCROLL | NO SCROLL)? LP_ select RP_
+    CURSOR FOR (SCROLL | NO SCROLL)? LP_ select RP_ SEMI_?
     ;
 
-procedureDeclaration
+procedureAnnouncement
     : PROCEDURE procedureName inputArgumentClause? (RETURNS inputArgumentClause)?
     ;
 
-functioneDeclaration
+functioneAnnouncement
     : FUNCTION functionName inputArgumentClause? RETURNS typeDescriptionArgument collateClause? DETERMINISTIC?
     ;
 
 inputArgument
-    : descriptionArgument ((EQ_ | DEFAULT) defaultValue)?
+    : announcementArgument ((EQ_ | DEFAULT) defaultValue)?
     ;
 
 inputArgumentClause
-    : LP_ inputArgument (COMMA_ inputArgument)* RP_
+    : LP_ (inputArgument (COMMA_ inputArgument)*)? RP_
     ;
 
 createDatabase
@@ -319,6 +324,22 @@ dropConstraintSpecification
     : DROP constraintDefinition
     ;
 
-return
+returnStatement
     : RETURN expr
+    ;
+
+createProcedure
+    : CREATE PROCEDURE procedureName (AUTHID (OWNER | CALLER))?
+        inputArgumentClause?
+        (RETURNS announcementArgument)?
+        (
+            EXTERNAL NAME externalModuleName ENGINE engineName
+        |
+            (SQL SECURITY (DEFINER | INVOKER))?
+            AS
+            announcementClause?
+            BEGIN
+                statementBlock
+            END
+        )
     ;
