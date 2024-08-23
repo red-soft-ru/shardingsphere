@@ -104,6 +104,10 @@ tableName
     : (owner DOT_)? name
     ;
 
+collationName
+    : identifier
+    ;
+
 roleName
     : identifier
     ;
@@ -122,6 +126,10 @@ owner
     ;
 
 name
+    : identifier
+    ;
+
+baseSortName
     : identifier
     ;
 
@@ -342,6 +350,19 @@ ignoredIdentifier
 dropBehaviour
     : (CASCADE | RESTRICT)?
     ;
+
+attributeCollation
+    : SQ_ attributeCollationName EQ_ (STRING_ | NUMBER_) SQ_
+    ;
+
+attributeCollationName
+    : DISABLE_COMPRESSIONS
+    | DISABLE_EXPANSIONS
+    | ICU_VERSION
+    | LOCALE
+    | MULTI_LEVEL
+    | NUMERIC_SORT
+    | SPECIALS_FIRST
 
 defaultValue
     : (literals | NULL | contextVariables)

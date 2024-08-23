@@ -36,6 +36,7 @@ execute
     | rollback
     | grant
     | revoke
+    | createCollation
     | createDomain
     | alterDomain
     | createRole

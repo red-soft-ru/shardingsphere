@@ -23,6 +23,30 @@ createTable
     : CREATE createTemporaryTable? TABLE tableName createDefinitionClause sqlSecurity?
     ;
 
+createCollation
+    : CREATE COLLATION collationName FOR characterSetName fromCollationClause? paddingClause? caseSensitivityClause? accentSensitivityClause? attributeClause?
+    ;
+
+fromCollationClause
+    : FROM baseSortName | FROM EXTERNAL LP_ STRING_ RP_
+    ;
+
+paddingClause
+    : NO PAD | PAD SPACE
+    ;
+
+caseSensitivityClause
+    : CASE SENSITIVE | CASE INSENSITIVE
+    ;
+
+accentSensitivityClause
+    : ACCENT SENSITIVE | ACCENT INSENSITIVE
+    ;
+
+attributeClause
+    : attributeCollation (SEMI_ attributeCollation)*
+    ;
+
 createDomain
     : CREATE DOMAIN domainName AS? dataType defaultClause? notNullClause? checkClause? characterSetClause?
     ;
