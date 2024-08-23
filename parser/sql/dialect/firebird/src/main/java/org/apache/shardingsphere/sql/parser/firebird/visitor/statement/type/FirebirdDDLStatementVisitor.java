@@ -24,6 +24,7 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AddC
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterDefinitionClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterSequenceContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterDomainContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CheckConstraintDefinitionContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ColumnDefinitionContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ConstraintDefinitionContext;
@@ -36,6 +37,8 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.Drop
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.DropConstraintSpecificationContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.DropTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ModifyColumnSpecificationContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateCollationContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateDomainContext;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.AlterDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.CreateDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.column.ColumnDefinitionSegment;
@@ -52,9 +55,12 @@ import org.apache.shardingsphere.sql.parser.sql.common.segment.generic.table.Sim
 import org.apache.shardingsphere.sql.parser.sql.common.value.collection.CollectionValue;
 import org.apache.shardingsphere.sql.parser.sql.common.value.identifier.IdentifierValue;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterTableStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterDomainStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdDropTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterSequenceStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateCollationStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateDomainStatement;
 import org.apache.shardingsphere.sql.parser.firebird.visitor.statement.FirebirdStatementVisitor;
 
 import java.util.Collections;
@@ -172,6 +178,11 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
         }
         return result;
     }
+
+    @Override
+    public ASTNode visitAlterDomain(final AlterDomainContext ctx) {
+        return new FirebirdAlterDomainStatement();
+    }
     
     @SuppressWarnings("unchecked")
     @Override
@@ -217,10 +228,21 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
         result.getTables().addAll(((CollectionValue<SimpleTableSegment>) visit(ctx.tableNames())).getValue());
         return result;
     }
+
     @Override
     public ASTNode visitAlterSequence(final AlterSequenceContext ctx) {
         FirebirdAlterSequenceStatement result = new FirebirdAlterSequenceStatement();
         result.setSequenceName(((SimpleTableSegment) visit(ctx.tableName())).getTableName().getIdentifier().getValue());
         return result;
+    }
+
+    @Override
+    public ASTNode visitCreateCollation(final CreateCollationContext ctx) {
+        return new FirebirdCreateCollationStatement();
+    }
+
+    @Override
+    public ASTNode visitCreateDomain(final CreateDomainContext ctx) {
+        return new FirebirdCreateDomainStatement();
     }
 }

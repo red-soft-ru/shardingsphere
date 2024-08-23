@@ -37,5 +37,10 @@ execute
     | grant
     | revoke
     | alterSequence
+    | createCollation
+    | createDomain
+    | alterDomain
+    | createRole
+    | savepoint
     ) SEMI_?
     ;
