@@ -23,6 +23,7 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AddC
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AddConstraintSpecificationContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterDefinitionClauseContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterTableContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterSequenceContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterDomainContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CheckConstraintDefinitionContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ColumnDefinitionContext;
@@ -57,6 +58,7 @@ import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.F
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterDomainStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdDropTableStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterSequenceStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateCollationStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateDomainStatement;
 import org.apache.shardingsphere.sql.parser.firebird.visitor.statement.FirebirdStatementVisitor;
@@ -228,8 +230,16 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
     }
 
     @Override
+    public ASTNode visitAlterSequence(final AlterSequenceContext ctx) {
+        FirebirdAlterSequenceStatement result = new FirebirdAlterSequenceStatement();
+        result.setSequenceName(((SimpleTableSegment) visit(ctx.tableName())).getTableName().getIdentifier().getValue());
+        return result;
+    }
+
+    @Override
     public ASTNode visitCreateCollation(final CreateCollationContext ctx) {
         return new FirebirdCreateCollationStatement();
+    }
 
     @Override
     public ASTNode visitCreateDomain(final CreateDomainContext ctx) {

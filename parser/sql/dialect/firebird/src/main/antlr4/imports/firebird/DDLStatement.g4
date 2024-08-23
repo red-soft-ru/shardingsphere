@@ -71,6 +71,10 @@ alterTable
     : ALTER TABLE tableName alterDefinitionClause
     ;
 
+alterSequence
+    : ALTER SEQUENCE tableName sequenceRestartClause? sequenceIncrementClause?
+    ;
+
 alterDomain
     : ALTER DOMAIN domainName toTableClause? defaultClause? notNullAlterDomainClause? constraintClause? typeClause?
     ;
@@ -127,6 +131,14 @@ sqlSecurity
 
 createDefinitionClause
     : LP_ createDefinition (COMMA_ createDefinition)* RP_
+    ;
+
+sequenceRestartClause
+    : RESTART (WITH bitExpr)?
+    ;
+
+sequenceIncrementClause
+    : INCREMENT BY? NUMBER_
     ;
 
 createDatabaseSpecification_

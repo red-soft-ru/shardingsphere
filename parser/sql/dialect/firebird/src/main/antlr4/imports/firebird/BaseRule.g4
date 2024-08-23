@@ -363,6 +363,7 @@ attributeCollationName
     | MULTI_LEVEL
     | NUMERIC_SORT
     | SPECIALS_FIRST
+    ;
 
 defaultValue
     : (literals | NULL | contextVariables)

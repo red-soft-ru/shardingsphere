@@ -711,6 +711,18 @@ ROW
     : R O W
     ;
 
+SEQUENCE
+    : S E Q U E N C E
+    ;
+
+RESTART
+    : R E S T A R T
+    ;
+
+INCREMENT
+    : I N C R E M E N T
+    ;
+
 SENSITIVE
     : S E N S I T I V E
     ;
