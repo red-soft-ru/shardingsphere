@@ -747,6 +747,10 @@ LOCALE
     : L O C A L E
     ;
 
+STARTING
+    : S T A R T I N G
+    ;
+
 //PASSWORD
 //    : P A S S W O R D
 //    ;
@@ -767,6 +771,6 @@ LOCALE
 //    : A D M I N
 //    ;
 //
-//ROLE
-//    : R O L E
-//    ;
+ROLE
+    : R O L E
+    ;

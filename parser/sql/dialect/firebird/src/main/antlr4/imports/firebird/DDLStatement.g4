@@ -47,8 +47,52 @@ attributeClause
     : attributeCollation (SEMI_ attributeCollation)*
     ;
 
+createDomain
+    : CREATE DOMAIN domainName AS? dataType defaultClause? notNullClause? checkClause? characterSetClause?
+    ;
+
+defaultClause
+    : DEFAULT defaultValue?
+    ;
+
+notNullClause
+    : NOT NULL
+    ;
+
+checkClause
+    : CHECK LP_ predicate RP_
+    ;
+
+characterSetClause
+    : CHARACTER SET characterSetName collateClause?
+    ;
+
 alterTable
     : ALTER TABLE tableName alterDefinitionClause
+    ;
+
+alterDomain
+    : ALTER DOMAIN domainName toTableClause? defaultClause? notNullAlterDomainClause? constraintClause? typeClause?
+    ;
+
+toTableClause
+    : TO tableName
+    ;
+
+defaultClause
+    : (SET DEFAULT defaultValue | DROP DEFAULT)
+    ;
+
+notNullAlterDomainClause
+    : (SET | DROP) NOT NULL
+    ;
+
+constraintClause
+    : (ADD CONSTRAINT? CHECK LP_ predicate RP_ | DROP CONSTRAINT)
+    ;
+
+typeClause
+    : TYPE dataType (CHARACTER SET literals (COLLATE sortOrder)?)?
     ;
 
 dropTable
