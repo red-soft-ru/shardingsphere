@@ -168,11 +168,15 @@ fetchClause
     ;
 
 limitRowCount
-    : numberLiterals | parameterMarker
+    : numberLiterals | parameterMarker | namedParameter
     ;
 
 limitOffset
-    : numberLiterals | parameterMarker
+    : numberLiterals | parameterMarker | namedParameter
+    ;
+
+namedParameter
+    : COLON_ identifier
     ;
 
 subquery

@@ -36,6 +36,7 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.Drop
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.DropTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ModifyColumnSpecificationContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateFunctionContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateProcedureContext;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.AlterDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.CreateDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.column.ColumnDefinitionSegment;
@@ -55,6 +56,7 @@ import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.F
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdDropTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateFunctionStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateProcedureStatement;
 import org.apache.shardingsphere.sql.parser.firebird.visitor.statement.FirebirdStatementVisitor;
 
 import java.util.Collections;
@@ -221,5 +223,9 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
     @Override
     public ASTNode visitCreateFunction(final CreateFunctionContext ctx) {
         return new FirebirdCreateFunctionStatement();
+    }
+    @Override
+    public ASTNode visitCreateProcedure(final CreateProcedureContext ctx) {
+        return new FirebirdCreateProcedureStatement();
     }
 }

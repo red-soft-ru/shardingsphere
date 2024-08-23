@@ -382,7 +382,7 @@ contextVariables
     | TODAY | TOMORROW | USER | YESTERDAY
     ;
 
-descriptionArgument
+announcementArgument
     : argumentName typeDescriptionArgument (NOT NULL)? collateClause?
     ;
 

@@ -735,6 +735,18 @@ RETURN
     : R E T U R N
     ;
 
+AUTHID
+    : A U T H I D
+    ;
+
+OWNER
+    : O W N E R
+    ;
+
+CALLER
+    : C A L L E R
+    ;
+
 
 //PASSWORD
 //    : P A S S W O R D
