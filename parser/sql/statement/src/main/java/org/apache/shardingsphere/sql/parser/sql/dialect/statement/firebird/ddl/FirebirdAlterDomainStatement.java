@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dcl;
+package org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl;
 
-import org.apache.shardingsphere.sql.parser.sql.common.statement.dcl.CreateRoleStatement;
+import org.apache.shardingsphere.sql.parser.sql.common.statement.ddl.AlterDomainStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.FirebirdStatement;
 
 /**
- * Firebird create role statement.
+ * SQL92 alter table statement.
  */
-public final class FirebirdCreateRoleStatement extends CreateRoleStatement implements FirebirdStatement {
+public final class FirebirdAlterDomainStatement extends AlterDomainStatement implements FirebirdStatement {
 }

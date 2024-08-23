@@ -37,5 +37,8 @@ execute
     | grant
     | revoke
     | createDomain
+    | alterDomain
+    | createRole
+    | savepoint
     ) SEMI_?
     ;

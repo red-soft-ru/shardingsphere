@@ -47,6 +47,30 @@ alterTable
     : ALTER TABLE tableName alterDefinitionClause
     ;
 
+alterDomain
+    : ALTER DOMAIN domainName toTableClause? defaultClause? notNullAlterDomainClause? constraintClause? typeClause?
+    ;
+
+toTableClause
+    : TO tableName
+    ;
+
+defaultClause
+    : (SET DEFAULT defaultValue | DROP DEFAULT)
+    ;
+
+notNullAlterDomainClause
+    : (SET | DROP) NOT NULL
+    ;
+
+constraintClause
+    : (ADD CONSTRAINT? CHECK LP_ predicate RP_ | DROP CONSTRAINT)
+    ;
+
+typeClause
+    : TYPE dataType (CHARACTER SET literals (COLLATE sortOrder)?)?
+    ;
+
 dropTable
     : DROP TABLE tableNames dropBehaviour
     ;
