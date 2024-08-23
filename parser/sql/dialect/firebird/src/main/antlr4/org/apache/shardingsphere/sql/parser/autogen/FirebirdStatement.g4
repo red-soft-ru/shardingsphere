@@ -38,5 +38,6 @@ execute
     | revoke
     | createFunction
     | createProcedure
+    | executeBlock
     ) SEMI_?
     ;

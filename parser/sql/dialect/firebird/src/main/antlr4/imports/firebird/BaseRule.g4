@@ -204,6 +204,8 @@ predicate
     | bitExpr NOT? IN LP_ expr (COMMA_ expr)* RP_
     | bitExpr NOT? BETWEEN bitExpr AND predicate
     | bitExpr NOT? LIKE simpleExpr (ESCAPE simpleExpr)?
+    | bitExpr IS NOT? NULL
+    | bitExpr IS NOT? DISTINCT FROM bitExpr
     | bitExpr
     ;
 
@@ -391,7 +393,6 @@ typeDescriptionArgument
     | (TYPE OF)? domainName
     | TYPE OF COLUMN (tableName | viewName) DOT_ columnName
     ;
-
 
 externalModule
     : EQ_ externalModuleName NOT_ functionName (NOT_ information)? EQ_

@@ -250,3 +250,32 @@ createProcedure
             END
         )
     ;
+
+executeBlock
+    :
+    EXECUTE BLOCK
+        inputArgumentListClause?
+        (RETURNS outputArgumentListClause)?
+    AS
+        localVariableAnnouncementClause?
+    BEGIN
+        statementBlock
+    END SEMI_
+    ;
+
+inputArgumentList
+    : announcementArgument EQ_ QUESTION_
+    ;
+
+inputArgumentListClause
+    : LP_ inputArgumentList (COMMA_ inputArgumentList)* RP_
+    ;
+
+outputArgumentListClause
+    : inputArgumentClause
+    ;
+
+localVariableAnnouncementClause
+    : localVariableAnnouncement (COMMA_ localVariableAnnouncement)*
+    ;
+
