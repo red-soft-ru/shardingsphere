@@ -92,6 +92,10 @@ schemaName
     : identifier
     ;
 
+domainName
+    : identifier
+    ;
+
 savepointName
     : identifier
     ;
@@ -336,4 +340,63 @@ ignoredIdentifier
 
 dropBehaviour
     : (CASCADE | RESTRICT)?
+    ;
+
+defaultValue
+    : (literals | NULL | contextVariables )
+    ;
+
+contextVariables
+    : CURRENT_CONNECTION | CURRENT_DATE | CURRENT_ROLE
+    | CURRENT_TIME | CURRENT_TIMESTAMP
+    | CURRENT_TRANSACTION | CURRENT_USER
+    | INSERTING | UPDATING | DELETING
+    | NEW | NOW | OLD | ROW_COUNT
+    | SQLCODE | GDSCODE | SQLSTATE
+    | TODAY | TOMORROW | USER | YESTERDAY
+    ;
+
+sortOrder
+    : DOS850 | DB_DEU850 | DB_ESP850 | DB_FRA850 | DB_FRC850 | DB_ITA850 | DB_NLD850 | DB_PTB850 | DB_SVE850 | DB_UK850 | DB_US850
+    | DOS852 | DB_CSY | DB_PLK | DB_SLO | PDOX_CSY | PDOX_HUN | PDOX_PLK | PDOX_SLO
+    | DOS857 | DB_TRK
+    | DOS858
+    | DOS860 | DB_PTG860
+    | DOS861 | PDOX_IS
+    | DOS862
+    | DOS863 | DB_FRC863
+    | DOS864
+    | DOS865 | DB_DAN865 | DB_NOR865 | PDOX_NORDAN4
+    | DOS866
+    | DOS869
+    | EUCJ_0208
+    | GB_2312
+    | ISO8859_1 | DA_DA | DE_DE | DU_NL | EN_UK | EN_US | ES_ES | ES_ES_CI_AI | FI_FI | FR_CA | FR_FR | IS_IS | IT_IT | NO_NO | PT_PT | PT_BR | SV_SV
+    | ISO8859_2 | CS_CZ | ISO_HUN | ISO_PLK
+    | ISO8859_3
+    | ISO8859_4
+    | ISO8859_5
+    | ISO8859_6
+    | ISO8859_7
+    | ISO8859_8
+    | ISO8859_9
+    | ISO8859_13 | LT_LT
+    | KOI8R | KOI8R_RU
+    | KOI8U | KOI8R_UA
+    | KSC_5601 | KSC_DIC_TIONAR
+    | NEXT | NXT_DEU | NXT_ESP | NXT_FRA | NXT_ITA | NXT_US
+    | NONE
+    | OCTETS
+    | SJIS_0208
+    | UNICODE_FSS
+    | UTF8 | USC_BASIC | UNICODE
+    | WIN1250 | BS_BA | PXW_CSY | PXW_HUN | PXW_HUNDC | PXW_PLK | PXW_SLOV | WIN_CZ | WIN_CZ_CI_AI
+    | WIN1251 | WIN1251_UA | PXW_CYRL
+    | WIN1252 | PXW_INTL | PXW_INTL850 | PXW_NORDAN4 | PXW_SPAN | PXW_SWEDFIN | WIN_PTBR
+    | WIN1253 | PXW_GREEK
+    | WIN1254 | PXW_TURK
+    | WIN1255
+    | WIN1256
+    | WIN1257 | WIN1257_EE | WIN1257_LT | WIN1257_LV
+    | WIN1258
     ;
