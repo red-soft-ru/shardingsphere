@@ -751,6 +751,73 @@ OVER
     : O V E R
     ;
 
+GENERATED
+    : G E N E R A T E D
+    ;
+
+ALWAYS
+    : A L W A Y S
+    ;
+
+COMPUTED
+    : C O M P U T E D
+    ;
+
+RESTART
+    : R E S T A R T
+    ;
+
+SEQUENCE
+    : S E Q U E N C E
+    ;
+
+RESTART
+    : R E S T A R T
+    ;
+
+INCREMENT
+    : I N C R E M E N T
+    ;
+
+SENSITIVE
+    : S E N S I T I V E
+    ;
+
+ACCENT
+    : A C C E N T
+    ;
+
+DISABLE_COMPRESSIONS
+    : D I S A B L E HYPHEN C O M P R E S S I O N S
+    ;
+
+DISABLE_EXPANSIONS
+    : D I S A B L E HYPHEN E X P A N S I O N S
+    ;
+
+ICU_VERSION
+    : I C U HYPHEN V E R S I O N
+    ;
+
+MULTI_LEVEL
+    : M U L T I HYPHEN L E V E L
+    ;
+
+NUMERIC_SORT
+    : N U M E R I C HYPHEN S O R T
+    ;
+
+SPECIALS_FIRST
+    : S P E C I A L S HYPHEN F I R S T
+    ;
+
+LOCALE
+    : L O C A L E
+    ;
+
+STARTING
+    : S T A R T I N G
+    ;
 
 //PASSWORD
 //    : P A S S W O R D
@@ -772,6 +839,6 @@ OVER
 //    : A D M I N
 //    ;
 //
-//ROLE
-//    : R O L E
-//    ;
+ROLE
+    : R O L E
+    ;

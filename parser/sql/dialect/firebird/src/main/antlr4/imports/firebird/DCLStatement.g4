@@ -61,6 +61,10 @@ privilegeLevel
     : tableName
     ;
 
+createRole
+    : CREATE ROLE roleName
+    ;
+
 //createUser
 //    : CREATE USER identifier password (userOptions)?
 //    ;
