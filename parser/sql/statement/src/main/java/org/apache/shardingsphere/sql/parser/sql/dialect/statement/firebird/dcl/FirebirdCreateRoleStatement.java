@@ -18,10 +18,10 @@
 package org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dcl;
 
 import org.apache.shardingsphere.sql.parser.sql.common.statement.dcl.CreateRoleStatement;
-import org.apache.shardingsphere.sql.parser.sql.dialect.statement.mysql.MySQLStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.FirebirdStatement;
 
 /**
- * MySQL create role statement.
+ * Firebird create role statement.
  */
-public final class FirebirdCreateRoleStatement extends CreateRoleStatement implements MySQLStatement {
+public final class FirebirdCreateRoleStatement extends CreateRoleStatement implements FirebirdStatement {
 }

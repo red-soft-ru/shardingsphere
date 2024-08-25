@@ -34,3 +34,7 @@ rollback
 levelOfIsolation
     : READ UNCOMMITTED | READ COMMITTED | REPEATABLE READ| SERIALIZABLE
     ;
+
+savepoint
+    : SAVEPOINT savepointName
+    ;
