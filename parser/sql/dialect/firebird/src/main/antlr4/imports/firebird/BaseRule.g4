@@ -121,7 +121,15 @@ viewName
     | (owner DOT_)? identifier
     ;
 
+functionName
+    : identifier
+    ;
+
 domainName
+    : identifier
+    ;
+
+argumentName
     : identifier
     ;
 
@@ -129,7 +137,15 @@ owner
     : identifier
     ;
 
-name
+engineName
+    : identifier
+    ;
+
+information
+    : identifier
+    ;
+
+localVariableDeclarationName
     : identifier
     ;
 
@@ -138,6 +154,22 @@ baseSortName
     ;
 
 constraintName
+    : identifier
+    ;
+
+externalModuleName
+    : identifier
+    ;
+
+cursorName
+    : identifier
+    ;
+
+procedureName
+    : identifier
+    ;
+
+name
     : identifier
     ;
 
@@ -396,6 +428,21 @@ contextVariables
     | NEW | NOW | OLD | ROW_COUNT
     | SQLCODE | GDSCODE | SQLSTATE
     | TODAY | TOMORROW | USER | YESTERDAY
+    ;
+
+announcementArgument
+    : argumentName typeDescriptionArgument (NOT NULL)? collateClause?
+    ;
+
+typeDescriptionArgument
+    : dataType
+    | (TYPE OF)? domainName
+    | TYPE OF COLUMN (tableName | viewName) DOT_ columnName
+    ;
+
+
+externalModule
+    : EQ_ externalModuleName NOT_ functionName (NOT_ information)? EQ_
     ;
 
 sortOrder

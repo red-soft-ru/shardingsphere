@@ -711,6 +711,42 @@ ROW
     : R O W
     ;
 
+RETURNS
+    : R E T U R N S
+    ;
+
+DETERMINISTIC
+    : D E T E R M I N I S T I C
+    ;
+
+ENGINE
+    : E N G I N E
+    ;
+
+SECIRITY
+    : S E C I R I T Y
+    ;
+
+VARIABLE
+    : V A R I A B L E
+    ;
+
+RETURN
+    : R E T U R N
+    ;
+
+AUTHID
+    : A U T H I D
+    ;
+
+OWNER
+    : O W N E R
+    ;
+
+CALLER
+    : C A L L E R
+    ;
+
 ROW_NUMBER
     : R O W UL_ N U M B E R
     ;

@@ -103,6 +103,84 @@ dropTable
     : DROP TABLE tableNames dropBehaviour
     ;
 
+createFunction
+    : CREATE FUNCTION functionName
+      inputArgumentClause?
+      RETURNS typeDescriptionArgument
+      collateClause?
+      DETERMINISTIC?
+      (
+          EXTERNAL NAME externalModuleName ENGINE engineName
+      |
+          (SQL SECURITY (DEFINER | INVOKER))?
+          AS
+          announcementClause?
+          BEGIN
+              statementBlock
+          END
+      )
+    ;
+
+
+statementBlock
+    : (statement SEMI_)*
+    ;
+
+statement
+    : select
+    | insert
+    | update
+    | delete
+    | returnStatement
+    | cursorOpenStatement
+    ;
+
+cursorOpenStatement
+    : OPEN cursorName
+    ;
+
+announcementClause
+    : announcement (COMMA_ announcement)*
+    ;
+
+announcement
+    : localVariableAnnouncement
+    | cursorAnnouncement
+    | procedureAnnouncement
+    | functioneAnnouncement
+    ;
+
+localVariableAnnouncement
+    : DECLARE VARIABLE? (
+    localVariableDeclarationName typeDescriptionArgument
+    (NOT NULL)?
+    collateClause?
+    ((EQ_ | DEFAULT) defaultValue)?
+    | cursorName CURSOR FOR LP_ select RP_ SEMI_?
+    )
+    ;
+
+cursorAnnouncement
+    :  DECLARE VARIABLE? cursorName
+    CURSOR FOR (SCROLL | NO SCROLL)? LP_ select RP_ SEMI_?
+    ;
+
+procedureAnnouncement
+    : PROCEDURE procedureName inputArgumentClause? (RETURNS inputArgumentClause)?
+    ;
+
+functioneAnnouncement
+    : FUNCTION functionName inputArgumentClause? RETURNS typeDescriptionArgument collateClause? DETERMINISTIC?
+    ;
+
+inputArgument
+    : announcementArgument ((EQ_ | DEFAULT) defaultValue)?
+    ;
+
+inputArgumentClause
+    : LP_ (inputArgument (COMMA_ inputArgument)*)? RP_
+    ;
+
 createDatabase
     : CREATE SCHEMA schemaName createDatabaseSpecification_*
     ;
@@ -244,4 +322,24 @@ addConstraintSpecification
 
 dropConstraintSpecification
     : DROP constraintDefinition
+    ;
+
+returnStatement
+    : RETURN expr
+    ;
+
+createProcedure
+    : CREATE PROCEDURE procedureName (AUTHID (OWNER | CALLER))?
+        inputArgumentClause?
+        (RETURNS announcementArgument)?
+        (
+            EXTERNAL NAME externalModuleName ENGINE engineName
+        |
+            (SQL SECURITY (DEFINER | INVOKER))?
+            AS
+            announcementClause?
+            BEGIN
+                statementBlock
+            END
+        )
     ;
