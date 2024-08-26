@@ -851,6 +851,14 @@ CALLER
     ;
 
 
+BLOCK
+    : B L O C K
+    ;
+
+SUSPEND
+    : S U S P E N D
+    ;
+
 //PASSWORD
 //    : P A S S W O R D
 //    ;
