@@ -71,6 +71,7 @@ unreservedWord
     | C92 | CATALOG_NAME | CHARACTER_SET_CATALOG | CHARACTER_SET_NAME | CHARACTER_SET_SCHEMA
     | CLASS_ORIGIN | COBOL | COLLATION_CATALOG | COLLATION_NAME | COLLATION_SCHEMA
     | COLUMN_NAME | COMMAND_FUNCTION | COMMITTED | CONDITION_NUMBER | CONNECTION_NAME
+    | COLUMN_NAME | COMMAND_FUNCTION | COMMITTED | CONDITION_NUMBER | CONNECTION_NAME
     | CONSTRAINT_CATALOG | CONSTRAINT_NAME | CONSTRAINT_SCHEMA | CURSOR_NAME
     | DATA | DATETIME_INTERVAL_CODE | DATETIME_INTERVAL_PRECISION | DYNAMIC_FUNCTION
     | FORTRAN
@@ -97,6 +98,10 @@ domainName
     ;
 
 savepointName
+    : identifier
+    ;
+
+variableName
     : identifier
     ;
 
@@ -196,7 +201,7 @@ expr
 andOperator
     : AND | AND_
     ;
-    
+
 orOperator
     : OR | CONCAT_
     ;
@@ -223,6 +228,8 @@ predicate
     | bitExpr NOT? BETWEEN bitExpr AND predicate
     | bitExpr NOT? LIKE simpleExpr (ESCAPE simpleExpr)?
     | bitExpr NOT? STARTING WITH? bitExpr
+    | bitExpr IS NOT? DISTINCT FROM bitExpr
+    | bitExpr IS NOT? NULL
     | bitExpr
     ;
 
@@ -432,6 +439,10 @@ contextVariables
 
 announcementArgument
     : argumentName typeDescriptionArgument (NOT NULL)? collateClause?
+    ;
+
+announcementArgumentClause
+    : announcementArgument (COMMA_ announcementArgument)*
     ;
 
 typeDescriptionArgument
