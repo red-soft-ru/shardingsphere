@@ -75,15 +75,19 @@ alterSequence
     : ALTER SEQUENCE tableName sequenceRestartClause? sequenceIncrementClause?
     ;
 
+createSequence
+    : CREATE (GENERATOR | SEQUENCE) tableName sequenceRestartClause? sequenceIncrementClause?
+    ;
+
 alterDomain
-    : ALTER DOMAIN domainName toTableClause? defaultClause? notNullAlterDomainClause? constraintClause? typeClause?
+    : ALTER DOMAIN domainName toTableClause? defaultAlterDomainClause? notNullAlterDomainClause? constraintClause? typeClause?
     ;
 
 toTableClause
     : TO tableName
     ;
 
-defaultClause
+defaultAlterDomainClause
     : (SET DEFAULT defaultValue | DROP DEFAULT)
     ;
 

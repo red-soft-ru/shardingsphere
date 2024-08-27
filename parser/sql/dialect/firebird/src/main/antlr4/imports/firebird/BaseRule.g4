@@ -92,10 +92,6 @@ schemaName
     : identifier
     ;
 
-domainName
-    : identifier
-    ;
-
 savepointName
     : identifier
     ;
