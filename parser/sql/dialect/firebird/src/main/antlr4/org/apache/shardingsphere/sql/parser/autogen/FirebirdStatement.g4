@@ -45,5 +45,6 @@ execute
     | createProcedure
     | savepoint
     | executeBlock
+    | createOrAlterTrigger
     ) SEMI_?
     ;

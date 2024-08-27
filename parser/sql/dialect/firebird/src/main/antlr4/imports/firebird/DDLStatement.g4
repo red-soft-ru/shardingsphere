@@ -134,10 +134,15 @@ statement
     | returnStatement
     | cursorOpenStatement
     | ifStatement
+    | cursorCloseStatement
     ;
 
 cursorOpenStatement
     : OPEN cursorName
+    ;
+
+cursorCloseStatement
+    : CLOSE cursorName
     ;
 
 announcementClause
@@ -386,4 +391,89 @@ transferOperator
 
 assignmentStatement
     : variableName EQ_ simpleExpr
+    ;
+createOrAlterTrigger
+    : CREATE OR ALTER TRIGGER triggerName
+    (
+    announcmentTableTrigger |
+    announcmentTableTriggerSQL_2003Standart |
+    announcmentDataBaseTrigger |
+    announcmentDDLTrigger
+    )
+    (
+          EXTERNAL NAME externalModuleName ENGINE engineName
+      |
+          (SQL SECURITY (DEFINER | INVOKER))?
+          AS
+          announcementClause?
+          BEGIN
+              statementBlock
+          END
+    )
+    ;
+
+announcmentTableTrigger
+    : FOR (tableName | viewName)
+    (ACTIVE | INACTIVE)?
+    (BEFORE | AFTER) eventListTable
+    (POSITION expr)?
+    ;
+
+eventListTable
+    : dmlStatement (OR dmlStatement)*
+    ;
+
+listDDLStatement
+    : ANY DDL STATEMENT
+    | ddlStatement (OR ddlStatement)*
+    ;
+
+dmlStatement
+    : INSERT | UPDATE | DELETE
+    ;
+
+ddlStatement
+    : (CREATE | ALTER | DROP) TABLE
+    | (CREATE | ALTER | DROP) PROCEDURE
+    | (CREATE | ALTER | DROP) FUNCTION
+    | (CREATE | ALTER | DROP) TRIGGER
+    | (CREATE | ALTER | DROP) EXCEPTION
+    | (CREATE | ALTER | DROP) VIEW
+    | (CREATE | ALTER | DROP) DOMAIN
+    | (CREATE | ALTER | DROP) ROLE
+    | (CREATE | ALTER | DROP) SEQUENCE
+    | (CREATE | ALTER | DROP) USER
+    | (CREATE|ALTER|DROP) INDEX
+    | (CREATE | DROP) COLLATION
+    | ALTER CHARACTER SET
+    | (CREATE | ALTER | DROP) PACKAGE
+    | (CREATE | DROP) PACKAGE BODY
+    | (CREATE | ALTER | DROP) MAPPING
+    ;
+
+announcmentTableTriggerSQL_2003Standart
+    : (ACTIVE | INACTIVE)?
+      (BEFORE | AFTER) eventListTable
+      (POSITION expr)?
+      ON (tableName | viewName)
+    ;
+
+announcmentDataBaseTrigger
+    : (ACTIVE | INACTIVE)?
+      ON eventConnectOrTransaction
+      (POSITION expr)?
+    ;
+
+eventConnectOrTransaction
+    : CONNECT
+    | DISCONNECT
+    | TRANSACTION START
+    | TRANSACTION COMMIT
+    | TRANSACTION ROLLBACK
+    ;
+
+announcmentDDLTrigger
+    : (ACTIVE | INACTIVE)?
+      (BEFORE | AFTER) listDDLStatement
+      (POSITION expr)?
     ;
