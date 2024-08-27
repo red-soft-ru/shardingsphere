@@ -125,7 +125,7 @@ functionName
     : identifier
     ;
 
-domainName
+triggerName
     : identifier
     ;
 

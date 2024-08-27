@@ -855,6 +855,22 @@ STARTING
     : S T A R T I N G
     ;
 
+ACTIVE
+    : A C T I V E
+    ;
+
+INACTIVE
+    : I N A C T I V E
+    ;
+
+BEFORE
+    : B E F O R E
+    ;
+
+AFTER
+    : A F T E R
+    ;
+
 //PASSWORD
 //    : P A S S W O R D
 //    ;
