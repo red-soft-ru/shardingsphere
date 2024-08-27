@@ -92,7 +92,8 @@ schemaName
     : identifier
     ;
 
-domainName
+
+generatorName
     : identifier
     ;
 
