@@ -292,41 +292,11 @@ subquery
     ;
 
 orderByClause
-    : ORDER BY orderByItem (COMMA_ orderByItem)* limitClause?
+    : ORDER BY orderByItem (COMMA_ orderByItem)*
     ;
 
 orderByItem
     : (columnName | numberLiterals) (ASC | DESC)?
-    ;
-
-limitClause
-    : rowsClause | offsetDefinition
-    ;
-
-rowsClause
-    : ROWS expr (TO expr)?
-    ;
-
-offsetDefinition
-    : offsetClause
-    | fetchClause
-    | (offsetClause fetchClause)
-    ;
-
-offsetClause
-    : OFFSET limitOffset (ROW | ROWS)
-    ;
-
-fetchClause
-    : FETCH (FIRST | NEXT) limitRowCount (ROW | ROWS) ONLY
-    ;
-
-limitRowCount
-    : numberLiterals | parameterMarker
-    ;
-
-limitOffset
-    : numberLiterals | parameterMarker
     ;
 
 dataType

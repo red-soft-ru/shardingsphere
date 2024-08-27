@@ -73,7 +73,7 @@ combineClause
     ;
 
 selectClause
-    : SELECT selectSpecification* projections fromClause? whereClause? groupByClause? havingClause? orderByClause?
+    : SELECT selectSpecification* projections fromClause? whereClause? groupByClause? havingClause? orderByClause? limitClause?
     ;
 
 selectSpecification
@@ -144,6 +144,34 @@ groupByClause
 
 havingClause
     : HAVING expr
+    ;
+
+limitClause
+    : rowsClause | offsetDefinition
+    ;
+
+rowsClause
+    : ROWS expr (TO expr)?
+    ;
+
+offsetDefinition
+    : offsetClause? fetchClause?
+    ;
+
+offsetClause
+    : OFFSET limitOffset (ROW | ROWS)
+    ;
+
+fetchClause
+    : FETCH (FIRST | NEXT) limitRowCount (ROW | ROWS) ONLY
+    ;
+
+limitRowCount
+    : numberLiterals | parameterMarker
+    ;
+    
+limitOffset
+    : numberLiterals | parameterMarker
     ;
 
 subquery
