@@ -92,6 +92,10 @@ schemaName
     : identifier
     ;
 
+variableName
+    : identifier
+    ;
+
 domainName
     : identifier
     ;
@@ -125,10 +129,6 @@ functionName
     : identifier
     ;
 
-domainName
-    : identifier
-    ;
-
 argumentName
     : identifier
     ;
@@ -158,7 +158,7 @@ constraintName
     ;
 
 externalModuleName
-    : identifier
+    : STRING_
     ;
 
 cursorName
@@ -196,7 +196,7 @@ expr
 andOperator
     : AND | AND_
     ;
-    
+
 orOperator
     : OR | CONCAT_
     ;

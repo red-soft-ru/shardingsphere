@@ -76,14 +76,14 @@ alterSequence
     ;
 
 alterDomain
-    : ALTER DOMAIN domainName toTableClause? defaultClause? notNullAlterDomainClause? constraintClause? typeClause?
+    : ALTER DOMAIN domainName toTableClause? defaultAlterDomainClause? notNullAlterDomainClause? constraintClause? typeClause?
     ;
 
 toTableClause
     : TO tableName
     ;
 
-defaultClause
+defaultAlterDomainClause
     : (SET DEFAULT defaultValue | DROP DEFAULT)
     ;
 
@@ -133,6 +133,8 @@ statement
     | delete
     | returnStatement
     | cursorOpenStatement
+    | assignmentStatement
+    | transferStatement
     ;
 
 cursorOpenStatement
@@ -342,4 +344,37 @@ createProcedure
                 statementBlock
             END
         )
+    ;
+
+createOrAlterProcedure
+    : CREATE OR ALTER PROCEDURE procedureName
+      (AUTHID (OWNER | CALLER))?
+        inputArgumentClause?
+      (RETURNS LP_ outputArgumentClause RP_)?
+      (
+          EXTERNAL NAME externalModuleName ENGINE engineName
+      |
+          (SQL SECURITY (DEFINER | INVOKER))?
+          AS
+          announcementClause?
+          BEGIN
+              statementBlock
+          END
+      )
+    ;
+
+outputArgumentClause
+    : outputArgument (COMMA_ outputArgument)*
+    ;
+
+outputArgument
+    : announcementArgument
+    ;
+
+assignmentStatement
+    : variableName EQ_ expr
+    ;
+    
+transferStatement
+    : SUSPEND
     ;

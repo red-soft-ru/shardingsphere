@@ -44,5 +44,6 @@ execute
     | alterDomain
     | createRole
     | savepoint
+    | createOrAlterProcedure
     ) SEMI_?
     ;
