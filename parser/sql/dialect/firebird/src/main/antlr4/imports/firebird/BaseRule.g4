@@ -92,11 +92,6 @@ schemaName
     : identifier
     ;
 
-
-generatorName
-    : identifier
-    ;
-
 savepointName
     : identifier
     ;
