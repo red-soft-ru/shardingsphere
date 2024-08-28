@@ -25,6 +25,7 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.Alte
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterSequenceContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterDomainContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterTriggerContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CheckConstraintDefinitionContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ColumnDefinitionContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ConstraintDefinitionContext;
@@ -41,6 +42,7 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.Crea
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateProcedureContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateCollationContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateDomainContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateTriggerContext;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.AlterDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.CreateDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.column.ColumnDefinitionSegment;
@@ -58,13 +60,15 @@ import org.apache.shardingsphere.sql.parser.sql.common.value.collection.Collecti
 import org.apache.shardingsphere.sql.parser.sql.common.value.identifier.IdentifierValue;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterDomainStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterTriggerStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterSequenceStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateTableStatement;
-import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdDropTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateFunctionStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateProcedureStatement;
-import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterSequenceStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateCollationStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateDomainStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateTriggerStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdDropTableStatement;
 import org.apache.shardingsphere.sql.parser.firebird.visitor.statement.FirebirdStatementVisitor;
 
 import java.util.Collections;
@@ -262,5 +266,15 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
     @Override
     public ASTNode visitCreateDomain(final CreateDomainContext ctx) {
         return new FirebirdCreateDomainStatement();
+    }
+
+    @Override
+    public ASTNode visitAlterTrigger(final AlterTriggerContext ctx) {
+        return new FirebirdAlterTriggerStatement();
+    }
+
+    @Override
+    public ASTNode visitCreateTrigger(final CreateTriggerContext ctx) {
+        return new FirebirdCreateTriggerStatement();
     }
 }

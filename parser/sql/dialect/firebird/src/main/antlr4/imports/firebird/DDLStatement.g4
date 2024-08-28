@@ -121,7 +121,6 @@ createFunction
       )
     ;
 
-
 statementBlock
     : (statement SEMI_)*
     ;
@@ -349,24 +348,39 @@ createProcedure
         )
     ;
 
+createTrigger
+    : CREATE TRIGGER triggerName triggerClause
+    ;
+
+alterTrigger
+    : ALTER TRIGGER triggerName (ACTIVE | INACTIVE)? ((BEFORE | AFTER) eventListTable)? (POSITION expr)? triggerClause
+    ;
+
 createOrAlterTrigger
-    : CREATE OR ALTER TRIGGER triggerName
-    (
-    announcmentTableTrigger |
-    announcmentTableTriggerSQL_2003Standart |
-    announcmentDataBaseTrigger |
-    announcmentDDLTrigger
-    )
-    (
-          EXTERNAL NAME externalModuleName ENGINE engineName
-      |
-          (SQL SECURITY (DEFINER | INVOKER))?
-          AS
-          announcementClause?
-          BEGIN
-              statementBlock
-          END
-    )
+    : CREATE OR ALTER TRIGGER triggerName triggerClause
+    ;
+
+announcmentTriggerClause
+    : (
+                announcmentTableTrigger |
+                announcmentTableTriggerSQL_2003Standart |
+                announcmentDataBaseTrigger |
+                announcmentDDLTrigger
+                )
+    ;
+
+triggerClause
+    : announcmentTriggerClause?
+          (
+                EXTERNAL NAME externalModuleName ENGINE engineName
+            |
+                (SQL SECURITY (DEFINER | INVOKER) | DROP SQL SECURITY)?
+                AS
+                announcementClause?
+                BEGIN
+                    statementBlock
+                END
+          )
     ;
 
 announcmentTableTrigger
