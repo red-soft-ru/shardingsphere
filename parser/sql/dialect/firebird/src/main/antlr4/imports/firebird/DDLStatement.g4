@@ -347,3 +347,15 @@ createProcedure
             END
         )
     ;
+
+executeStmt
+    : EXECUTE PROCEDURE procedureName exprClause?
+    ;
+
+exprClause
+    : LP_ expr (COMMA_ expr)* RP_
+    ;
+
+returningValuesClause
+    : RETURNING_VALUES exprClause? SEMI_
+    ;

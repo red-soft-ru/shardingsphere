@@ -855,6 +855,10 @@ STARTING
     : S T A R T I N G
     ;
 
+RETURNING_VALUES
+    : R E T U R N I N G UL_ V A L U E S
+    ;
+
 //PASSWORD
 //    : P A S S W O R D
 //    ;
