@@ -859,6 +859,14 @@ RETURNING_VALUES
     : R E T U R N I N G UL_ V A L U E S
     ;
 
+BLOCK
+    : B L O C K
+    ;
+
+SUSPEND
+    : S U S P E N D
+    ;
+
 //PASSWORD
 //    : P A S S W O R D
 //    ;

@@ -100,6 +100,10 @@ tableName
     : (owner DOT_)? name
     ;
 
+variableName
+    : identifier
+    ;
+
 collationName
     : identifier
     ;
@@ -219,6 +223,8 @@ predicate
     | bitExpr NOT? BETWEEN bitExpr AND predicate
     | bitExpr NOT? LIKE simpleExpr (ESCAPE simpleExpr)?
     | bitExpr NOT? STARTING WITH? bitExpr
+    | bitExpr IS NOT? DISTINCT FROM bitExpr
+    | bitExpr IS NOT? NULL
     | bitExpr
     ;
 
@@ -430,6 +436,10 @@ announcementArgument
     : argumentName typeDescriptionArgument (NOT NULL)? collateClause?
     ;
 
+announcementArgumentClause
+    : announcementArgument (COMMA_ announcementArgument)*
+    ;
+
 typeDescriptionArgument
     : dataType
     | (TYPE OF)? domainName
@@ -485,3 +495,4 @@ sortOrder
     | WIN1257 | WIN1257_EE | WIN1257_LT | WIN1257_LV
     | WIN1258
     ;
+
