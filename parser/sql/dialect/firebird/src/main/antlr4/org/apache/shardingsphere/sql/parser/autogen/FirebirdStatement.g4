@@ -45,5 +45,6 @@ execute
     | createRole
     | savepoint
     | createSequence
+    | createUser
     ) SEMI_?
     ;

@@ -855,26 +855,42 @@ STARTING
     : S T A R T I N G
     ;
 
-//PASSWORD
-//    : P A S S W O R D
-//    ;
-//
-//FIRSTNAME
-//    : F I R S T N A M E
-//    ;
-//
-//MIDDLENAME
-//    : M I D D L E N A M E
-//    ;
-//
-//LASTNAME
-//    : L A S T N A M E
-//    ;
-//
-//ADMIN
-//    : A D M I N
-//    ;
-//
+PASSWORD
+    : P A S S W O R D
+    ;
+
+FIRSTNAME
+    : F I R S T N A M E
+    ;
+
+MIDDLENAME
+    : M I D D L E N A M E
+    ;
+
+LASTNAME
+    : L A S T N A M E
+    ;
+
+ACTIVE
+    : A C T I V E
+    ;
+
+INACTIVE
+    : I N A C T I V E
+    ;
+
+PLUGIN
+    : P L U G I N
+    ;
+
+TAGS
+    : T A G S
+    ;
+
+ADMIN
+    : A D M I N
+    ;
+
 ROLE
     : R O L E
     ;

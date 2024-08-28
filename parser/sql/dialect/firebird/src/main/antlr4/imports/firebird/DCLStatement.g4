@@ -65,6 +65,41 @@ createRole
     : CREATE ROLE roleName
     ;
 
+createUser
+    : CREATE USER login PASSWORD password
+    firstNameClause? middleNameClause? lastNameClause?
+    activeClause? usingPluginClause?
+    tagsAttributeClause? grantAdminRoleClause?
+    ;
+
+firstNameClause
+    : FIRSTNAME STRING_
+    ;
+
+middleNameClause
+    : MIDDLENAME STRING_
+    ;
+
+lastNameClause
+    : LASTNAME STRING_
+    ;
+
+activeClause
+    : ACTIVE | INACTIVE
+    ;
+
+usingPluginClause
+    : USING PLUGIN STRING_
+    ;
+
+tagsAttributeClause
+    : TAGS LP_ attributeClause RP_
+    ;
+
+grantAdminRoleClause
+    : GRANT ADMIN ROLE
+    ;
+
 //createUser
 //    : CREATE USER identifier password (userOptions)?
 //    ;

@@ -104,6 +104,18 @@ collationName
     : identifier
     ;
 
+attributeName
+    : identifier
+    ;
+
+login
+    : identifier
+    ;
+
+password
+    : STRING_
+    ;
+
 roleName
     : identifier
     ;
@@ -484,4 +496,12 @@ sortOrder
     | WIN1256
     | WIN1257 | WIN1257_EE | WIN1257_LT | WIN1257_LV
     | WIN1258
+    ;
+
+attribute
+    : attributeName EQ_ STRING_
+    ;
+
+attributeClause
+    : attribute (COMMA_ attribute)*
     ;
