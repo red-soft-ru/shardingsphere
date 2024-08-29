@@ -96,6 +96,14 @@ savepointName
     : identifier
     ;
 
+variableName
+    : identifier
+    ;
+
+domainName
+    : identifier
+    ;
+
 tableName
     : (owner DOT_)? name
     ;
@@ -118,10 +126,6 @@ viewName
     ;
 
 functionName
-    : identifier
-    ;
-
-domainName
     : identifier
     ;
 
@@ -192,7 +196,7 @@ expr
 andOperator
     : AND | AND_
     ;
-    
+
 orOperator
     : OR | CONCAT_
     ;
@@ -219,6 +223,8 @@ predicate
     | bitExpr NOT? BETWEEN bitExpr AND predicate
     | bitExpr NOT? LIKE simpleExpr (ESCAPE simpleExpr)?
     | bitExpr NOT? STARTING WITH? bitExpr
+    | bitExpr IS NOT? DISTINCT FROM bitExpr
+    | bitExpr IS NOT? NULL
     | bitExpr
     ;
 
@@ -428,6 +434,10 @@ contextVariables
 
 announcementArgument
     : argumentName typeDescriptionArgument (NOT NULL)? collateClause?
+    ;
+
+announcementArgumentClause
+    : announcementArgument (COMMA_ announcementArgument)*
     ;
 
 typeDescriptionArgument
