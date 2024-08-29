@@ -75,6 +75,10 @@ alterSequence
     : ALTER SEQUENCE tableName sequenceRestartClause? sequenceIncrementClause?
     ;
 
+createSequence
+    : CREATE (GENERATOR | SEQUENCE) tableName sequenceRestartClause? sequenceIncrementClause?
+    ;
+
 alterDomain
     : ALTER DOMAIN domainName toTableClause? defaultAlterDomainClause? notNullAlterDomainClause? constraintClause? typeClause?
     ;
@@ -122,7 +126,7 @@ createFunction
     ;
 
 statementBlock
-    : (statement SEMI_)*
+    : (statement SEMI_?)*
     ;
 
 statement
@@ -133,6 +137,7 @@ statement
     | returnStatement
     | cursorOpenStatement
     | cursorCloseStatement
+    | ifStatement
     ;
 
 cursorOpenStatement
@@ -447,4 +452,46 @@ announcmentDDLTrigger
     : (ACTIVE | INACTIVE)?
       (BEFORE | AFTER) listDDLStatement
       (POSITION expr)?
+    ;
+
+executeBlock
+    : EXECUTE BLOCK
+    inputArgumentList?
+        (RETURNS LP_ outputArgumentList RP_)?
+    AS
+        announcementClause?
+    BEGIN
+        statementBlock
+    END SEMI_
+    ;
+
+inputArgumentList
+    : LP_ announcementArgument EQ_ QUESTION_  (COMMA_ (announcementArgument EQ_ QUESTION_))* RP_
+    ;
+
+outputArgumentList
+    : announcementArgumentClause
+    ;
+
+ifStatement
+    :
+     IF LP_ predicate RP_
+     THEN beginStatement+
+     (ELSE beginStatement+)?
+    ;
+
+compoundStatement
+    : (createTable | alterTable | dropTable | dropDatabase | insert | update | delete | select | createView | beginStatement | transferOperator | assignmentStatement) SEMI_?
+    ;
+
+beginStatement
+    : BEGIN compoundStatement* END SEMI_?
+    ;
+
+transferOperator
+    : SUSPEND
+    ;
+
+assignmentStatement
+    : variableName EQ_ simpleExpr
     ;

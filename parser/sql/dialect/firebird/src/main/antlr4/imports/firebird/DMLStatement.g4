@@ -190,3 +190,4 @@ withClause
 cteClause
     : identifier (LP_ columnNames RP_)? AS subquery
     ;
+

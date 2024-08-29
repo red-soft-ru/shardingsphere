@@ -43,6 +43,8 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.Crea
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateCollationContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateDomainContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateTriggerContext;
+//import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ExecuteBlockContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateSequenceContext;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.AlterDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.CreateDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.column.ColumnDefinitionSegment;
@@ -69,6 +71,8 @@ import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.F
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateDomainStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateTriggerStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdDropTableStatement;
+//import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdExecuteBlockStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateSequenceStatement;
 import org.apache.shardingsphere.sql.parser.firebird.visitor.statement.FirebirdStatementVisitor;
 
 import java.util.Collections;
@@ -276,5 +280,17 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
     @Override
     public ASTNode visitCreateTrigger(final CreateTriggerContext ctx) {
         return new FirebirdCreateTriggerStatement();
+    }
+  
+//    @Override
+//    public ASTNode visitExecuteBlock(final ExecuteBlockContext ctx) {
+//        return new FirebirdExecuteBlockStatement();
+//    }
+
+    @Override
+    public ASTNode visitCreateSequence(final CreateSequenceContext ctx) {
+        FirebirdCreateSequenceStatement result = new FirebirdCreateSequenceStatement();
+        result.setSequenceName(((SimpleTableSegment) visit(ctx.tableName())).getTableName().getIdentifier().getValue());
+        return result;
     }
 }
