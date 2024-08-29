@@ -173,6 +173,10 @@ baseSortName
     : identifier
     ;
 
+variableName
+    : identifier
+    ;
+
 constraintName
     : identifier
     ;

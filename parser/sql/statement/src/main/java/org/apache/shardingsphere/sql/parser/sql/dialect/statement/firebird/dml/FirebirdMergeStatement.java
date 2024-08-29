@@ -15,42 +15,13 @@
  * limitations under the License.
  */
 
-grammar FirebirdStatement;
+package org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dml;
 
-import Comments, DDLStatement, TCLStatement, DCLStatement;
+import org.apache.shardingsphere.sql.parser.sql.common.statement.dml.MergeStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.FirebirdStatement;
 
-execute
-    : (select
-    | insert
-    | update
-    | delete
-    | createDatabase
-    | dropDatabase
-    | createTable
-    | alterTable
-    | dropTable
-    | createView
-    | dropView
-    | setTransaction
-    | commit
-    | rollback
-    | grant
-    | revoke
-    | createFunction
-    | createProcedure
-    | alterSequence
-    | createCollation
-    | createDomain
-    | alterDomain
-    | createRole
-    | savepoint
-    | createOrAlterTrigger
-    | createTrigger
-    | alterTrigger
-    | executeBlock
-    | createSequence
-    | merge
-    | createUser
-    | executeStmt
-    ) SEMI_?
-    ;
+/**
+ * Firebird merge statement.
+ */
+public final class FirebirdMergeStatement extends MergeStatement implements FirebirdStatement {
+}
