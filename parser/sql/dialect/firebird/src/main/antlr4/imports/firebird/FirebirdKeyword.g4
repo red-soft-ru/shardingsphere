@@ -875,6 +875,18 @@ AFTER
     : A F T E R
     ;
 
+MERGE
+    : M E R G E
+    ;
+
+RETURNING
+    : R E T U R N I N G
+    ;
+
+MATCHED
+    : M A T C H E D
+    ;
+
 //PASSWORD
 //    : P A S S W O R D
 //    ;

@@ -52,6 +52,9 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.Tabl
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.TableReferencesContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.UpdateContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.WhereClauseContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.MergeContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.IntoClauseContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.UsingClauseContext;
 import org.apache.shardingsphere.sql.parser.sql.common.enums.JoinType;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.dml.assignment.ColumnAssignmentSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.dml.assignment.InsertValuesSegment;
@@ -91,6 +94,7 @@ import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dml.F
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dml.FirebirdInsertStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dml.FirebirdSelectStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dml.FirebirdUpdateStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dml.FirebirdMergeStatement;
 import org.apache.shardingsphere.sql.parser.firebird.visitor.statement.FirebirdStatementVisitor;
 
 import java.util.Collection;
@@ -477,5 +481,15 @@ public final class FirebirdDMLStatementVisitor extends FirebirdStatementVisitor 
     @Override
     public ASTNode visitSubquery(final SubqueryContext ctx) {
         return visit(ctx.combineClause());
+    }
+
+    @Override
+    public ASTNode visitMerge(final MergeContext ctx) {
+        FirebirdMergeStatement result = new FirebirdMergeStatement();
+        result.setTarget((TableSegment) visit(ctx.intoClause()));
+        result.setSource((TableSegment) visit(ctx.usingClause()));
+        // add mergeWhenNotMatched and mergeWhenMatched part
+        // add RETURNING part
+        return result;
     }
 }

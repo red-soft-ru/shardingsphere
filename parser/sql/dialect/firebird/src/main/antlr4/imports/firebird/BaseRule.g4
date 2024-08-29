@@ -162,6 +162,10 @@ baseSortName
     : identifier
     ;
 
+variableName
+    : identifier
+    ;
+
 constraintName
     : identifier
     ;
@@ -229,7 +233,8 @@ comparisonOperator
     ;
 
 predicate
-    : bitExpr NOT? IN subquery
+    : bitExpr comparisonOperator bitExpr
+    | bitExpr NOT? IN subquery
     | bitExpr NOT? IN LP_ expr (COMMA_ expr)* RP_
     | bitExpr NOT? BETWEEN bitExpr AND predicate
     | bitExpr NOT? LIKE simpleExpr (ESCAPE simpleExpr)?
