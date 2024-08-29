@@ -123,7 +123,7 @@ createFunction
 
 
 statementBlock
-    : (statement SEMI_)*
+    : (statement SEMI_?)*
     ;
 
 statement
@@ -133,12 +133,20 @@ statement
     | delete
     | returnStatement
     | cursorOpenStatement
+    | cursorCloseStatement
     | assignmentStatement
     | transferStatement
+    | fetchStatement
+    | whileStatement
+    | ifStatement
     ;
 
 cursorOpenStatement
     : OPEN cursorName
+    ;
+
+cursorCloseStatement
+    : CLOSE cursorName
     ;
 
 announcementClause
@@ -374,7 +382,41 @@ outputArgument
 assignmentStatement
     : variableName EQ_ expr
     ;
-    
+
 transferStatement
-    : SUSPEND
+    : SUSPEND SEMI_
+    ;
+
+whileStatement
+    : WHILE LP_ predicate RP_ DO compoundStatement
+    ;
+
+fetchStatement
+    : FETCH cursorName
+    INTO COLON_ variable (COMMA_ (COLON_ variable))* SEMI_
+    | FETCH (NEXT
+             | PRIOR
+             | FIRST
+             | LAST
+             | ABSOLUTE NUMBER_
+             | RELATIVE NUMBER_ ) FROM cursorName (INTO LBT_ COLON_ RBT_ variable (COMMA_ (LBT_ COLON_ RBT_ variable))* SEMI_)
+    ;
+
+ifStatement
+    :
+     IF LP_ predicate RP_
+     THEN compoundStatement+
+     (ELSE compoundStatement+)?
+    ;
+
+compoundStatement
+    : (createTable | alterTable | dropTable | dropDatabase | insert | update | delete | select | createView | beginStatement | ifStatement | fetchStatement | leaveStatement | transferStatement | cursorCloseStatement) SEMI_?
+    ;
+
+beginStatement
+    : BEGIN compoundStatement* END SEMI_?
+    ;
+
+leaveStatement
+    : LEAVE expr? SEMI_
     ;

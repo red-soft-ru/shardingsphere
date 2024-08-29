@@ -859,6 +859,14 @@ SUSPEND
     : S U S P E N D
     ;
 
+WHILE
+    : W H I L E
+    ;
+
+LEAVE
+    : L E A V E
+    ;
+
 //PASSWORD
 //    : P A S S W O R D
 //    ;
