@@ -136,7 +136,7 @@ joinSpecification
     ;
 
 whereClause
-    : WHERE expr
+    : WHERE (expr | CURRENT OF cursorName)
     ;
 
 groupByClause

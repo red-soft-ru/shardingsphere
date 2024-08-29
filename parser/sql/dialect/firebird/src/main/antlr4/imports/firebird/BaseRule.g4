@@ -129,6 +129,10 @@ functionName
     : identifier
     ;
 
+triggerName
+    : identifier
+    ;
+
 argumentName
     : identifier
     ;
