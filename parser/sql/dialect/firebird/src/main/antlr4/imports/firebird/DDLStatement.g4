@@ -353,6 +353,22 @@ createProcedure
         )
     ;
 
+executeStmt
+    : executeProcedure | executeBlock
+    ;
+
+executeProcedure
+    : EXECUTE PROCEDURE procedureName exprClause?
+    ;
+
+exprClause
+    : LP_ expr (COMMA_ expr)* RP_
+    ;
+
+returningValuesClause
+    : RETURNING_VALUES exprClause? SEMI_
+    ;
+    
 createTrigger
     : CREATE TRIGGER triggerName triggerClause
     ;
@@ -457,7 +473,7 @@ announcmentDDLTrigger
 executeBlock
     : EXECUTE BLOCK
     inputArgumentList?
-        (RETURNS LP_ outputArgumentList RP_)?
+    (RETURNS LP_ outputArgumentList RP_)?
     AS
         announcementClause?
     BEGIN

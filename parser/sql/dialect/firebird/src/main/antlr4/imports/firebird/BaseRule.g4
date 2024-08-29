@@ -108,6 +108,10 @@ tableName
     : (owner DOT_)? name
     ;
 
+variableName
+    : identifier
+    ;
+
 collationName
     : identifier
     ;
@@ -500,3 +504,4 @@ sortOrder
     | WIN1257 | WIN1257_EE | WIN1257_LT | WIN1257_LV
     | WIN1258
     ;
+
