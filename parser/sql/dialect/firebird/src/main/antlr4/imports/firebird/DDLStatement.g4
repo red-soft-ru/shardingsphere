@@ -125,9 +125,8 @@ createFunction
       )
     ;
 
-
 statementBlock
-    : (statement SEMI_)*
+    : (statement SEMI_?)*
     ;
 
 statement
@@ -137,10 +136,16 @@ statement
     | delete
     | returnStatement
     | cursorOpenStatement
+    | cursorCloseStatement
+    | ifStatement
     ;
 
 cursorOpenStatement
     : OPEN cursorName
+    ;
+
+cursorCloseStatement
+    : CLOSE cursorName
     ;
 
 announcementClause
@@ -346,4 +351,163 @@ createProcedure
                 statementBlock
             END
         )
+    ;
+
+executeStmt
+    : executeProcedure | executeBlock
+    ;
+
+executeProcedure
+    : EXECUTE PROCEDURE procedureName exprClause?
+    ;
+
+exprClause
+    : LP_ expr (COMMA_ expr)* RP_
+    ;
+
+returningValuesClause
+    : RETURNING_VALUES exprClause? SEMI_
+    ;
+    
+createTrigger
+    : CREATE TRIGGER triggerName triggerClause
+    ;
+
+alterTrigger
+    : ALTER TRIGGER triggerName (ACTIVE | INACTIVE)? ((BEFORE | AFTER) eventListTable)? (POSITION expr)? triggerClause
+    ;
+
+createOrAlterTrigger
+    : CREATE OR ALTER TRIGGER triggerName triggerClause
+    ;
+
+announcmentTriggerClause
+    : (
+                announcmentTableTrigger |
+                announcmentTableTriggerSQL_2003Standart |
+                announcmentDataBaseTrigger |
+                announcmentDDLTrigger
+                )
+    ;
+
+triggerClause
+    : announcmentTriggerClause?
+          (
+                EXTERNAL NAME externalModuleName ENGINE engineName
+            |
+                (SQL SECURITY (DEFINER | INVOKER) | DROP SQL SECURITY)?
+                AS
+                announcementClause?
+                BEGIN
+                    statementBlock
+                END
+          )
+    ;
+
+announcmentTableTrigger
+    : FOR (tableName | viewName)
+    (ACTIVE | INACTIVE)?
+    (BEFORE | AFTER) eventListTable
+    (POSITION expr)?
+    ;
+
+eventListTable
+    : dmlStatement (OR dmlStatement)*
+    ;
+
+listDDLStatement
+    : ANY DDL STATEMENT
+    | ddlStatement (OR ddlStatement)*
+    ;
+
+dmlStatement
+    : INSERT | UPDATE | DELETE
+    ;
+
+ddlStatement
+    : (CREATE | ALTER | DROP) TABLE
+    | (CREATE | ALTER | DROP) PROCEDURE
+    | (CREATE | ALTER | DROP) FUNCTION
+    | (CREATE | ALTER | DROP) TRIGGER
+    | (CREATE | ALTER | DROP) EXCEPTION
+    | (CREATE | ALTER | DROP) VIEW
+    | (CREATE | ALTER | DROP) DOMAIN
+    | (CREATE | ALTER | DROP) ROLE
+    | (CREATE | ALTER | DROP) SEQUENCE
+    | (CREATE | ALTER | DROP) USER
+    | (CREATE|ALTER|DROP) INDEX
+    | (CREATE | DROP) COLLATION
+    | ALTER CHARACTER SET
+    | (CREATE | ALTER | DROP) PACKAGE
+    | (CREATE | DROP) PACKAGE BODY
+    | (CREATE | ALTER | DROP) MAPPING
+    ;
+
+announcmentTableTriggerSQL_2003Standart
+    : (ACTIVE | INACTIVE)?
+      (BEFORE | AFTER) eventListTable
+      (POSITION expr)?
+      ON (tableName | viewName)
+    ;
+
+announcmentDataBaseTrigger
+    : (ACTIVE | INACTIVE)?
+      ON eventConnectOrTransaction
+      (POSITION expr)?
+    ;
+
+eventConnectOrTransaction
+    : CONNECT
+    | DISCONNECT
+    | TRANSACTION START
+    | TRANSACTION COMMIT
+    | TRANSACTION ROLLBACK
+    ;
+
+announcmentDDLTrigger
+    : (ACTIVE | INACTIVE)?
+      (BEFORE | AFTER) listDDLStatement
+      (POSITION expr)?
+    ;
+
+executeBlock
+    : EXECUTE BLOCK
+    inputArgumentList?
+    (RETURNS LP_ outputArgumentList RP_)?
+    AS
+        announcementClause?
+    BEGIN
+        statementBlock
+    END SEMI_
+    ;
+
+inputArgumentList
+    : LP_ announcementArgument EQ_ QUESTION_  (COMMA_ (announcementArgument EQ_ QUESTION_))* RP_
+    ;
+
+outputArgumentList
+    : announcementArgumentClause
+    ;
+
+ifStatement
+    :
+     IF LP_ predicate RP_
+     THEN beginStatement+
+     (ELSE beginStatement+)?
+    ;
+
+compoundStatement
+    : (createTable | alterTable | dropTable | dropDatabase | insert | update | delete | select | createView | beginStatement | transferOperator | assignmentStatement) SEMI_?
+    ;
+
+beginStatement
+    : BEGIN compoundStatement* END SEMI_?
+    ;
+
+transferOperator
+    : SUSPEND
+    ;
+
+assignmentStatement
+    : variableName EQ_ simpleExpr
     ;

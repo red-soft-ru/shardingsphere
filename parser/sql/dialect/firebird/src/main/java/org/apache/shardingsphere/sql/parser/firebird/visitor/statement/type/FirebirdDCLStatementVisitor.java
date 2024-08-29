@@ -22,10 +22,12 @@ import org.apache.shardingsphere.sql.parser.api.visitor.statement.type.DCLStatem
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.GrantContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.RevokeContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateRoleContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateUserContext;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.generic.table.SimpleTableSegment;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dcl.FirebirdGrantStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dcl.FirebirdRevokeStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dcl.FirebirdCreateRoleStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dcl.FirebirdCreateUserStatement;
 import org.apache.shardingsphere.sql.parser.firebird.visitor.statement.FirebirdStatementVisitor;
 
 /**
@@ -54,5 +56,10 @@ public final class FirebirdDCLStatementVisitor extends FirebirdStatementVisitor 
     @Override
     public ASTNode visitCreateRole(final CreateRoleContext ctx) {
         return new FirebirdCreateRoleStatement();
+    }
+
+    @Override
+    public ASTNode visitCreateUser(final CreateUserContext ctx) {
+        return new FirebirdCreateUserStatement();
     }
 }

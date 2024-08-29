@@ -867,26 +867,62 @@ MATCHED
     : M A T C H E D
     ;
 
-//PASSWORD
-//    : P A S S W O R D
-//    ;
-//
-//FIRSTNAME
-//    : F I R S T N A M E
-//    ;
-//
-//MIDDLENAME
-//    : M I D D L E N A M E
-//    ;
-//
-//LASTNAME
-//    : L A S T N A M E
-//    ;
-//
-//ADMIN
-//    : A D M I N
-//    ;
-//
+PASSWORD
+    : P A S S W O R D
+    ;
+
+FIRSTNAME
+    : F I R S T N A M E
+    ;
+
+MIDDLENAME
+    : M I D D L E N A M E
+    ;
+
+LASTNAME
+    : L A S T N A M E
+    ;
+
+RETURNING_VALUES
+    : R E T U R N I N G UL_ V A L U E S
+    ;
+    
+ACTIVE
+    : A C T I V E
+    ;
+
+INACTIVE
+    : I N A C T I V E
+    ;
+
+PLUGIN
+    : P L U G I N
+    ;
+
+TAGS
+    : T A G S
+    ;
+
+ADMIN
+    : A D M I N
+    ;
+
+BEFORE
+    : B E F O R E
+    ;
+
+AFTER
+    : A F T E R
+    ;
+
+BLOCK
+    : B L O C K
+    ;
+
+SUSPEND
+    : S U S P E N D
+    ;
+
 ROLE
     : R O L E
     ;
