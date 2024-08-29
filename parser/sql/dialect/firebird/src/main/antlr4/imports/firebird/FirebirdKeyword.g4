@@ -871,6 +871,10 @@ LASTNAME
     : L A S T N A M E
     ;
 
+RETURNING_VALUES
+    : R E T U R N I N G UL_ V A L U E S
+    ;
+    
 ACTIVE
     : A C T I V E
     ;
@@ -889,6 +893,22 @@ TAGS
 
 ADMIN
     : A D M I N
+    ;
+
+BEFORE
+    : B E F O R E
+    ;
+
+AFTER
+    : A F T E R
+    ;
+
+BLOCK
+    : B L O C K
+    ;
+
+SUSPEND
+    : S U S P E N D
     ;
 
 ROLE

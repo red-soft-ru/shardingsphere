@@ -96,8 +96,20 @@ savepointName
     : identifier
     ;
 
+variableName
+    : identifier
+    ;
+
+domainName
+    : identifier
+    ;
+
 tableName
     : (owner DOT_)? name
+    ;
+
+variableName
+    : identifier
     ;
 
 collationName
@@ -133,7 +145,7 @@ functionName
     : identifier
     ;
 
-domainName
+triggerName
     : identifier
     ;
 
@@ -204,7 +216,7 @@ expr
 andOperator
     : AND | AND_
     ;
-    
+
 orOperator
     : OR | CONCAT_
     ;
@@ -226,11 +238,14 @@ comparisonOperator
     ;
 
 predicate
-    : bitExpr NOT? IN subquery
+    : bitExpr comparisonOperator bitExpr
+    | bitExpr NOT? IN subquery
     | bitExpr NOT? IN LP_ expr (COMMA_ expr)* RP_
     | bitExpr NOT? BETWEEN bitExpr AND predicate
     | bitExpr NOT? LIKE simpleExpr (ESCAPE simpleExpr)?
     | bitExpr NOT? STARTING WITH? bitExpr
+    | bitExpr IS NOT? DISTINCT FROM bitExpr
+    | bitExpr IS NOT? NULL
     | bitExpr
     ;
 
@@ -440,6 +455,10 @@ contextVariables
 
 announcementArgument
     : argumentName typeDescriptionArgument (NOT NULL)? collateClause?
+    ;
+
+announcementArgumentClause
+    : announcementArgument (COMMA_ announcementArgument)*
     ;
 
 typeDescriptionArgument
