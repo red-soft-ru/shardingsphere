@@ -49,6 +49,7 @@ execute
     | alterTrigger
     | executeBlock
     | createSequence
+    | createUser
     | executeStmt
     ) SEMI_?
     ;

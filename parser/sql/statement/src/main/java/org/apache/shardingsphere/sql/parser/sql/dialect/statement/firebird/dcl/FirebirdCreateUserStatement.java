@@ -34,12 +34,12 @@ import java.util.LinkedList;
 @Getter
 @Setter
 public final class FirebirdCreateUserStatement extends CreateUserStatement implements MySQLStatement {
-    
+
     private final Collection<String> defaultRoles = new LinkedList<>();
-    
+
     private TLSOptionSegment tlsOptionSegment;
-    
+
     private UserResourceSegment userResource;
-    
+
     private PasswordOrLockOptionSegment passwordOrLockOption;
 }
