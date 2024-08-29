@@ -858,6 +858,22 @@ STARTING
 RETURNING_VALUES
     : R E T U R N I N G UL_ V A L U E S
     ;
+    
+ACTIVE
+    : A C T I V E
+    ;
+
+INACTIVE
+    : I N A C T I V E
+    ;
+
+BEFORE
+    : B E F O R E
+    ;
+
+AFTER
+    : A F T E R
+    ;
 
 BLOCK
     : B L O C K

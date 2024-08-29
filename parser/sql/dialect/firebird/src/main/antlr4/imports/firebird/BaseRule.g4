@@ -96,6 +96,14 @@ savepointName
     : identifier
     ;
 
+variableName
+    : identifier
+    ;
+
+domainName
+    : identifier
+    ;
+
 tableName
     : (owner DOT_)? name
     ;
@@ -125,7 +133,7 @@ functionName
     : identifier
     ;
 
-domainName
+triggerName
     : identifier
     ;
 
@@ -196,7 +204,7 @@ expr
 andOperator
     : AND | AND_
     ;
-    
+
 orOperator
     : OR | CONCAT_
     ;
@@ -218,7 +226,8 @@ comparisonOperator
     ;
 
 predicate
-    : bitExpr NOT? IN subquery
+    : bitExpr comparisonOperator bitExpr
+    | bitExpr NOT? IN subquery
     | bitExpr NOT? IN LP_ expr (COMMA_ expr)* RP_
     | bitExpr NOT? BETWEEN bitExpr AND predicate
     | bitExpr NOT? LIKE simpleExpr (ESCAPE simpleExpr)?

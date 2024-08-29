@@ -136,7 +136,7 @@ joinSpecification
     ;
 
 whereClause
-    : WHERE expr
+    : WHERE (expr | CURRENT OF cursorName)
     ;
 
 groupByClause
@@ -190,3 +190,4 @@ withClause
 cteClause
     : identifier (LP_ columnNames RP_)? AS subquery
     ;
+
