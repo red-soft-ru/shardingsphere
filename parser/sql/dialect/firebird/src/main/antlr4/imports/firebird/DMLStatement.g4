@@ -190,3 +190,45 @@ withClause
 cteClause
     : identifier (LP_ columnNames RP_)? AS subquery
     ;
+
+merge
+    : MERGE intoClause usingClause
+    mergeWhen (mergeWhen)*
+    (RETURNING returnExprListClause (INTO variableListClause)?)?
+    ;
+
+intoClause
+    : INTO (tableName | viewName | subquery) (AS? alias)?
+    ;
+
+usingClause
+    : USING ((tableName | viewName) | subquery) (AS? alias)? ON predicate
+    ;
+
+mergeWhen
+    : mergeWhenMatched | mergeWhenNotMatched
+    ;
+
+mergeWhenMatched
+    : WHEN MATCHED (AND predicate)? THEN (UPDATE SET columnName EQ_ expr (COMMA_ (columnName EQ_ expr))* | DELETE )
+    ;
+
+mergeWhenNotMatched
+    : WHEN NOT MATCHED (AND predicate)? THEN INSERT columnNames? VALUES LP_ expr RP_
+    ;
+
+returnExpr
+    : expr (AS? alias)
+    ;
+
+returnExprListClause
+    : returnExpr (COMMA_ returnExpr)*
+    ;
+
+variableList
+    : LBT_ COLON_ RBT_ variableName
+    ;
+
+variableListClause
+    : variableList (COMMA_ variableList)*
+    ;
