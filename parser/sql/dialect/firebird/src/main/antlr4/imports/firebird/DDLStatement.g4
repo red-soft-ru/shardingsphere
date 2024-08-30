@@ -339,36 +339,31 @@ returnStatement
     ;
 
 createProcedure
-    : CREATE PROCEDURE procedureName (AUTHID (OWNER | CALLER))?
-        inputArgumentClause?
-        (RETURNS announcementArgument)?
-        (
-            EXTERNAL NAME externalModuleName ENGINE engineName
-        |
-            (SQL SECURITY (DEFINER | INVOKER))?
-            AS
-            announcementClause?
-            BEGIN
-                statementBlock
-            END
-        )
+    : CREATE PROCEDURE procedureClause
     ;
 
 createOrAlterProcedure
-    : CREATE OR ALTER PROCEDURE procedureName
-      (AUTHID (OWNER | CALLER))?
-        inputArgumentClause?
-      (RETURNS LP_ outputArgumentClause RP_)?
-      (
-          EXTERNAL NAME externalModuleName ENGINE engineName
-      |
-          (SQL SECURITY (DEFINER | INVOKER))?
-          AS
-          announcementClause?
-          BEGIN
-              statementBlock
-          END
-      )
+    : CREATE OR ALTER PROCEDURE procedureClause
+    ;
+
+alterProcedure
+    : ALTER PROCEDURE procedureClause
+    ;
+
+procedureClause
+    : procedureName (AUTHID (OWNER | CALLER))?
+              inputArgumentClause?
+              (RETURNS LP_ outputArgumentClause RP_)?
+              (
+                  EXTERNAL NAME externalModuleName ENGINE engineName
+              |
+                  (SQL SECURITY (DEFINER | INVOKER))?
+                  AS
+                  announcementClause?
+                  BEGIN
+                      statementBlock
+                  END
+              )
     ;
 
 outputArgumentClause
