@@ -97,7 +97,7 @@ savepointName
     ;
 
 variableName
-    : identifier
+    : (owner DOT_)? name
     ;
 
 domainName

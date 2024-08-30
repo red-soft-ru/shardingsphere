@@ -47,6 +47,8 @@ execute
     | savepoint
     | executeStmt
     | createOrAlterTrigger
+    | createTrigger
+    | alterTrigger
     | createSequence
     | merge
     ) SEMI_?
