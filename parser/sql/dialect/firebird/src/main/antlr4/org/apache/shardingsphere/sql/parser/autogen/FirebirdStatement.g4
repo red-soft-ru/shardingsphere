@@ -52,5 +52,5 @@ execute
     | merge
     | createUser
     | executeStmt
-    ) SEMI_?
+    ) SEMI_? EOF
     ;

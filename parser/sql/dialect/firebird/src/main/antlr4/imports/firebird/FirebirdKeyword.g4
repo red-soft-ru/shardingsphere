@@ -807,10 +807,6 @@ SEQUENCE
     : S E Q U E N C E
     ;
 
-RESTART
-    : R E S T A R T
-    ;
-
 INCREMENT
     : I N C R E M E N T
     ;
@@ -925,4 +921,28 @@ SUSPEND
 
 ROLE
     : R O L E
+    ;
+
+START
+    : S T A R T
+    ;
+
+DDL
+    : D D L
+    ;
+
+STATEMENT
+    : S T A T E M E N T
+    ;
+
+PACKAGE
+    : P A C K A G E
+    ;
+
+BODY
+    : B O D Y
+    ;
+
+MAPPING
+    : M A P P I N G
     ;
