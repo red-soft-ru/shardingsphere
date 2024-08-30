@@ -137,6 +137,10 @@ statement
     | returnStatement
     | cursorOpenStatement
     | cursorCloseStatement
+    | assignmentStatement
+    | transferStatement
+    | fetchStatement
+    | whileStatement
     | ifStatement
     ;
 
@@ -508,9 +512,11 @@ assignmentStatement
 transferStatement
     : SUSPEND SEMI_
     ;
+
 whileStatement
     : WHILE LP_ predicate RP_ DO compoundStatement
     ;
+
 fetchStatement
     : FETCH cursorName
     INTO COLON_ variable (COMMA_ (COLON_ variable))* SEMI_
