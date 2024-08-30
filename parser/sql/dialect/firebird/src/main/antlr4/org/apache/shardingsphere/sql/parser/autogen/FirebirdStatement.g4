@@ -38,6 +38,7 @@ execute
     | revoke
     | alterDomain
     | createRole
+    | createUser
     | createDomain
     | alterSequence
     | createCollation
