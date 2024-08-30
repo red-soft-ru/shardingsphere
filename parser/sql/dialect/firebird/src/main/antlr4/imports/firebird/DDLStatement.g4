@@ -23,26 +23,6 @@ createTable
     : CREATE createTemporaryTable? TABLE tableName createDefinitionClause sqlSecurity?
     ;
 
-createDomain
-    : CREATE DOMAIN domainName AS? dataType defaultClause? notNullClause? checkClause? characterSetClause?
-    ;
-
-defaultClause
-    : DEFAULT defaultValue?
-    ;
-
-notNullClause
-    : NOT NULL
-    ;
-
-checkClause
-    : CHECK LP_ predicate RP_
-    ;
-
-characterSetClause
-    : CHARACTER SET characterSetName collateClause?
-    ;
-    
 createCollation
     : CREATE COLLATION collationName FOR characterSetName fromCollationClause? paddingClause? caseSensitivityClause? accentSensitivityClause? attributeClause?
     ;
@@ -65,6 +45,26 @@ accentSensitivityClause
 
 attributeClause
     : attributeCollation (SEMI_ attributeCollation)*
+    ;
+
+createDomain
+    : CREATE DOMAIN domainName AS? dataType defaultClause? notNullClause? checkClause? characterSetClause?
+    ;
+
+defaultClause
+    : DEFAULT defaultValue?
+    ;
+
+notNullClause
+    : NOT NULL
+    ;
+
+checkClause
+    : CHECK LP_ predicate RP_
+    ;
+
+characterSetClause
+    : CHARACTER SET characterSetName collateClause?
     ;
 
 alterTable
@@ -125,7 +125,6 @@ createFunction
       )
     ;
 
-
 statementBlock
     : (statement SEMI_?)*
     ;
@@ -137,8 +136,8 @@ statement
     | delete
     | returnStatement
     | cursorOpenStatement
-    | ifStatement
     | cursorCloseStatement
+    | ifStatement
     ;
 
 cursorOpenStatement
@@ -339,81 +338,82 @@ returnStatement
     ;
 
 createProcedure
-    : CREATE PROCEDURE procedureName (AUTHID (OWNER | CALLER))?
-        inputArgumentClause?
-        (RETURNS announcementArgument)?
-        (
-            EXTERNAL NAME externalModuleName ENGINE engineName
-        |
-            (SQL SECURITY (DEFINER | INVOKER))?
-            AS
-            announcementClause?
-            BEGIN
-                statementBlock
-            END
-        )
+    : CREATE PROCEDURE procedureClause
     ;
 
-
-executeBlock
-    : EXECUTE BLOCK
-    inputArgumentList?
-        (RETURNS LP_ outputArgumentList RP_)?
-    AS
-        announcementClause?
-    BEGIN
-        statementBlock
-    END SEMI_
+createOrAlterProcedure
+    : CREATE OR ALTER PROCEDURE procedureClause
     ;
 
-inputArgumentList
-    : LP_ announcementArgument EQ_ QUESTION_  (COMMA_ (announcementArgument EQ_ QUESTION_))* RP_
+alterProcedure
+    : ALTER PROCEDURE procedureClause
     ;
 
-outputArgumentList
-    : announcementArgumentClause
+procedureClause
+    : procedureName (AUTHID (OWNER | CALLER))?
+              inputArgumentClause?
+              (RETURNS LP_ outputArgumentList RP_)?
+              (
+                  EXTERNAL NAME externalModuleName ENGINE engineName
+              |
+                  (SQL SECURITY (DEFINER | INVOKER))?
+                  AS
+                  announcementClause?
+                  BEGIN
+                      statementBlock
+                  END
+              )
     ;
 
-ifStatement
-    :
-     IF LP_ predicate RP_
-     THEN beginStatement+
-     (ELSE beginStatement+)?
+executeStmt
+    : executeProcedure | executeBlock
     ;
 
-compoundStatement
-    : (createTable | alterTable | dropTable | dropDatabase | insert | update | delete | select | createView | beginStatement | transferOperator | assignmentStatement) SEMI_?
+executeProcedure
+    : EXECUTE PROCEDURE procedureName exprClause?
     ;
 
-beginStatement
-    : BEGIN compoundStatement* END SEMI_?
+exprClause
+    : LP_ expr (COMMA_ expr)* RP_
     ;
 
-transferOperator
-    : SUSPEND
+returningValuesClause
+    : RETURNING_VALUES exprClause? SEMI_
     ;
 
-assignmentStatement
-    : variableName EQ_ simpleExpr
+createTrigger
+    : CREATE TRIGGER triggerName triggerClause
     ;
+
+alterTrigger
+    : ALTER TRIGGER triggerName (ACTIVE | INACTIVE)? ((BEFORE | AFTER) eventListTable)? (POSITION expr)? triggerClause
+    ;
+
 createOrAlterTrigger
-    : CREATE OR ALTER TRIGGER triggerName
-    (
-    announcmentTableTrigger |
-    announcmentTableTriggerSQL_2003Standart |
-    announcmentDataBaseTrigger |
-    announcmentDDLTrigger
-    )
-    (
-          EXTERNAL NAME externalModuleName ENGINE engineName
-      |
-          (SQL SECURITY (DEFINER | INVOKER))?
-          AS
-          announcementClause?
-          BEGIN
-              statementBlock
-          END
-    )
+    : CREATE OR ALTER TRIGGER triggerName triggerClause
+    ;
+
+announcmentTriggerClause
+    : (
+                announcmentTableTrigger |
+                announcmentTableTriggerSQL_2003Standart |
+                announcmentDataBaseTrigger |
+                announcmentDDLTrigger
+                )
+    ;
+
+triggerClause
+    : announcmentTriggerClause?
+          (
+                EXTERNAL NAME externalModuleName ENGINE engineName
+            |
+                (SQL SECURITY (DEFINER | INVOKER) | DROP SQL SECURITY)?
+                AS
+                announcementClause?
+                BEGIN
+                    statementBlock
+                END
+          )
     ;
 
 announcmentTableTrigger
@@ -481,3 +481,62 @@ announcmentDDLTrigger
       (BEFORE | AFTER) listDDLStatement
       (POSITION expr)?
     ;
+
+executeBlock
+    : EXECUTE BLOCK
+    inputArgumentList?
+    (RETURNS LP_ outputArgumentList RP_)?
+    AS
+        announcementClause?
+    BEGIN
+        statementBlock
+    END SEMI_
+    ;
+
+inputArgumentList
+    : LP_ announcementArgument EQ_ QUESTION_  (COMMA_ (announcementArgument EQ_ QUESTION_))* RP_
+    ;
+
+outputArgumentList
+    : announcementArgumentClause
+    ;
+
+assignmentStatement
+    : variableName EQ_ simpleExpr
+    ;
+
+transferStatement
+    : SUSPEND SEMI_
+    ;
+whileStatement
+    : WHILE LP_ predicate RP_ DO compoundStatement
+    ;
+fetchStatement
+    : FETCH cursorName
+    INTO COLON_ variable (COMMA_ (COLON_ variable))* SEMI_
+    | FETCH (NEXT
+             | PRIOR
+             | FIRST
+             | LAST
+             | ABSOLUTE NUMBER_
+             | RELATIVE NUMBER_ ) FROM cursorName (INTO LBT_ COLON_ RBT_ variable (COMMA_ (LBT_ COLON_ RBT_ variable))* SEMI_)
+    ;
+
+ifStatement
+    : IF LP_ predicate RP_
+      THEN compoundStatement+
+      (ELSE compoundStatement+)?
+    ;
+
+compoundStatement
+    : (createTable | alterTable | dropTable | dropDatabase | insert | update | delete | select | createView | beginStatement | ifStatement | fetchStatement | leaveStatement | transferStatement | cursorCloseStatement) SEMI_?
+    ;
+
+beginStatement
+    : BEGIN compoundStatement* END SEMI_?
+    ;
+
+leaveStatement
+    : LEAVE expr? SEMI_
+    ;
+

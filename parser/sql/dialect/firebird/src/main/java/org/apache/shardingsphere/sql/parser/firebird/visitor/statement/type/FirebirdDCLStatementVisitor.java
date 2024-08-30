@@ -22,17 +22,19 @@ import org.apache.shardingsphere.sql.parser.api.visitor.statement.type.DCLStatem
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.GrantContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.RevokeContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateRoleContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateUserContext;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.generic.table.SimpleTableSegment;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dcl.FirebirdGrantStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dcl.FirebirdRevokeStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dcl.FirebirdCreateRoleStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.dcl.FirebirdCreateUserStatement;
 import org.apache.shardingsphere.sql.parser.firebird.visitor.statement.FirebirdStatementVisitor;
 
 /**
  * DCL statement visitor for Firebird.
  */
 public final class FirebirdDCLStatementVisitor extends FirebirdStatementVisitor implements DCLStatementVisitor {
-    
+
     @Override
     public ASTNode visitGrant(final GrantContext ctx) {
         FirebirdGrantStatement result = new FirebirdGrantStatement();
@@ -41,7 +43,7 @@ public final class FirebirdDCLStatementVisitor extends FirebirdStatementVisitor 
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitRevoke(final RevokeContext ctx) {
         FirebirdRevokeStatement result = new FirebirdRevokeStatement();
@@ -54,5 +56,10 @@ public final class FirebirdDCLStatementVisitor extends FirebirdStatementVisitor 
     @Override
     public ASTNode visitCreateRole(final CreateRoleContext ctx) {
         return new FirebirdCreateRoleStatement();
+    }
+
+    @Override
+    public ASTNode visitCreateUser(final CreateUserContext ctx) {
+        return new FirebirdCreateUserStatement();
     }
 }

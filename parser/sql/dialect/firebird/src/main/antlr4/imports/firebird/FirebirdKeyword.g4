@@ -711,41 +711,42 @@ ROW
     : R O W
     ;
 
-STARTING
-    : S T A R T I N G
-    ;
-    
-SEQUENCE
-    : S E Q U E N C E
-    ;
-    
-GENERATED
-    : G E N E R A T E D
+RETURNS
+    : R E T U R N S
     ;
 
-ALWAYS
-    : A L W A Y S
+DETERMINISTIC
+    : D E T E R M I N I S T I C
     ;
 
-COMPUTED
-    : C O M P U T E D
+ENGINE
+    : E N G I N E
     ;
 
-RESTART
-    : R E S T A R T
+SECIRITY
+    : S E C I R I T Y
     ;
 
-INCREMENT
-    : I N C R E M E N T
+VARIABLE
+    : V A R I A B L E
     ;
 
-SENSITIVE
-    : S E N S I T I V E
+RETURN
+    : R E T U R N
     ;
 
-ACCENT
-    : A C C E N T
+AUTHID
+    : A U T H I D
     ;
+
+OWNER
+    : O W N E R
+    ;
+
+CALLER
+    : C A L L E R
+    ;
+
 ROW_NUMBER
     : R O W UL_ N U M B E R
     ;
@@ -786,6 +787,37 @@ OVER
     : O V E R
     ;
 
+GENERATED
+    : G E N E R A T E D
+    ;
+
+ALWAYS
+    : A L W A Y S
+    ;
+
+COMPUTED
+    : C O M P U T E D
+    ;
+
+RESTART
+    : R E S T A R T
+    ;
+
+SEQUENCE
+    : S E Q U E N C E
+    ;
+
+INCREMENT
+    : I N C R E M E N T
+    ;
+
+SENSITIVE
+    : S E N S I T I V E
+    ;
+
+ACCENT
+    : A C C E N T
+    ;
 
 DISABLE_COMPRESSIONS
     : D I S A B L E HYPHEN C O M P R E S S I O N S
@@ -814,65 +846,9 @@ SPECIALS_FIRST
 LOCALE
     : L O C A L E
     ;
-RETURNS
-    : R E T U R N S
-    ;
 
-DETERMINISTIC
-    : D E T E R M I N I S T I C
-    ;
-
-ENGINE
-    : E N G I N E
-    ;
-
-SECIRITY
-    : S E C I R I T Y
-    ;
-
-VARIABLE
-    : V A R I A B L E
-    ;
-
-RETURN
-    : R E T U R N
-    ;
-
-AUTHID
-    : A U T H I D
-    ;
-
-OWNER
-    : O W N E R
-    ;
-
-CALLER
-    : C A L L E R
-    ;
-
-
-BLOCK
-    : B L O C K
-    ;
-
-SUSPEND
-    : S U S P E N D
-    ;
-
-ACTIVE
-    : A C T I V E
-    ;
-
-INACTIVE
-    : I N A C T I V E
-    ;
-
-BEFORE
-    : B E F O R E
-    ;
-
-AFTER
-    : A F T E R
+STARTING
+    : S T A R T I N G
     ;
 
 MERGE
@@ -887,26 +863,98 @@ MATCHED
     : M A T C H E D
     ;
 
-//PASSWORD
-//    : P A S S W O R D
-//    ;
-//
-//FIRSTNAME
-//    : F I R S T N A M E
-//    ;
-//
-//MIDDLENAME
-//    : M I D D L E N A M E
-//    ;
-//
-//LASTNAME
-//    : L A S T N A M E
-//    ;
-//
-//ADMIN
-//    : A D M I N
-//    ;
-//
+PASSWORD
+    : P A S S W O R D
+    ;
+
+FIRSTNAME
+    : F I R S T N A M E
+    ;
+
+MIDDLENAME
+    : M I D D L E N A M E
+    ;
+
+LASTNAME
+    : L A S T N A M E
+    ;
+
+RETURNING_VALUES
+    : R E T U R N I N G UL_ V A L U E S
+    ;
+
+ACTIVE
+    : A C T I V E
+    ;
+
+INACTIVE
+    : I N A C T I V E
+    ;
+
+PLUGIN
+    : P L U G I N
+    ;
+
+TAGS
+    : T A G S
+    ;
+
+ADMIN
+    : A D M I N
+    ;
+
+BEFORE
+    : B E F O R E
+    ;
+
+AFTER
+    : A F T E R
+    ;
+
+BLOCK
+    : B L O C K
+    ;
+
+SUSPEND
+    : S U S P E N D
+    ;
+
 ROLE
     : R O L E
+    ;
+
+START
+    : S T A R T
+    ;
+
+DDL
+    : D D L
+    ;
+
+STATEMENT
+    : S T A T E M E N T
+    ;
+
+PACKAGE
+    : P A C K A G E
+    ;
+
+BODY
+    : B O D Y
+    ;
+
+MAPPING
+    : M A P P I N G
+    ;
+
+GENERATOR 
+    : G E N E R A T O R
+    ;
+
+WHILE
+    : W H I L E
+    ;
+
+LEAVE
+    : L E A V E
     ;
