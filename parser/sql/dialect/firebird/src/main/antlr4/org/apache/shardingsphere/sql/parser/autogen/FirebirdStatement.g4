@@ -36,20 +36,21 @@ execute
     | rollback
     | grant
     | revoke
-    | alterDomain
-    | createRole
-    | createUser
-    | createDomain
-    | alterSequence
-    | createCollation
     | createFunction
     | createProcedure
+    | alterSequence
+    | createCollation
+    | createDomain
+    | alterDomain
+    | createRole
     | savepoint
-    | executeStmt
     | createOrAlterTrigger
     | createTrigger
     | alterTrigger
+    | executeBlock
     | createSequence
     | merge
-    ) SEMI_?
+    | createUser
+    | executeStmt
+    ) SEMI_? EOF
     ;
