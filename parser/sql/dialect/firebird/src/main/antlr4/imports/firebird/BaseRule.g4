@@ -138,6 +138,10 @@ argumentName
     : identifier
     ;
 
+domainName
+    : identifier
+    ;
+
 owner
     : identifier
     ;
@@ -364,11 +368,41 @@ subquery
     ;
 
 orderByClause
-    : ORDER BY orderByItem (COMMA_ orderByItem)*
+    : ORDER BY orderByItem (COMMA_ orderByItem)* limitClause?
     ;
 
 orderByItem
     : (columnName | numberLiterals) (ASC | DESC)?
+    ;
+
+limitClause
+    : rowsClause | offsetDefinition
+    ;
+
+rowsClause
+    : ROWS expr (TO expr)?
+    ;
+
+offsetDefinition
+    : offsetClause
+    | fetchClause
+    | (offsetClause fetchClause)
+    ;
+
+offsetClause
+    : OFFSET limitOffset (ROW | ROWS)
+    ;
+
+fetchClause
+    : FETCH (FIRST | NEXT) limitRowCount (ROW | ROWS) ONLY
+    ;
+
+limitRowCount
+    : numberLiterals | parameterMarker
+    ;
+
+limitOffset
+    : numberLiterals | parameterMarker
     ;
 
 dataType
@@ -501,19 +535,4 @@ windowFunction
 
 overClause
     : OVER LP_ (PARTITION BY expr (COMMA_ expr)*)? orderByClause? RP_
-    ;
-    
-announcementArgument
-    : argumentName typeDescriptionArgument (NOT NULL)? collateClause?
-    ;
-
-typeDescriptionArgument
-    : dataType
-    | (TYPE OF)? domainName
-    | TYPE OF COLUMN (tableName | viewName) DOT_ columnName
-    ;
-
-
-externalModule
-    : EQ_ externalModuleName NOT_ functionName (NOT_ information)? EQ_
     ;

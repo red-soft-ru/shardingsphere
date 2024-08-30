@@ -86,10 +86,6 @@ alterDomain
 toTableClause
     : TO tableName
     ;
-    
-alterSequence
-    : ALTER SEQUENCE tableName sequenceRestartClause? sequenceIncrementClause?
-    ;
 
 defaultAlterDomainClause
     : (SET DEFAULT defaultValue | DROP DEFAULT)
