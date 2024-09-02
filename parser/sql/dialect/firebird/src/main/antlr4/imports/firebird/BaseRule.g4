@@ -92,6 +92,10 @@ schemaName
     : identifier
     ;
 
+variableName
+    : identifier
+    ;
+
 savepointName
     : identifier
     ;
@@ -174,7 +178,7 @@ constraintName
     ;
 
 externalModuleName
-    : identifier
+    : STRING_
     ;
 
 cursorName

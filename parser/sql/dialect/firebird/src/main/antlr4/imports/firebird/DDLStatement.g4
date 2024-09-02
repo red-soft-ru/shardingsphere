@@ -137,7 +137,10 @@ statement
     | returnStatement
     | cursorOpenStatement
     | cursorCloseStatement
-    | ifStatement
+    | assignmentStatement
+    | transferStatement
+    | fetchStatement
+    | whileStatement
     ;
 
 cursorOpenStatement
@@ -338,19 +341,62 @@ returnStatement
     ;
 
 createProcedure
-    : CREATE PROCEDURE procedureName (AUTHID (OWNER | CALLER))?
-        inputArgumentClause?
-        (RETURNS announcementArgument)?
-        (
-            EXTERNAL NAME externalModuleName ENGINE engineName
-        |
-            (SQL SECURITY (DEFINER | INVOKER))?
-            AS
-            announcementClause?
-            BEGIN
-                statementBlock
-            END
-        )
+    : CREATE PROCEDURE procedureClause
+    ;
+
+createOrAlterProcedure
+    : CREATE OR ALTER PROCEDURE procedureClause
+    ;
+
+alterProcedure
+    : ALTER PROCEDURE procedureClause
+    ;
+
+procedureClause
+    : procedureName (AUTHID (OWNER | CALLER))?
+              inputArgumentClause?
+              (RETURNS LP_ outputArgumentClause RP_)?
+              (
+                  EXTERNAL NAME externalModuleName ENGINE engineName
+              |
+                  (SQL SECURITY (DEFINER | INVOKER))?
+                  AS
+                  announcementClause?
+                  BEGIN
+                      statementBlock
+                  END
+              )
+    ;
+
+outputArgumentClause
+    : outputArgument (COMMA_ outputArgument)*
+    ;
+
+outputArgument
+    : announcementArgument
+    ;
+
+assignmentStatement
+    : variableName EQ_ expr
+    ;
+
+transferStatement
+    : SUSPEND SEMI_
+    ;
+
+whileStatement
+    : WHILE LP_ predicate RP_ DO compoundStatement
+    ;
+
+fetchStatement
+    : FETCH cursorName
+    INTO COLON_ variable (COMMA_ (COLON_ variable))* SEMI_
+    | FETCH (NEXT
+             | PRIOR
+             | FIRST
+             | LAST
+             | ABSOLUTE NUMBER_
+             | RELATIVE NUMBER_ ) FROM cursorName (INTO LBT_ COLON_ RBT_ variable (COMMA_ (LBT_ COLON_ RBT_ variable))* SEMI_)
     ;
 
 executeStmt
@@ -492,22 +538,18 @@ outputArgumentList
 ifStatement
     :
      IF LP_ predicate RP_
-     THEN beginStatement+
-     (ELSE beginStatement+)?
+     THEN compoundStatement+
+     (ELSE compoundStatement+)?
     ;
 
 compoundStatement
-    : (createTable | alterTable | dropTable | dropDatabase | insert | update | delete | select | createView | beginStatement | transferOperator | assignmentStatement) SEMI_?
+    : (createTable | alterTable | dropTable | dropDatabase | insert | update | delete | select | createView | beginStatement | ifStatement | fetchStatement | leaveStatement | transferStatement | cursorCloseStatement) SEMI_?
     ;
 
 beginStatement
     : BEGIN compoundStatement* END SEMI_?
     ;
 
-transferOperator
-    : SUSPEND
-    ;
-
-assignmentStatement
-    : variableName EQ_ simpleExpr
+leaveStatement
+    : LEAVE expr? SEMI_
     ;

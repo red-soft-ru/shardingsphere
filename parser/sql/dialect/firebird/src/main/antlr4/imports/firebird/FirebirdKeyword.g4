@@ -919,6 +919,35 @@ SUSPEND
     : S U S P E N D
     ;
 
+WHILE
+    : W H I L E
+    ;
+
+LEAVE
+    : L E A V E
+    ;
+
+//PASSWORD
+//    : P A S S W O R D
+//    ;
+//
+//FIRSTNAME
+//    : F I R S T N A M E
+//    ;
+//
+//MIDDLENAME
+//    : M I D D L E N A M E
+//    ;
+//
+//LASTNAME
+//    : L A S T N A M E
+//    ;
+//
+//ADMIN
+//    : A D M I N
+//    ;
+//
+
 ROLE
     : R O L E
     ;
