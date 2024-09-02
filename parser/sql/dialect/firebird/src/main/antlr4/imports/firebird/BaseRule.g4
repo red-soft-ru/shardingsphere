@@ -96,11 +96,15 @@ variableName
     : identifier
     ;
 
-domainName
+savepointName
     : identifier
     ;
 
-savepointName
+variableName
+    : identifier
+    ;
+
+domainName
     : identifier
     ;
 
@@ -110,6 +114,18 @@ tableName
 
 collationName
     : identifier
+    ;
+
+attributeName
+    : identifier
+    ;
+
+login
+    : identifier
+    ;
+
+password
+    : STRING_
     ;
 
 roleName
@@ -126,6 +142,10 @@ viewName
     ;
 
 functionName
+    : identifier
+    ;
+
+triggerName
     : identifier
     ;
 
@@ -224,6 +244,8 @@ predicate
     | bitExpr NOT? BETWEEN bitExpr AND predicate
     | bitExpr NOT? LIKE simpleExpr (ESCAPE simpleExpr)?
     | bitExpr NOT? STARTING WITH? bitExpr
+    | bitExpr IS NOT? DISTINCT FROM bitExpr
+    | bitExpr IS NOT? NULL
     | bitExpr
     ;
 
@@ -356,11 +378,41 @@ subquery
     ;
 
 orderByClause
-    : ORDER BY orderByItem (COMMA_ orderByItem)*
+    : ORDER BY orderByItem (COMMA_ orderByItem)* limitClause?
     ;
 
 orderByItem
     : (columnName | numberLiterals) (ASC | DESC)?
+    ;
+
+limitClause
+    : rowsClause | offsetDefinition
+    ;
+
+rowsClause
+    : ROWS expr (TO expr)?
+    ;
+
+offsetDefinition
+    : offsetClause
+    | fetchClause
+    | (offsetClause fetchClause)
+    ;
+
+offsetClause
+    : OFFSET limitOffset (ROW | ROWS)
+    ;
+
+fetchClause
+    : FETCH (FIRST | NEXT) limitRowCount (ROW | ROWS) ONLY
+    ;
+
+limitRowCount
+    : numberLiterals | parameterMarker
+    ;
+
+limitOffset
+    : numberLiterals | parameterMarker
     ;
 
 dataType
@@ -435,6 +487,10 @@ announcementArgument
     : argumentName typeDescriptionArgument (NOT NULL)? collateClause?
     ;
 
+announcementArgumentClause
+    : announcementArgument (COMMA_ announcementArgument)*
+    ;
+
 typeDescriptionArgument
     : dataType
     | (TYPE OF)? domainName
@@ -489,4 +545,12 @@ sortOrder
     | WIN1256
     | WIN1257 | WIN1257_EE | WIN1257_LT | WIN1257_LV
     | WIN1258
+    ;
+
+attribute
+    : attributeName EQ_ STRING_
+    ;
+
+attributeClause
+    : attribute (COMMA_ attribute)*
     ;

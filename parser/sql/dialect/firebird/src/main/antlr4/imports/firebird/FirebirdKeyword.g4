@@ -807,10 +807,6 @@ SEQUENCE
     : S E Q U E N C E
     ;
 
-RESTART
-    : R E S T A R T
-    ;
-
 INCREMENT
     : I N C R E M E N T
     ;
@@ -855,6 +851,70 @@ STARTING
     : S T A R T I N G
     ;
 
+MERGE
+    : M E R G E
+    ;
+
+RETURNING
+    : R E T U R N I N G
+    ;
+
+MATCHED
+    : M A T C H E D
+    ;
+
+PASSWORD
+    : P A S S W O R D
+    ;
+
+FIRSTNAME
+    : F I R S T N A M E
+    ;
+
+MIDDLENAME
+    : M I D D L E N A M E
+    ;
+
+LASTNAME
+    : L A S T N A M E
+    ;
+
+RETURNING_VALUES
+    : R E T U R N I N G UL_ V A L U E S
+    ;
+    
+ACTIVE
+    : A C T I V E
+    ;
+
+INACTIVE
+    : I N A C T I V E
+    ;
+
+PLUGIN
+    : P L U G I N
+    ;
+
+TAGS
+    : T A G S
+    ;
+
+ADMIN
+    : A D M I N
+    ;
+
+BEFORE
+    : B E F O R E
+    ;
+
+AFTER
+    : A F T E R
+    ;
+
+BLOCK
+    : B L O C K
+    ;
+
 SUSPEND
     : S U S P E N D
     ;
@@ -887,6 +947,31 @@ LEAVE
 //    : A D M I N
 //    ;
 //
+
 ROLE
     : R O L E
+    ;
+
+START
+    : S T A R T
+    ;
+
+DDL
+    : D D L
+    ;
+
+STATEMENT
+    : S T A T E M E N T
+    ;
+
+PACKAGE
+    : P A C K A G E
+    ;
+
+BODY
+    : B O D Y
+    ;
+
+MAPPING
+    : M A P P I N G
     ;
