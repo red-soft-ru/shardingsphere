@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-//package org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl;
-//
-//import org.apache.shardingsphere.sql.parser.sql.common.statement.ddl.ExecuteBlockStatement;
-//import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.FirebirdStatement;
-//
-///**
-// * Firebird create collation statement.
-// */
-//public final class FirebirdExecuteBlockStatement extends ExecuteBlockStatement implements FirebirdStatement {
-//}
+package org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl;
+
+import org.apache.shardingsphere.sql.parser.sql.common.statement.ddl.AlterTriggerStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.FirebirdStatement;
+
+/**
+ * Firebird alter trigger statement.
+ */
+public final class FirebirdAlterTriggerStatement extends AlterTriggerStatement implements FirebirdStatement {
+}

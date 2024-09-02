@@ -25,6 +25,8 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.Alte
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterSequenceContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterDomainContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterTriggerContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.AlterProcedureContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CheckConstraintDefinitionContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ColumnDefinitionContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ConstraintDefinitionContext;
@@ -37,14 +39,13 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.Drop
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.DropConstraintSpecificationContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.DropTableContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ModifyColumnSpecificationContext;
-import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateDomainContext;
-import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateCollationContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateFunctionContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateProcedureContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateCollationContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateDomainContext;
-//import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ExecuteBlockContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateTriggerContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateSequenceContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ExecuteStmtContext;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.AlterDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.CreateDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.column.ColumnDefinitionSegment;
@@ -62,16 +63,18 @@ import org.apache.shardingsphere.sql.parser.sql.common.value.collection.Collecti
 import org.apache.shardingsphere.sql.parser.sql.common.value.identifier.IdentifierValue;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterDomainStatement;
-import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateTableStatement;
-import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdDropTableStatement;
-import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateDomainStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterTriggerStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterSequenceStatement;
-import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateCollationStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdAlterProcedureStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateFunctionStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateProcedureStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateCollationStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateDomainStatement;
-//import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdExecuteBlockStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateTriggerStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdDropTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateSequenceStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdExecuteStatement;
 import org.apache.shardingsphere.sql.parser.firebird.visitor.statement.FirebirdStatementVisitor;
 
 import java.util.Collections;
@@ -80,7 +83,7 @@ import java.util.Collections;
  * DDL statement visitor for Firebird.
  */
 public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor implements DDLStatementVisitor {
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitCreateTable(final CreateTableContext ctx) {
@@ -98,7 +101,7 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitCreateDefinitionClause(final CreateDefinitionClauseContext ctx) {
         CollectionValue<CreateDefinitionSegment> result = new CollectionValue<>();
@@ -115,7 +118,7 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitColumnDefinition(final ColumnDefinitionContext ctx) {
         ColumnSegment column = (ColumnSegment) visit(ctx.columnName());
@@ -130,22 +133,22 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitCheckConstraintDefinition(final CheckConstraintDefinitionContext ctx) {
         return new ConstraintDefinitionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex());
     }
-    
+
     @Override
     public ASTNode visitAddConstraintSpecification(final AddConstraintSpecificationContext ctx) {
         return new AddConstraintDefinitionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (ConstraintDefinitionSegment) visit(ctx.constraintDefinition()));
     }
-    
+
     @Override
     public ASTNode visitDropConstraintSpecification(final DropConstraintSpecificationContext ctx) {
         return new DropConstraintDefinitionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (ConstraintSegment) visit(ctx.constraintDefinition().constraintName()));
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitConstraintDefinition(final ConstraintDefinitionContext ctx) {
@@ -161,7 +164,7 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitConstraintName(final ConstraintNameContext ctx) {
         return new ConstraintSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), (IdentifierValue) visit(ctx.identifier()));
@@ -196,7 +199,7 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
     public ASTNode visitAlterDomain(final AlterDomainContext ctx) {
         return new FirebirdAlterDomainStatement();
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitAlterDefinitionClause(final AlterDefinitionClauseContext ctx) {
@@ -212,7 +215,7 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
         }
         return result;
     }
-    
+
     @Override
     public ASTNode visitAddColumnSpecification(final AddColumnSpecificationContext ctx) {
         CollectionValue<AddColumnDefinitionSegment> result = new CollectionValue<>();
@@ -236,7 +239,7 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
     public ASTNode visitDropColumnSpecification(final DropColumnSpecificationContext ctx) {
         return new DropColumnDefinitionSegment(ctx.getStart().getStartIndex(), ctx.getStop().getStopIndex(), Collections.singleton((ColumnSegment) visit(ctx.columnName())));
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public ASTNode visitDropTable(final DropTableContext ctx) {
@@ -246,41 +249,56 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
     }
 
     @Override
-    public ASTNode visitCreateDomain(final CreateDomainContext ctx) {
-        return new FirebirdCreateDomainStatement();
-    }
-    
-    @Override
-    public ASTNode visitAlterSequence(final AlterSequenceContext ctx) {
-        FirebirdAlterSequenceStatement result = new FirebirdAlterSequenceStatement();
-        result.setSequenceName(((SimpleTableSegment) visit(ctx.tableName())).getTableName().getIdentifier().getValue());
-        return result;
-    }
-    
-    @Override
-    public ASTNode visitCreateCollation(final CreateCollationContext ctx) {
-        return new FirebirdCreateCollationStatement();
-    }
-    
-    @Override
     public ASTNode visitCreateFunction(final CreateFunctionContext ctx) {
         return new FirebirdCreateFunctionStatement();
     }
-    
+
     @Override
     public ASTNode visitCreateProcedure(final CreateProcedureContext ctx) {
         return new FirebirdCreateProcedureStatement();
     }
 
-//    @Override
-//    public ASTNode visitExecuteBlock(final ExecuteBlockContext ctx) {
-//        return new FirebirdExecuteBlockStatement();
-//    }
+    @Override
+    public ASTNode visitAlterProcedure(final AlterProcedureContext ctx) {
+        return new FirebirdAlterProcedureStatement();
+    }
+
+    public ASTNode visitAlterSequence(final AlterSequenceContext ctx) {
+        FirebirdAlterSequenceStatement result = new FirebirdAlterSequenceStatement();
+        result.setSequenceName(((SimpleTableSegment) visit(ctx.tableName())).getTableName().getIdentifier().getValue());
+        return result;
+    }
+
+    @Override
+    public ASTNode visitCreateCollation(final CreateCollationContext ctx) {
+        return new FirebirdCreateCollationStatement();
+    }
+
+    @Override
+    public ASTNode visitCreateDomain(final CreateDomainContext ctx) {
+        return new FirebirdCreateDomainStatement();
+    }
+
+    @Override
+    public ASTNode visitAlterTrigger(final AlterTriggerContext ctx) {
+        return new FirebirdAlterTriggerStatement();
+    }
+
+    @Override
+    public ASTNode visitCreateTrigger(final CreateTriggerContext ctx) {
+        return new FirebirdCreateTriggerStatement();
+    }
+
 
     @Override
     public ASTNode visitCreateSequence(final CreateSequenceContext ctx) {
         FirebirdCreateSequenceStatement result = new FirebirdCreateSequenceStatement();
         result.setSequenceName(((SimpleTableSegment) visit(ctx.tableName())).getTableName().getIdentifier().getValue());
         return result;
+    }
+
+    @Override
+    public ASTNode visitExecuteStmt(final ExecuteStmtContext ctx) {
+        return new FirebirdExecuteStatement();
     }
 }

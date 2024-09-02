@@ -92,16 +92,15 @@ schemaName
     : identifier
     ;
 
-
-generatorName
-    : identifier
-    ;
-    
 savepointName
     : identifier
     ;
 
 variableName
+    : (owner DOT_)? name
+    ;
+
+domainName
     : identifier
     ;
 
@@ -112,7 +111,19 @@ tableName
 collationName
     : identifier
     ;
-    
+
+attributeName
+    : identifier
+    ;
+
+login
+    : identifier
+    ;
+
+password
+    : STRING_
+    ;
+
 roleName
     : identifier
     ;
@@ -138,10 +149,6 @@ argumentName
     : identifier
     ;
 
-domainName
-    : identifier
-    ;
-
 owner
     : identifier
     ;
@@ -159,10 +166,6 @@ localVariableDeclarationName
     ;
 
 baseSortName
-    : identifier
-    ;
-
-variableName
     : identifier
     ;
 
@@ -213,8 +216,6 @@ andOperator
 orOperator
     : OR | CONCAT_
     ;
-
-
 
 notOperator
     : NOT | NOT_
@@ -278,7 +279,7 @@ simpleExpr
     ;
 
 functionCall
-    : aggregationFunction | specialFunction | regularFunction 
+    : aggregationFunction | specialFunction | regularFunction
     ;
 
 aggregationFunction
@@ -441,6 +442,29 @@ dropBehaviour
     : (CASCADE | RESTRICT)?
     ;
 
+windowFunction
+    : funcName = (ROW_NUMBER | RANK | DENSE_RANK) LP_ (expr (COMMA_ expr)* | ASTERISK_)? RP_ overClause?
+    | funcName = (LEAD | LAG | FIRST_VALUE | LAST_VALUE | NTH_VALUE) LP_ (expr (COMMA_ expr)* | ASTERISK_)? RP_ overClause?
+    ;
+
+overClause
+    : OVER LP_ (PARTITION BY expr (COMMA_ expr)*)? orderByClause? RP_
+    ;
+
+attributeCollation
+    : SQ_ attributeCollationName EQ_ (STRING_ | NUMBER_) SQ_
+    ;
+
+attributeCollationName
+    : DISABLE_COMPRESSIONS
+    | DISABLE_EXPANSIONS
+    | ICU_VERSION
+    | LOCALE
+    | MULTI_LEVEL
+    | NUMERIC_SORT
+    | SPECIALS_FIRST
+    ;
+
 defaultValue
     : (literals | NULL | contextVariables)
     ;
@@ -518,26 +542,11 @@ sortOrder
     | WIN1257 | WIN1257_EE | WIN1257_LT | WIN1257_LV
     | WIN1258
     ;
-    
-attributeCollation
-    : SQ_ attributeCollationName EQ_ (STRING_ | NUMBER_) SQ_
+
+attribute
+    : attributeName EQ_ STRING_
     ;
 
-attributeCollationName
-    : DISABLE_COMPRESSIONS
-    | DISABLE_EXPANSIONS
-    | ICU_VERSION
-    | LOCALE
-    | MULTI_LEVEL
-    | NUMERIC_SORT
-    | SPECIALS_FIRST
-    ;
-    
-windowFunction
-    : funcName = (ROW_NUMBER | RANK | DENSE_RANK) LP_ (expr (COMMA_ expr)* | ASTERISK_)? RP_ overClause?
-    | funcName = (LEAD | LAG | FIRST_VALUE | LAST_VALUE | NTH_VALUE) LP_ (expr (COMMA_ expr)* | ASTERISK_)? RP_ overClause?
-    ;
-
-overClause
-    : OVER LP_ (PARTITION BY expr (COMMA_ expr)*)? orderByClause? RP_
+attributeClause
+    : attribute (COMMA_ attribute)*
     ;
