@@ -19,4 +19,5 @@ lexer grammar Comments;
 
 import Symbol;
 
-INLINE_COMMENT: (('-- ' | '#') ~[\r\n]* ('\r'? '\n' | EOF) | '--' ('\r'? '\n' | EOF)) -> channel(HIDDEN);
+BLOCK_COMMENT:  '/*' (BLOCK_COMMENT|.)*? '*/' -> channel(HIDDEN);
+INLINE_COMMENT: '--' ~[\r\n]* ('\r'? '\n' | EOF) -> channel(HIDDEN);
