@@ -38,7 +38,6 @@ execute
     | revoke
     | createFunction
     | createProcedure
-    | createOrAlterProcedure
     | alterProcedure
     | alterSequence
     | createCollation

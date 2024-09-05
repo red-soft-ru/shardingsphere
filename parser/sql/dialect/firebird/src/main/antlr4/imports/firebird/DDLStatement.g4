@@ -341,11 +341,7 @@ returnStatement
     ;
 
 createProcedure
-    : CREATE PROCEDURE procedureClause
-    ;
-
-createOrAlterProcedure
-    : CREATE OR ALTER PROCEDURE procedureClause
+    : (CREATE PROCEDURE | CREATE OR ALTER PROCEDURE) procedureClause
     ;
 
 alterProcedure
