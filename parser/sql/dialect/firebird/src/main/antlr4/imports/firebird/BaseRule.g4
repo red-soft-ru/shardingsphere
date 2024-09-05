@@ -92,7 +92,7 @@ schemaName
     : identifier
     ;
 
-variableName
+packageName
     : identifier
     ;
 

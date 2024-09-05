@@ -46,7 +46,7 @@ privilegeType
     ;
 
 grantee
-    : PUBLIC | identifier
+    : objectRecepient | userRecepient
     ;
 
 onObjectClause
@@ -55,6 +55,32 @@ onObjectClause
 
 objectType
     : TABLE
+    | VIEW
+    | PROCEDURE
+    | FUNCTION
+    | PACKAGE
+    | GENERATOR
+    | SEQUENCE
+    | DOMAIN
+    | EXCEPTION
+    | ROLE
+    | CHARACTER SET
+    | COLLATION
+    | FILTER
+    ;
+
+objectRecepient
+    : PROCEDURE procedureName
+    | FUNCTION functionName
+    | PACKAGE packageName
+    | TRIGGER triggerName
+    | VIEW viewName
+    ;
+
+userRecepient
+    : USER? identifier
+    | ROLE? roleName
+    | GROUP identifier
     ;
 
 privilegeLevel
@@ -123,3 +149,5 @@ grantAdminRoleClause
 //userOptions
 //    : (FIRSTNAME STRING_)? (MIDDLENAME STRING_)? (LASTNAME STRING_)? ((GRANT | REVOKE) ADMIN ROLE)?
 //    ;
+GENERATOR : G E N E R A T O R;
+FILTER : F I L T E R;
