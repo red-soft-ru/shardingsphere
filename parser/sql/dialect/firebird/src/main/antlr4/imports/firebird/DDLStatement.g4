@@ -141,6 +141,7 @@ statement
     | transferStatement
     | fetchStatement
     | whileStatement
+    | ifStatement
     ;
 
 cursorOpenStatement
@@ -543,7 +544,7 @@ ifStatement
     ;
 
 compoundStatement
-    : (createTable | alterTable | dropTable | dropDatabase | insert | update | delete | select | createView | beginStatement | ifStatement | fetchStatement | leaveStatement | transferStatement | cursorCloseStatement) SEMI_?
+    : (createTable | alterTable | dropTable | dropDatabase | insert | update | delete | select | createView | beginStatement | ifStatement | fetchStatement | leaveStatement | transferStatement | cursorCloseStatement | assignmentStatement) SEMI_?
     ;
 
 beginStatement
