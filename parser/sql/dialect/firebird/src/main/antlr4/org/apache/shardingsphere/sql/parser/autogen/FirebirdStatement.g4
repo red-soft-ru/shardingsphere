@@ -46,10 +46,8 @@ execute
     | alterDomain
     | createRole
     | savepoint
-    | createOrAlterTrigger
     | createTrigger
     | alterTrigger
-    | executeBlock
     | createSequence
     | merge
     | createUser
