@@ -301,12 +301,13 @@ orderByItem
 
 dataType
     : dataTypeName dataTypeLength? characterSet? collateClause? | dataTypeName LP_ STRING_ (COMMA_ STRING_)* RP_ characterSet? collateClause?
+    | (SMALLINT | INTEGER | BIGINT) LBT_ arrayDimension RBT_
     ;
 
 dataTypeName
     : CHARACTER | CHARACTER VARYING | CHAR VARYING | NATIONAL CHARACTER | NATIONAL CHARACTER VARYING | CHAR | VARCHAR | NCHAR
     | NATIONAL CHAR | NATIONAL CHAR VARYING | BIT | BIT VARYING | NUMERIC | DECIMAL | DEC | INTEGER | SMALLINT | BOOLEAN
-    | FLOAT | REAL | DOUBLE PRECISION | DATE | TIME | TIMESTAMP | INTERVAL | TIME WITH TIME ZONE | TIMESTAMP WITH TIME ZONE | array
+    | FLOAT | REAL | DOUBLE PRECISION | DATE | TIME | TIMESTAMP | INTERVAL | TIME WITH TIME ZONE | TIMESTAMP WITH TIME ZONE
     | identifier
     ;
 
@@ -328,10 +329,6 @@ ignoredIdentifier
 
 dropBehaviour
     : (CASCADE | RESTRICT)?
-    ;
-
-array
-    : (SMALLINT | INTEGER | BIGINT) LBT_ arrayDimension RBT_
     ;
 
 arrayDimension
