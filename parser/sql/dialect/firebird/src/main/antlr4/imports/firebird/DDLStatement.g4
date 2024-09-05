@@ -553,3 +553,30 @@ beginStatement
 leaveStatement
     : LEAVE expr? SEMI_
     ;
+
+comment
+    : COMMENT ON (
+    DATABASE
+    | baseTypeComment tableName
+    | COLUMN tableName.columnName
+    | (PROCEDURE | FUNCTION) PARAMETER (packageName DOT_)? procedureName DOT_ parameterName
+    | (PROCEDURE | EXTERNAL? FUNCTION) (packageName DOT_)? procedureName
+    ) IS (STRING_ | NULL)
+    ;
+
+baseTypeComment
+    : CHARACTER SET
+    | COLLATION
+    | DOMAIN
+    | EXCEPTION
+    | FILTER
+    | GENERATOR
+    | INDEX
+    | PACKAGE
+    | USER
+    | ROLE
+    | SEQUENCE
+    | TABLE
+    | TRIGGER
+    | VIEW
+    ;

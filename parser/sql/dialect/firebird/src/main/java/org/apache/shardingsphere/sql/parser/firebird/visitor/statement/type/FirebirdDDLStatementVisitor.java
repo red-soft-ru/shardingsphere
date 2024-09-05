@@ -44,6 +44,7 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.Crea
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateCollationContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateDomainContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateTriggerContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CommentContext;
 //import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ExecuteBlockContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateSequenceContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ExecuteStmtContext;
@@ -57,8 +58,10 @@ import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.constraint.Co
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.constraint.ConstraintSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.constraint.alter.AddConstraintDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.constraint.alter.DropConstraintDefinitionSegment;
+import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.index.IndexTypeSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.dml.column.ColumnSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.generic.DataTypeSegment;
+import org.apache.shardingsphere.sql.parser.sql.common.segment.generic.NameSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.generic.table.SimpleTableSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.value.collection.CollectionValue;
 import org.apache.shardingsphere.sql.parser.sql.common.value.identifier.IdentifierValue;
@@ -79,9 +82,13 @@ import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.F
 //import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdExecuteBlockStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateSequenceStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdExecuteStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCommentStatement;
 import org.apache.shardingsphere.sql.parser.firebird.visitor.statement.FirebirdStatementVisitor;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.oracle.ddl.OracleCommentStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.postgresql.ddl.PostgreSQLCommentStatement;
 
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * DDL statement visitor for Firebird.
@@ -307,5 +314,17 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
     @Override
     public ASTNode visitExecuteStmt(final ExecuteStmtContext ctx) {
         return new FirebirdExecuteStatement();
+    }
+
+    @Override
+    public ASTNode visitComment(final CommentContext ctx) {
+        OracleCommentStatement result = new OracleCommentStatement();
+        if (null != ctx.tableName()) {
+            result.setTable((SimpleTableSegment) visit(ctx.tableName()));
+        }
+        if (null != ctx.columnName()) {
+            result.setColumn((ColumnSegment) visit(ctx.columnName()));
+        }
+        return result;
     }
 }

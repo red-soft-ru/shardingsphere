@@ -975,3 +975,19 @@ BODY
 MAPPING
     : M A P P I N G
     ;
+
+FILTER
+    : F I L T E R
+    ;
+
+PARAMETER
+    : P A R A M E T E R
+    ;
+
+DATABASE
+    : D A T A B A S E
+    ;
+
+COMMENT
+    : C O M M E N T
+    ;
