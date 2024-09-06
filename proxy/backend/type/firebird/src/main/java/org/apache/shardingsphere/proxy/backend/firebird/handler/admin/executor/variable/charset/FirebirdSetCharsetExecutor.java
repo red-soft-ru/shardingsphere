@@ -31,7 +31,7 @@ public final class FirebirdSetCharsetExecutor implements CharsetVariableProvider
     
     @Override
     public boolean isCharsetVariable(final String variableName) {
-        return "client_encoding".equalsIgnoreCase(variableName);
+        return "names".equalsIgnoreCase(variableName);
     }
     
     @Override
@@ -39,9 +39,9 @@ public final class FirebirdSetCharsetExecutor implements CharsetVariableProvider
         String formattedValue = formatValue(variableValue);
         try {
             String result = formattedValue.toLowerCase(Locale.ROOT);
-            return "default".equals(result) ? StandardCharsets.UTF_8 : FirebirdCharacterSets.findCharacterSet(result);
+            return "default".equals(result) ? Charset.defaultCharset() : FirebirdCharacterSets.findCharacterSet(result);
         } catch (final IllegalArgumentException ignored) {
-            throw new InvalidParameterValueException("client_encoding", formattedValue.toLowerCase(Locale.ROOT));
+            throw new InvalidParameterValueException("names", formattedValue.toLowerCase(Locale.ROOT));
         }
     }
     

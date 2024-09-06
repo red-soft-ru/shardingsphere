@@ -34,7 +34,7 @@ public final class FirebirdResetVariableAdminExecutor implements DatabaseAdminEx
     
     private static final String DEFAULT = "DEFAULT";
     
-    private final DatabaseType databaseType = TypedSPILoader.getService(DatabaseType.class, "PostgreSQL");
+    private final DatabaseType databaseType = TypedSPILoader.getService(DatabaseType.class, "Firebird");
     
     private final ResetParameterStatement resetParameterStatement;
     

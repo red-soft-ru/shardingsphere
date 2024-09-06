@@ -28,57 +28,65 @@ import java.util.function.Supplier;
 
 /**
  * Character sets defined in Firebird.
- * <a href="https://www.postgresql.org/docs/14/multibyte.html">24.3. Character Set Support</a>
  */
 public enum FirebirdCharacterSets {
-    
-    SQL_ASCII(() -> StandardCharsets.US_ASCII),
-    EUC_JP(() -> Charset.forName("EUC_JP")),
-    EUC_CN(() -> Charset.forName("EUC_CN")),
-    EUC_KR(() -> Charset.forName("EUC_KR")),
-    EUC_TW(() -> Charset.forName("EUC_TW")),
-    EUC_JIS_2004(() -> Charset.forName("EUC_JIS_2004")),
-    UTF8(() -> StandardCharsets.UTF_8, "Unicode", "UTF_8"),
-    MULE_INTERNAL(() -> Charset.forName("MULE_INTERNAL")),
-    LATIN1(() -> StandardCharsets.ISO_8859_1, "ISO88591"),
-    LATIN2(() -> Charset.forName("LATIN2"), "ISO88592"),
-    LATIN3(() -> Charset.forName("LATIN3"), "ISO88593"),
-    LATIN4(() -> Charset.forName("LATIN4"), "ISO88594"),
-    LATIN5(() -> Charset.forName("LATIN5"), "ISO88599"),
-    LATIN6(() -> Charset.forName("ISO-8859-10"), "ISO885910"),
-    LATIN7(() -> Charset.forName("ISO-8859-13"), "ISO885913"),
-    LATIN8(() -> Charset.forName("ISO-8859-14"), "ISO885914"),
-    LATIN9(() -> Charset.forName("LATIN9"), "ISO885915"),
-    LATIN10(() -> Charset.forName("LATIN10"), "ISO885916"),
-    WIN1256(() -> Charset.forName("WINDOWS-1256")),
-    WIN1258(() -> Charset.forName("WINDOWS-1258"), "ABC", "TCVN", "TCVN5712", "VSCII"),
-    WIN866(() -> Charset.forName("WINDOWS-866"), "ALT"),
-    WIN874(() -> Charset.forName("WINDOWS-874")),
+
+    ASCII(() -> StandardCharsets.US_ASCII),
+    BIG_5(() -> Charset.forName("BIG5")),
+    CYRL(() -> Charset.forName("CYRL")),
+    DOS437(() -> Charset.forName("IBM437")),
+    DOS737(() -> Charset.forName("IBM737")),
+    DOS775(() -> Charset.forName("IBM775")),
+    DOS850(() -> Charset.forName("IBM850")),
+    DOS852(() -> Charset.forName("IBM852")),
+    DOS857(() -> Charset.forName("IBM857")),
+    DOS858(() -> Charset.forName("IBM858")),
+    DOS860(() -> Charset.forName("IBM860")),
+    DOS861(() -> Charset.forName("IBM861")),
+    DOS862(() -> Charset.forName("IBM862")),
+    DOS863(() -> Charset.forName("IBM863")),
+    DOS864(() -> Charset.forName("IBM864")),
+    DOS865(() -> Charset.forName("IBM865")),
+    DOS866(() -> Charset.forName("IBM866")),
+    DOS869(() -> Charset.forName("IBM869")),
+    EUCJ_0208(() -> Charset.forName("EUC-JP")),
+    GB_2312(() -> Charset.forName("GB2312")),
+    ISO8859_1(() -> StandardCharsets.ISO_8859_1),
+    ISO8859_2(() -> Charset.forName("ISO8859_2")),
+    ISO8859_3(() -> Charset.forName("ISO8859_3")),
+    ISO8859_4(() -> Charset.forName("ISO8859_4")),
+    ISO8859_5(() -> Charset.forName("ISO8859_5")),
+    ISO8859_6(() -> Charset.forName("ISO8859_6")),
+    ISO8859_7(() -> Charset.forName("ISO8859_7")),
+    ISO8859_8(() -> Charset.forName("ISO8859_8")),
+    ISO8859_9(() -> Charset.forName("ISO8859_9")),
+    ISO8859_13(() -> Charset.forName("ISO8859_13")),
     KOI8R(() -> Charset.forName("KOI8-R")),
-    WIN1251(() -> Charset.forName("WINDOWS-1251"), "WIN"),
-    WIN1252(() -> Charset.forName("WINDOWS-1252")),
-    ISO_8859_5(() -> Charset.forName("ISO-8859-5")),
-    ISO_8859_6(() -> Charset.forName("ISO-8859-6")),
-    ISO_8859_7(() -> Charset.forName("ISO-8859-7")),
-    ISO_8859_8(() -> Charset.forName("ISO-8859-8")),
-    WIN1250(() -> Charset.forName("WINDOWS-1250")),
-    WIN1253(() -> Charset.forName("WINDOWS-1253")),
-    WIN1254(() -> Charset.forName("WINDOWS-1254")),
-    WIN1255(() -> Charset.forName("WINDOWS-1255")),
-    WIN1257(() -> Charset.forName("WINDOWS-1257")),
-    KOI8U(() -> Charset.forName("KOI8-U"), "KOI8"),
-    SJIS(() -> Charset.forName("SJIS"), "Mskanji", "ShiftJIS", "WIN932", "Windows932"),
-    BIG5(() -> Charset.forName("BIG5"), "WIN950", "Windows950"),
-    GBK(() -> Charset.forName("GBK"), "WIN936", "Windows936"),
-    UHC(() -> Charset.forName("UHC"), "WIN949", "Windows949"),
-    GB18030(() -> Charset.forName("GB18030")),
-    JOHAB(() -> Charset.forName("JOHAB")),
-    SHIFT_JIS_2004(() -> Charset.forName("SHIFT_JIS"));
-    
+    KOI8U(() -> Charset.forName("KOI8-U")),
+    KSC_5601(() -> Charset.forName("EUC-KR")),
+    NEXT(() -> Charset.forName("NEXT")),
+
+    //default jvm value as described here: https://www.firebirdsql.org/file/documentation/drivers_documentation/java/faq.html#how-can-i-specify-the-connection-character-set
+    NONE(Charset::defaultCharset),
+    OCTETS(Charset::defaultCharset, "BINARY"),
+
+    SJIS_0208(() -> Charset.forName("ISO-2022-JP")),
+    UNICODE_FSS(() -> StandardCharsets.UTF_8),
+    UTF8(() -> StandardCharsets.UTF_8),
+    WIN1250(() -> Charset.forName("windows-1250")),
+    WIN1251(() -> Charset.forName("windows-1251")),
+    WIN1252(() -> Charset.forName("windows-1252")),
+    WIN1253(() -> Charset.forName("windows-1253")),
+    WIN1254(() -> Charset.forName("windows-1254")),
+    WIN1255(() -> Charset.forName("windows-1255")),
+    WIN1256(() -> Charset.forName("windows-1256")),
+    WIN1257(() -> Charset.forName("windows-1257")),
+    WIN1258(() -> Charset.forName("windows-1258"));
+
     private static final Map<String, FirebirdCharacterSets> CHARACTER_SETS_MAP;
     
     static {
-        Map<String, FirebirdCharacterSets> map = new HashMap<>(128, 1F);
+        Map<String, FirebirdCharacterSets> map = new HashMap<>(64, 1F);
         for (FirebirdCharacterSets each : values()) {
             map.put(each.name(), each);
             for (String eachAlias : each.aliases) {

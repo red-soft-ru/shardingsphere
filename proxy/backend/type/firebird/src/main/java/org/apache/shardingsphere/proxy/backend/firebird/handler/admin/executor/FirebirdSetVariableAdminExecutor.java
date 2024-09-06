@@ -33,7 +33,7 @@ import org.apache.shardingsphere.sql.parser.sql.common.statement.dal.SetStatemen
 @RequiredArgsConstructor
 public final class FirebirdSetVariableAdminExecutor implements DatabaseAdminExecutor {
     
-    private final DatabaseType databaseType = TypedSPILoader.getService(DatabaseType.class, "PostgreSQL");
+    private final DatabaseType databaseType = TypedSPILoader.getService(DatabaseType.class, "Firebird");
     
     private final SetStatement setStatement;
     
