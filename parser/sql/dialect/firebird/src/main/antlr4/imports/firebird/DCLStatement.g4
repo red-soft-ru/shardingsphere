@@ -149,5 +149,3 @@ grantAdminRoleClause
 //userOptions
 //    : (FIRSTNAME STRING_)? (MIDDLENAME STRING_)? (LASTNAME STRING_)? ((GRANT | REVOKE) ADMIN ROLE)?
 //    ;
-GENERATOR : G E N E R A T O R;
-FILTER : F I L T E R;

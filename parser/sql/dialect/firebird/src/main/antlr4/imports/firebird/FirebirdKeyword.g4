@@ -975,3 +975,11 @@ BODY
 MAPPING
     : M A P P I N G
     ;
+
+GENERATOR
+    : G E N E R A T O R
+    ;
+
+FILTER
+    : F I L T E R
+    ;
