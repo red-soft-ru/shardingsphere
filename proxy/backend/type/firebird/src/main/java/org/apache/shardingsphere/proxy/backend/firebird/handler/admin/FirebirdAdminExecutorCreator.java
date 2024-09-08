@@ -18,10 +18,8 @@
 package org.apache.shardingsphere.proxy.backend.firebird.handler.admin;
 
 import org.apache.shardingsphere.infra.binder.context.statement.SQLStatementContext;
-import org.apache.shardingsphere.infra.metadata.database.schema.manager.SystemSchemaManager;
 import org.apache.shardingsphere.proxy.backend.firebird.handler.admin.executor.FirebirdSetVariableAdminExecutor;
 import org.apache.shardingsphere.proxy.backend.firebird.handler.admin.executor.FirebirdShowVariableExecutor;
-import org.apache.shardingsphere.proxy.backend.handler.admin.executor.AbstractDatabaseMetaDataExecutor.DefaultDatabaseMetaDataExecutor;
 import org.apache.shardingsphere.proxy.backend.handler.admin.executor.DatabaseAdminExecutor;
 import org.apache.shardingsphere.proxy.backend.handler.admin.executor.DatabaseAdminExecutorCreator;
 import org.apache.shardingsphere.proxy.backend.firebird.handler.admin.executor.FirebirdResetVariableAdminExecutor;
@@ -36,7 +34,6 @@ import org.apache.shardingsphere.sql.parser.sql.common.statement.dal.ShowStateme
 import org.apache.shardingsphere.sql.parser.sql.common.statement.dml.SelectStatement;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,13 +43,7 @@ import java.util.Optional;
  * Database admin executor creator for Firebird.
  */
 public final class FirebirdAdminExecutorCreator implements DatabaseAdminExecutorCreator {
-    
-    private static final String PG_CLASS = "pg_class";
-    
-    private static final String PG_NAMESPACE = "pg_namespace";
-    
-    private static final Collection<String> KERNEL_SUPPORTED_TABLES = Arrays.asList(PG_NAMESPACE, PG_CLASS);
-    
+
     @Override
     public Optional<DatabaseAdminExecutor> create(final SQLStatementContext sqlStatementContext) {
         SQLStatement sqlStatement = sqlStatementContext.getSqlStatement();
@@ -65,15 +56,9 @@ public final class FirebirdAdminExecutorCreator implements DatabaseAdminExecutor
     @Override
     public Optional<DatabaseAdminExecutor> create(final SQLStatementContext sqlStatementContext, final String sql, final String databaseName, final List<Object> parameters) {
         SQLStatement sqlStatement = sqlStatementContext.getSqlStatement();
+        // TODO add support for Firebird system tables
         if (sqlStatement instanceof SelectStatement) {
-            Collection<String> selectedTableNames = getSelectedTableNames((SelectStatement) sqlStatement);
-            if (!selectedTableNames.isEmpty() && KERNEL_SUPPORTED_TABLES.containsAll(selectedTableNames)) {
-                return Optional.empty();
-            }
-            if (!selectedTableNames.isEmpty() && (SystemSchemaManager.isSystemTable("postgresql", "information_schema", selectedTableNames)
-                    || SystemSchemaManager.isSystemTable("postgresql", "pg_catalog", selectedTableNames))) {
-                return Optional.of(new DefaultDatabaseMetaDataExecutor(sql, parameters));
-            }
+            return Optional.empty();
         }
         if (sqlStatement instanceof SetStatement) {
             return Optional.of(new FirebirdSetVariableAdminExecutor((SetStatement) sqlStatement));
