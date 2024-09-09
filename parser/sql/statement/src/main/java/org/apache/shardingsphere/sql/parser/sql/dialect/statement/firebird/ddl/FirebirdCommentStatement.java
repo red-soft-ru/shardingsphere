@@ -15,9 +15,13 @@
  * limitations under the License.
  */
 
-lexer grammar Comments;
+package org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl;
 
-import Symbol;
+import org.apache.shardingsphere.sql.parser.sql.common.statement.ddl.CommentStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.FirebirdStatement;
 
-BLOCK_COMMENT:  '/*' (BLOCK_COMMENT|.)*? '*/' -> channel(HIDDEN);
-INLINE_COMMENT: '--' ~[\r\n]* ('\r'? '\n' | EOF) -> channel(HIDDEN);
+/**
+ * Firebird comment statement.
+ */
+public final class FirebirdCommentStatement extends CommentStatement implements FirebirdStatement {
+}

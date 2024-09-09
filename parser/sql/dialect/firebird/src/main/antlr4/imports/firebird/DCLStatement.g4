@@ -46,7 +46,7 @@ privilegeType
     ;
 
 grantee
-    : PUBLIC | identifier
+    : objectRecepient | userRecepient
     ;
 
 onObjectClause
@@ -55,6 +55,32 @@ onObjectClause
 
 objectType
     : TABLE
+    | VIEW
+    | PROCEDURE
+    | FUNCTION
+    | PACKAGE
+    | GENERATOR
+    | SEQUENCE
+    | DOMAIN
+    | EXCEPTION
+    | ROLE
+    | CHARACTER SET
+    | COLLATION
+    | FILTER
+    ;
+
+objectRecepient
+    : PROCEDURE procedureName
+    | FUNCTION functionName
+    | PACKAGE packageName
+    | TRIGGER triggerName
+    | VIEW viewName
+    ;
+
+userRecepient
+    : USER? identifier
+    | ROLE? roleName
+    | GROUP identifier
     ;
 
 privilegeLevel

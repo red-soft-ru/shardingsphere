@@ -44,7 +44,6 @@ execute
     | alterDomain
     | createRole
     | savepoint
-    | createOrAlterTrigger
     | createTrigger
     | alterTrigger
     | executeBlock
@@ -52,5 +51,6 @@ execute
     | merge
     | createUser
     | executeStmt
+    | comment
     ) SEMI_? EOF
     ;

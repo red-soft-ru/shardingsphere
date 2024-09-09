@@ -104,8 +104,20 @@ domainName
     : identifier
     ;
 
+packageName
+    : identifier
+    ;
+
 tableName
     : (owner DOT_)? name
+    ;
+
+packageName
+    : identifier
+    ;
+
+parameterName
+    : identifier
     ;
 
 collationName
