@@ -49,7 +49,7 @@ assignmentValues
     ;
 
 assignmentValue
-    : expr | DEFAULT | blobValue
+    : expr | DEFAULT | blobValue | bindLiterals
     ;
 
 blobValue
