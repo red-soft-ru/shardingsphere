@@ -142,6 +142,7 @@ statement
     | fetchStatement
     | whileStatement
     | ifStatement
+    | executeStmt
     ;
 
 cursorOpenStatement
@@ -157,25 +158,19 @@ announcementClause
     ;
 
 announcement
-    : localVariableAnnouncement
-    | cursorAnnouncement
+    : localVariableOrCursorAnnouncement
     | procedureAnnouncement
     | functioneAnnouncement
     ;
 
-localVariableAnnouncement
+localVariableOrCursorAnnouncement
     : DECLARE VARIABLE? (
     localVariableDeclarationName typeDescriptionArgument
     (NOT NULL)?
     collateClause?
     ((EQ_ | DEFAULT) defaultValue)?
-    | cursorName CURSOR FOR LP_ select RP_ SEMI_?
-    )
-    ;
-
-cursorAnnouncement
-    :  DECLARE VARIABLE? cursorName
-    CURSOR FOR (SCROLL | NO SCROLL)? LP_ select RP_ SEMI_?
+    | cursorName
+          CURSOR FOR (SCROLL | NO SCROLL)? LP_ select RP_ SEMI_? )
     ;
 
 procedureAnnouncement
@@ -381,7 +376,7 @@ executeStmt
     ;
 
 executeProcedure
-    : EXECUTE PROCEDURE procedureName exprClause?
+    : EXECUTE PROCEDURE procedureName exprClause? returningValuesClause?
     ;
 
 exprClause
@@ -389,7 +384,7 @@ exprClause
     ;
 
 returningValuesClause
-    : RETURNING_VALUES exprClause? SEMI_
+    : RETURNING_VALUES exprClause SEMI_
     ;
 
 createTrigger
