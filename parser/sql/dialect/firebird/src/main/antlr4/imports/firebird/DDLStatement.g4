@@ -283,7 +283,7 @@ usingDefinition
     ;
 
 constraintDefinition
-    : (CONSTRAINT constraintName?)? (primaryKeyOption | uniqueOption | foreignKeyOption)
+    : (CONSTRAINT constraintName?)? (primaryKeyOption | uniqueOption | foreignKeyOption)?
     ;
 
 primaryKeyOption
