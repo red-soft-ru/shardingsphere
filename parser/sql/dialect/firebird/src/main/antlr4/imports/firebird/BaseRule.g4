@@ -404,11 +404,11 @@ fetchClause
     ;
 
 limitRowCount
-    : numberLiterals | parameterMarker
+    : numberLiterals | parameterMarker | bindLiterals
     ;
 
 limitOffset
-    : numberLiterals | parameterMarker
+    : numberLiterals | parameterMarker | bindLiterals
     ;
 
 dataType
@@ -549,4 +549,8 @@ attribute
 
 attributeClause
     : attribute (COMMA_ attribute)*
+    ;
+
+bindLiterals
+    : COLON_ identifier
     ;
