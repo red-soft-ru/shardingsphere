@@ -342,7 +342,7 @@ returnStatement
     ;
 
 createProcedure
-    : (CREATE PROCEDURE | CREATE OR ALTER PROCEDURE) procedureClause
+    : (CREATE (OR ALTER)? PROCEDURE) procedureClause
     ;
 
 alterProcedure
