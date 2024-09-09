@@ -112,6 +112,14 @@ tableName
     : (owner DOT_)? name
     ;
 
+packageName
+    : identifier
+    ;
+
+parameterName
+    : identifier
+    ;
+
 collationName
     : identifier
     ;

@@ -45,6 +45,7 @@ import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.Crea
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateDomainContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateTriggerContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CreateSequenceContext;
+import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.CommentContext;
 import org.apache.shardingsphere.sql.parser.autogen.FirebirdStatementParser.ExecuteStmtContext;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.AlterDefinitionSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.ddl.CreateDefinitionSegment;
@@ -74,6 +75,7 @@ import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.F
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateTriggerStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdDropTableStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCreateSequenceStatement;
+import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdCommentStatement;
 import org.apache.shardingsphere.sql.parser.sql.dialect.statement.firebird.ddl.FirebirdExecuteStatement;
 import org.apache.shardingsphere.sql.parser.firebird.visitor.statement.FirebirdStatementVisitor;
 
@@ -300,5 +302,17 @@ public final class FirebirdDDLStatementVisitor extends FirebirdStatementVisitor 
     @Override
     public ASTNode visitExecuteStmt(final ExecuteStmtContext ctx) {
         return new FirebirdExecuteStatement();
+    }
+
+    @Override
+    public ASTNode visitComment(final CommentContext ctx) {
+        FirebirdCommentStatement result = new FirebirdCommentStatement();
+        if (null != ctx.tableName()) {
+            result.setTable((SimpleTableSegment) visit(ctx.tableName()));
+        }
+        if (null != ctx.columnName()) {
+            result.setColumn((ColumnSegment) visit(ctx.columnName()));
+        }
+        return result;
     }
 }
