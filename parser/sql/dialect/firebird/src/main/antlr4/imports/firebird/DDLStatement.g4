@@ -386,15 +386,11 @@ returningValuesClause
     ;
 
 createTrigger
-    : CREATE TRIGGER triggerName triggerClause
+    : (CREATE TRIGGER | CREATE OR ALTER TRIGGER) triggerName triggerClause
     ;
 
 alterTrigger
     : ALTER TRIGGER triggerName (ACTIVE | INACTIVE)? ((BEFORE | AFTER) eventListTable)? (POSITION expr)? triggerClause
-    ;
-
-createOrAlterTrigger
-    : CREATE OR ALTER TRIGGER triggerName triggerClause
     ;
 
 announcmentTriggerClause
@@ -535,7 +531,7 @@ ifStatement
     ;
 
 compoundStatement
-    : (createTable | alterTable | dropTable | dropDatabase | insert | update | delete | select | createView | beginStatement | ifStatement | fetchStatement | leaveStatement | transferStatement | cursorCloseStatement) SEMI_?
+    : (createTable | alterTable | dropTable | dropDatabase | insert | update | delete | select | createView | beginStatement | ifStatement | fetchStatement | leaveStatement | transferStatement | cursorCloseStatement | assignmentStatement) SEMI_?
     ;
 
 beginStatement
