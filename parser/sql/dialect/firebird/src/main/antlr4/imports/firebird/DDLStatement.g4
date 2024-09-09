@@ -203,9 +203,18 @@ dropDatabase
     ;
 
 createView
-    : CREATE VIEW viewName (LP_ identifier (COMMA_ identifier)* RP_)?
+    : (CREATE (OR ALTER)? VIEW)
+    viewName viewAliasClause?
       AS select
       (WITH (CASCADED | LOCAL)? CHECK OPTION)?
+    ;
+
+viewAliasClause
+    : LP_ viewAlias (COMMA_ viewAlias)* RP_
+    ;
+
+viewAlias
+    : columnName (AS alias)?
     ;
 
 dropView
@@ -342,11 +351,7 @@ returnStatement
     ;
 
 createProcedure
-    : CREATE PROCEDURE procedureClause
-    ;
-
-createOrAlterProcedure
-    : CREATE OR ALTER PROCEDURE procedureClause
+    : (CREATE (OR ALTER)? PROCEDURE) procedureClause
     ;
 
 alterProcedure
@@ -386,15 +391,11 @@ returningValuesClause
     ;
 
 createTrigger
-    : CREATE TRIGGER triggerName triggerClause
+    : (CREATE (OR ALTER)? TRIGGER) triggerName triggerClause
     ;
 
 alterTrigger
     : ALTER TRIGGER triggerName (ACTIVE | INACTIVE)? ((BEFORE | AFTER) eventListTable)? (POSITION expr)? triggerClause
-    ;
-
-createOrAlterTrigger
-    : CREATE OR ALTER TRIGGER triggerName triggerClause
     ;
 
 announcmentTriggerClause
@@ -535,7 +536,7 @@ ifStatement
     ;
 
 compoundStatement
-    : (createTable | alterTable | dropTable | dropDatabase | insert | update | delete | select | createView | beginStatement | ifStatement | fetchStatement | leaveStatement | transferStatement | cursorCloseStatement) SEMI_?
+    : (createTable | alterTable | dropTable | dropDatabase | insert | update | delete | select | createView | beginStatement | ifStatement | fetchStatement | leaveStatement | transferStatement | cursorCloseStatement | assignmentStatement) SEMI_?
     ;
 
 beginStatement
