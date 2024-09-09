@@ -203,9 +203,18 @@ dropDatabase
     ;
 
 createView
-    : CREATE VIEW viewName (LP_ identifier (COMMA_ identifier)* RP_)?
+    : (CREATE (OR ALTER)? VIEW)
+    viewName viewAliasClause?
       AS select
       (WITH (CASCADED | LOCAL)? CHECK OPTION)?
+    ;
+
+viewAliasClause
+    : LP_ viewAlias (COMMA_ viewAlias)* RP_
+    ;
+
+viewAlias
+    : columnName (AS alias)?
     ;
 
 dropView
