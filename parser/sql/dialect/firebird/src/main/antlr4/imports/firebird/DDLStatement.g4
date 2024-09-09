@@ -203,7 +203,7 @@ dropDatabase
     ;
 
 createView
-    : (CREATE VIEW | CREATE OR ALTER VIEW)
+    : (CREATE (OR ALTER)? VIEW)
     viewName viewAliasClause?
       AS select
       (WITH (CASCADED | LOCAL)? CHECK OPTION)?
