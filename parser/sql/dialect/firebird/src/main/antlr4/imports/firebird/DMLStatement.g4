@@ -73,7 +73,7 @@ combineClause
     ;
 
 selectClause
-    : SELECT selectSpecification* projections fromClause? whereClause? groupByClause? havingClause? orderByClause?
+    : SELECT selectSpecification* projections fromClause? whereClause? groupByClause? havingClause? orderByClause? limitClause?
     ;
 
 
