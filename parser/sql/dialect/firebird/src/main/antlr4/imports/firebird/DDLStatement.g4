@@ -386,7 +386,7 @@ returningValuesClause
     ;
 
 createTrigger
-    : (CREATE TRIGGER | CREATE OR ALTER TRIGGER) triggerName triggerClause
+    : (CREATE (OR ALTER)? TRIGGER) triggerName triggerClause
     ;
 
 alterTrigger
