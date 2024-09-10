@@ -348,7 +348,7 @@ returnStatement
     ;
 
 createProcedure
-    : (CREATE (OR ALTER)? PROCEDURE) procedureClause
+    : (CREATE PROCEDURE | CREATE OR ALTER PROCEDURE) procedureClause
     ;
 
 alterProcedure
@@ -517,13 +517,13 @@ whileStatement
 
 fetchStatement
     : FETCH cursorName
-    INTO COLON_ variable (COMMA_ (COLON_ variable))* SEMI_
+    (INTO COLON_ variable (COMMA_ (COLON_ variable))* SEMI_)?
     | FETCH (NEXT
              | PRIOR
              | FIRST
              | LAST
              | ABSOLUTE NUMBER_
-             | RELATIVE NUMBER_ ) FROM cursorName (INTO LBT_ COLON_ RBT_ variable (COMMA_ (LBT_ COLON_ RBT_ variable))* SEMI_)
+             | RELATIVE NUMBER_ ) FROM cursorName (INTO LBT_ COLON_ RBT_ variable (COMMA_ (LBT_ COLON_ RBT_ variable))* SEMI_)?
     ;
 
 ifStatement
