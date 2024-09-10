@@ -504,7 +504,7 @@ outputArgumentList
     ;
 
 assignmentStatement
-    : variableName EQ_ simpleExpr
+    : variableName EQ_ expr
     ;
 
 transferStatement
