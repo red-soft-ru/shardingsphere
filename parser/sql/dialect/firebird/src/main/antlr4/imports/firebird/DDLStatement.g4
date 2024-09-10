@@ -48,7 +48,7 @@ attributeClause
     ;
 
 createDomain
-    : CREATE DOMAIN domainName AS? dataType defaultClause? notNullClause? checkClause? characterSetClause?
+    : CREATE DOMAIN domainName AS? dataType defaultClause? notNullClause? checkClause? characterSetClause? collateClause?
     ;
 
 defaultClause
