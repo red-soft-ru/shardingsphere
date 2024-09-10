@@ -22,13 +22,11 @@ import org.apache.shardingsphere.proxy.backend.firebird.handler.admin.executor.F
 import org.apache.shardingsphere.proxy.backend.firebird.handler.admin.executor.FirebirdShowVariableExecutor;
 import org.apache.shardingsphere.proxy.backend.handler.admin.executor.DatabaseAdminExecutor;
 import org.apache.shardingsphere.proxy.backend.handler.admin.executor.DatabaseAdminExecutorCreator;
-import org.apache.shardingsphere.proxy.backend.firebird.handler.admin.executor.FirebirdResetVariableAdminExecutor;
 import org.apache.shardingsphere.sql.parser.sql.common.extractor.TableExtractor;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.generic.table.SimpleTableSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.generic.table.SubqueryTableSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.segment.generic.table.TableSegment;
 import org.apache.shardingsphere.sql.parser.sql.common.statement.SQLStatement;
-import org.apache.shardingsphere.sql.parser.sql.common.statement.dal.ResetParameterStatement;
 import org.apache.shardingsphere.sql.parser.sql.common.statement.dal.SetStatement;
 import org.apache.shardingsphere.sql.parser.sql.common.statement.dal.ShowStatement;
 import org.apache.shardingsphere.sql.parser.sql.common.statement.dml.SelectStatement;
@@ -62,9 +60,6 @@ public final class FirebirdAdminExecutorCreator implements DatabaseAdminExecutor
         }
         if (sqlStatement instanceof SetStatement) {
             return Optional.of(new FirebirdSetVariableAdminExecutor((SetStatement) sqlStatement));
-        }
-        if (sqlStatement instanceof ResetParameterStatement) {
-            return Optional.of(new FirebirdResetVariableAdminExecutor((ResetParameterStatement) sqlStatement));
         }
         return Optional.empty();
     }
