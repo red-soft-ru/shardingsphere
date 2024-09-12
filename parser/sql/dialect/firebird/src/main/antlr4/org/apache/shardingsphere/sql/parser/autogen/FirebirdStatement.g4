@@ -46,7 +46,6 @@ execute
     | savepoint
     | createTrigger
     | alterTrigger
-    | executeBlock
     | createSequence
     | merge
     | createUser
