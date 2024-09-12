@@ -112,10 +112,6 @@ tableName
     : (owner DOT_)? name
     ;
 
-packageName
-    : identifier
-    ;
-
 parameterName
     : identifier
     ;
@@ -254,6 +250,7 @@ predicate
     | bitExpr NOT? STARTING WITH? bitExpr
     | bitExpr IS NOT? DISTINCT FROM bitExpr
     | bitExpr IS NOT? NULL
+    | bitExpr NOT? SIMILAR TO bitExpr (ESCAPE bitExpr)?
     | bitExpr
     ;
 

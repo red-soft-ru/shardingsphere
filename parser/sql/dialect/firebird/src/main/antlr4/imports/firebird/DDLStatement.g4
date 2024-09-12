@@ -262,7 +262,7 @@ dataTypeOption
     ;
 
 checkConstraintDefinition
-    : (CONSTRAINT ignoredIdentifier?)? CHECK expr
+    : (CONSTRAINT ignoredIdentifier?)? checkClause
     ;
 
 referenceDefinition
