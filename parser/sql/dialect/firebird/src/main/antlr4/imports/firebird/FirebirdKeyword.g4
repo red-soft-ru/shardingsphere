@@ -974,3 +974,7 @@ DATABASE
 COMMENT
     : C O M M E N T
     ;
+
+SIMILAR
+    : S I M I L A R
+    ;
