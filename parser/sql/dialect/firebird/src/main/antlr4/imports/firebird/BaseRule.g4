@@ -421,7 +421,9 @@ limitOffset
     ;
 
 dataType
-    : dataTypeName dataTypeLength? characterSet? collateClause? | dataTypeName LP_ STRING_ (COMMA_ STRING_)* RP_ characterSet? collateClause?
+    : dataTypeName dataTypeLength? characterSet? collateClause?
+    | dataTypeName LP_ STRING_ (COMMA_ STRING_)* RP_ characterSet? collateClause?
+    | dataTypeName LBT_ (NUMBER_? COLON_ NUMBER | NUMBER_ (COMMA_ NUMBER_)*) RBT_
     ;
 
 dataTypeName
