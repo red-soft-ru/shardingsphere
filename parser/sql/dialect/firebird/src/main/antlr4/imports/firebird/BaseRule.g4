@@ -233,7 +233,7 @@ booleanPrimary
     : booleanPrimary IS NOT? (TRUE | FALSE | UNKNOWN | NULL)
     | booleanPrimary SAFE_EQ_ predicate
     | booleanPrimary comparisonOperator predicate
-    | booleanPrimary comparisonOperator (ALL | ANY) subquery
+    | booleanPrimary comparisonOperator (ALL | SOME | ANY) subquery
     | predicate
     ;
 
