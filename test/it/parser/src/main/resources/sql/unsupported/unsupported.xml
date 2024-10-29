@@ -377,5 +377,19 @@
     <sql-case id="update_without_alias" value="UPDATE t_order SET status = ? WHERE order_id = ? AND user_id = ?" db-types="Firebird"/>
     <sql-case id="update_without_parameters" value="UPDATE t_order SET status = 'update' WHERE order_id = 1000 AND user_id = 10" db-types="Firebird"/>
     <sql-case id="update_with_where_calculation" value="UPDATE t_order SET status = ? WHERE order_id = order_id - ? AND user_id = ?" db-types="Firebird"/>
+    <!-- ################################################################################################# -->
+
+    <sql-case id="unsupported_create_view_as_base_select1" value="CREATE VIEW F31_01_VIEW AS SELECT * FROM F31_01" db-types="Firebird" />
+    <sql-case id="unsupported_create_view_as_base_select2" value="CREATE view F131_02 (namecompany, typeproduct) as select namecompany, typeproduct from company" db-types="Firebird" />
+    <sql-case id="unsupported_create_view_with_select_and_union_select1" value="CREATE view F081_UNION (model,price)as select model,price from computers union select model,price from laptop" db-types="Firebird" />
+    <sql-case id="unsupported_create_view_with_select_and_union_select2" value="CREATE view F131_01 (model,price,speedcpu,ram,hdd,namecompany)as select model,price,speedcpu,ram,hdd,namecompany from computers union select model,price,speedcpu,ram,hdd,namecompany from laptop" db-types="Firebird" />
+    <sql-case id="unsupported_merge_into_with_using_in_select_on_matched_and_not_matched_and_insert" value="MERGE INTO agents a USING (SELECT * FROM agents WHERE commission > 0.15) cd ON (a.agent_code = cd.agent_code) WHEN MATCHED THEN UPDATE SET agent_code = cd.agent_code WHEN NOT MATCHED THEN INSERT (agent_code) VALUES (cd.agent_code)" db-types="Firebird" />
+    <sql-case id="unsupported_merge_into_with_using_in_select_on_matched" value="MERGE INTO customer c USING (SELECT * FROM agents WHERE commission > 0.18) cd ON (c.agent_code = cd.agent_code) WHEN MATCHED THEN UPDATE SET agent_code = cd.agent_code" db-types="Firebird" />
+    <sql-case id="unsupported_merge_into_with_using_in_select_on_matched_and_delete" value="MERGE INTO CUSTOMER USING ( SELECT AGENT_CODE FROM AGENTS WHERE AGENT_CODE = 'A006') AG ON CUSTOMER.AGENT_CODE = AG.AGENT_CODE WHEN MATCHED THEN DELETE" db-types="Firebird" />
+    <sql-case id="unsupported_create_or_alter_view_as_select_with_order_by" value="CREATE OR ALTER VIEW F852(ID, namecompany) AS SELECT id, namecompany FROM company ORDER BY typeproduct" db-types="Firebird" />
+    <sql-case id="unsupported_create_or_alter_view_as_select_with_order_by_and_offset_and_fetch" value="CREATE OR ALTER VIEW F859(ID, namecompany) AS SELECT id, namecompany FROM company ORDER BY typeproduct OFFSET 0 ROWS FETCH FIRST 4 ROWS ONLY" db-types="Firebird" />
+    <sql-case id="unsupported_create_table_with_check_in_similar_to_and_escape" value="CREATE TABLE T141 (ROW_NUM NUMERIC(3) NOT NULL, ROW_NAME VARCHAR(25) NOT NULL, ROW_PHONE VARCHAR(14) CHECK (ROW_PHONE SIMILAR TO '\([0-9]{3}\) [0-9]{3}\-[0-9]{4}' escape '\'))" db-types="Firebird" />
+
+
 </sql-cases>
 
