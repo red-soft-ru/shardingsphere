@@ -19,4 +19,6 @@
 <sql-cases>
     <sql-case id="execute_with_expected_db_table" value="EXECUTE ps1 USING @expected, @db, @table" db-types="MySQL" />
     <sql-case id="execute_without_parameter" value="EXECUTE q" db-types="PostgreSQL" />
+    <sql-case id="execute_block_with_suspend" value="EXECUTE block RETURNS (s VARCHAR(100)) AS BEGIN IF (NULL IS NOT DISTINCT FROM NULL) THEN BEGIN s = 'null is not distinct from null'; suspend; END END;" db-types="Firebird" />
+    <sql-case id="execute_simple_procedure" value="execute procedure t522_proc" db-types="Firebird" />
 </sql-cases>
