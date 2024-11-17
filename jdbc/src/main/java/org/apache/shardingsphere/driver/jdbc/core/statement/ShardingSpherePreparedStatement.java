@@ -571,22 +571,16 @@ public final class ShardingSpherePreparedStatement extends AbstractPreparedState
         return currentResultSet;
     }
 
-    private List<ResultSet> getResultSets(List<QueryResult> qr) throws SQLException {
+    private List<ResultSet> getResultSets(List<QueryResult> qr) {
         List<ResultSet> result = new ArrayList<>(qr.size());
         for (QueryResult each : qr) {
-            try {
-                Method getResultSet = each.getClass().getDeclaredMethod("getResultSet");
-                ResultSet rs = (ResultSet) getResultSet.invoke(each);
-                if (null != rs) {
-                    result.add(rs);
-                }
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
-                return getResultSets();
+            if (null != each.getResultSet()) {
+                result.add(each.getResultSet());
             }
         }
         return result;
     }
-    
+
     private List<ResultSet> getResultSets() throws SQLException {
         List<ResultSet> result = new ArrayList<>(statements.size());
         for (Statement each : statements) {

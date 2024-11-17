@@ -645,14 +645,8 @@ public final class ShardingSphereStatement extends AbstractStatementAdapter {
     private List<ResultSet> getResultSets(List<QueryResult> qr) throws SQLException {
         List<ResultSet> result = new ArrayList<>(qr.size());
         for (QueryResult each : qr) {
-            try {
-                Method getResultSet = each.getClass().getDeclaredMethod("getResultSet");
-                ResultSet rs = (ResultSet) getResultSet.invoke(each);
-                if (null != rs) {
-                    result.add(rs);
-                }
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
-                return getResultSets();
+            if (null != each.getResultSet()) {
+                result.add(each.getResultSet());
             }
         }
         return result;

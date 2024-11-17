@@ -21,6 +21,7 @@ import org.apache.shardingsphere.infra.executor.sql.execute.result.query.QueryRe
 import org.apache.shardingsphere.infra.executor.sql.execute.result.query.type.memory.AbstractMemoryQueryResult;
 import org.apache.shardingsphere.infra.executor.sql.execute.result.query.type.memory.row.MemoryQueryResultDataRow;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 /**
@@ -30,5 +31,10 @@ public final class RawMemoryQueryResult extends AbstractMemoryQueryResult {
     
     public RawMemoryQueryResult(final QueryResultMetaData metaData, final List<MemoryQueryResultDataRow> rows) {
         super(metaData, rows);
+    }
+
+    @Override
+    public ResultSet getResultSet() {
+        return null;
     }
 }
