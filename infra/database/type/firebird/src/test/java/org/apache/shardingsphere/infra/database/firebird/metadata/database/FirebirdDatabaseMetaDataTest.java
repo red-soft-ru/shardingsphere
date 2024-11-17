@@ -17,6 +17,7 @@
 package org.apache.shardingsphere.infra.database.firebird.metadata.database;
 import org.apache.shardingsphere.infra.database.core.metadata.database.DialectDatabaseMetaData;
 import org.apache.shardingsphere.infra.database.core.metadata.database.enums.QuoteCharacter;
+import org.apache.shardingsphere.infra.database.core.metadata.database.enums.NullsOrderType;
 import org.apache.shardingsphere.infra.database.core.spi.DatabaseTypedSPILoader;
 import org.apache.shardingsphere.infra.database.core.type.DatabaseType;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
@@ -30,5 +31,10 @@ class FirebirdDatabaseMetaDataTest {
     @Test
     void assertGetQuoteCharacter() {
         assertThat(dialectDatabaseMetaData.getQuoteCharacter(), is(QuoteCharacter.QUOTE));
+    }
+
+    @Test
+    void assertGetDefaultNullsOrderType() {
+        assertThat(dialectDatabaseMetaData.getDefaultNullsOrderType(), is(NullsOrderType.FIRST));
     }
 }
