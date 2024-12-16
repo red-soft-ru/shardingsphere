@@ -21,7 +21,7 @@ import org.apache.shardingsphere.infra.binder.context.statement.ddl.CreateIndexS
 import org.apache.shardingsphere.infra.exception.dialect.exception.syntax.table.NoSuchTableException;
 import org.apache.shardingsphere.infra.metadata.database.ShardingSphereDatabase;
 import org.apache.shardingsphere.infra.metadata.database.schema.model.ShardingSphereSchema;
-import org.apache.shardingsphere.sharding.exception.metadata.DuplicateIndexException;
+import org.apache.shardingsphere.infra.exception.kernel.metadata.DuplicateIndexException;
 import org.apache.shardingsphere.sharding.rule.ShardingRule;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.index.IndexNameSegment;
 import org.apache.shardingsphere.sql.parser.statement.core.segment.ddl.index.IndexSegment;
@@ -57,7 +57,7 @@ class ShardingCreateIndexSupportedCheckerTest {
         sqlStatement.setIndex(new IndexSegment(0, 0, new IndexNameSegment(0, 0, new IdentifierValue("t_order_index"))));
         ShardingSphereSchema schema = mock(ShardingSphereSchema.class);
         when(schema.containsTable("t_order")).thenReturn(true);
-        assertDoesNotThrow(() -> new ShardingCreateIndexSupportedChecker().check(rule, database, schema, new CreateIndexStatementContext(sqlStatement, "foo_db")));
+        assertDoesNotThrow(() -> new ShardingCreateIndexSupportedChecker().check(rule, database, schema, new CreateIndexStatementContext(sqlStatement)));
     }
     
     @Test
@@ -67,7 +67,7 @@ class ShardingCreateIndexSupportedCheckerTest {
         sqlStatement.setIndex(new IndexSegment(0, 0, new IndexNameSegment(0, 0, new IdentifierValue("t_order_index"))));
         ShardingSphereSchema schema = mock(ShardingSphereSchema.class);
         when(schema.containsTable("t_order")).thenReturn(false);
-        assertThrows(NoSuchTableException.class, () -> new ShardingCreateIndexSupportedChecker().check(rule, database, schema, new CreateIndexStatementContext(sqlStatement, "foo_db")));
+        assertThrows(NoSuchTableException.class, () -> new ShardingCreateIndexSupportedChecker().check(rule, database, schema, new CreateIndexStatementContext(sqlStatement)));
     }
     
     @Test
@@ -78,7 +78,7 @@ class ShardingCreateIndexSupportedCheckerTest {
         ShardingSphereSchema schema = mock(ShardingSphereSchema.class);
         when(schema.containsTable("t_order")).thenReturn(true);
         when(schema.containsIndex("t_order", "t_order_index")).thenReturn(true);
-        assertThrows(DuplicateIndexException.class, () -> new ShardingCreateIndexSupportedChecker().check(rule, database, schema, new CreateIndexStatementContext(sqlStatement, "foo_db")));
+        assertThrows(DuplicateIndexException.class, () -> new ShardingCreateIndexSupportedChecker().check(rule, database, schema, new CreateIndexStatementContext(sqlStatement)));
     }
     
     @Test
@@ -89,7 +89,7 @@ class ShardingCreateIndexSupportedCheckerTest {
         sqlStatement.setGeneratedIndexStartIndex(10);
         ShardingSphereSchema schema = mock(ShardingSphereSchema.class);
         when(schema.containsTable("t_order")).thenReturn(true);
-        assertDoesNotThrow(() -> new ShardingCreateIndexSupportedChecker().check(rule, database, schema, new CreateIndexStatementContext(sqlStatement, "foo_db")));
+        assertDoesNotThrow(() -> new ShardingCreateIndexSupportedChecker().check(rule, database, schema, new CreateIndexStatementContext(sqlStatement)));
     }
     
     @Test
@@ -100,7 +100,7 @@ class ShardingCreateIndexSupportedCheckerTest {
         sqlStatement.setGeneratedIndexStartIndex(10);
         ShardingSphereSchema schema = mock(ShardingSphereSchema.class);
         when(schema.containsTable("t_order")).thenReturn(false);
-        assertThrows(NoSuchTableException.class, () -> new ShardingCreateIndexSupportedChecker().check(rule, database, schema, new CreateIndexStatementContext(sqlStatement, "foo_db")));
+        assertThrows(NoSuchTableException.class, () -> new ShardingCreateIndexSupportedChecker().check(rule, database, schema, new CreateIndexStatementContext(sqlStatement)));
     }
     
     @Test
@@ -112,6 +112,6 @@ class ShardingCreateIndexSupportedCheckerTest {
         ShardingSphereSchema schema = mock(ShardingSphereSchema.class);
         when(schema.containsTable("t_order")).thenReturn(true);
         when(schema.containsIndex("t_order", "content_idx")).thenReturn(true);
-        assertThrows(DuplicateIndexException.class, () -> new ShardingCreateIndexSupportedChecker().check(rule, database, schema, new CreateIndexStatementContext(sqlStatement, "foo_db")));
+        assertThrows(DuplicateIndexException.class, () -> new ShardingCreateIndexSupportedChecker().check(rule, database, schema, new CreateIndexStatementContext(sqlStatement)));
     }
 }
